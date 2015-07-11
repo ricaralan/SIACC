@@ -5,26 +5,56 @@
   *{
     color: #000 !important;
   }
-  .nav-wrapper, .nav-wrapper >a {
+  .nav-wrapper, .nav-wrapper >a, .top-nav{
     background-color: #fff;
     color: #000;
   }
+  #contentApp{
+    margin-top:30px;
+    background-color: #fff;
+    padding: 20px;
+    min-height: 300px;
+  }
 </style>
+
 <nav>
-    <div class="nav-wrapper">
-      <a href="#!" class="brand-logo">Universidad Veracruzana</a>
+    <div class="nav-wrapper col s12 m9 l10">
+      <a href="#!" class="brand-logo"> &nbsp;SIACC</a>
       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="input material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="/users/createSession">Sass</a></li>
-        <li><a href="#">Components</a></li>
-        <li><a href="#">Javascript</a></li>
-        <li><a href="#">Mobile</a></li>
+      <ul class="right hide-on-med-and-down"><!-- right hide-on-med-and-down      side-nav fixed -->
+        <li><a href="#">Areas</a></li>
+        <li><a href="#">Usuarios</a></li>
+        <li><a href="#">Inventarios</a></li>
+        <li><a href="#">Mesa de ayuda</a></li>
+        <li><a class='dropdown-button' href='#' data-activates='configuracion'><img src="/images/system/icon-user.png" alt="" width="64px"/></a>
+          <ul id='configuracion' class='dropdown-content'>
+            <li><a href="#!">YO</a></li>
+            <li class="divider"></li>
+            <li><a href="#!">Salir</a></li>
+          </ul>
+        </li>
       </ul>
       <ul class="side-nav" id="mobile-demo">
-        <li><a href="#">Sass</a></li>
-        <li><a href="#">Components</a></li>
-        <li><a href="#">Javascript</a></li>
-        <li><a href="#">Mobile</a></li>
+        <li><a href="#">Areas</a></li>
+        <li><a href="#">Usuarios</a></li>
+        <li><a href="#">Inventarios</a></li>
+        <li><a href="#">Mesa de ayuda</a></li>
+        <li>
+          <ul class="collapsible" data-collapsible="accordion">
+            <li class="bold">
+              <div class="collapsible-header"><i class="material-icons">settings</i>Configuración</div>
+              <div class="collapsible-body">
+                <ul>
+                  <li><a href="#">YO</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Salir</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
 </nav>
+
+<div ng-transclude class="container" id="contentApp"></div>
