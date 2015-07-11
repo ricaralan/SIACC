@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  //h1= title
+  //p Welcome to #{title}
+  div(ng-app="AppModule")
+    app-for-users
+
+  script(src="/javascripts/angular/angular.min.js")
+  script(src="/javascripts/angular/angular_modules/AppModule.js")
+  script(src="/materialize/js/jquery-2.1.4.min.js")
+  script(src="/materialize/js/materialize.min.js")
+  link(rel='stylesheet', href='/materialize/css/materialize.min.css')
+  link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
