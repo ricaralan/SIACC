@@ -1,187 +1,220 @@
-create database db_siacc;
+CREATE DATABASE db_siacc;
 
 use db_siacc;
 
-create table area(
-id_area int not null auto_increment primary key,
-are_centro_de_computo boolean,
-are_nombre varchar(40) not null,
-are_total_computadoras int,
-are_capacidad_alumnos int,
-are_cuota_por_hora int,
-are_descripcion varchar(200)
+/**
+* TABLE SYSTEM: Esta tabla contendrá los nombres de las tablas de la base de datos
+*/
+CREATE TABLE table_system(
+table_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+table_name VARCHAR(40) NOT NULL,
+table_description VARCHAR(150)
+);
+
+/**
+*	TABLE SYSTEM: El contenido de esta tabla estará por defecto en la instalación
+* del sistema para que no afecten el funcionamiento del mismo...
+* Ejemplos de atributos:
+* - Control de usuarios
+* - Control de inventarios
+* - Control de accesos
+* - Mesa de ayuda
+*/
+CREATE TABLE atributo_area(
+id_atributo VARCHAR(15) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+attr_table_id INT NOT NULL,
+attr_nombre VARCHAR(30),
+attr_descripcion VARCHAR(100),
+FOREIGN KEY(attr_table_id) REFERENCES table_system(table_id)
+);
+
+CREATE TABLE tipo_area(
+id_tipo_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+tipo_nombre VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE atributo_en_area();
+
+CREATE TABLE area(
+id_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+are_centro_de_computo BOOLEAN,
+are_nombre VARCHAR(40) NOT NULL,
+are_total_computadoras INT,
+are_capacidad_alumnos INT,
+are_cuota_por_hora INT,
+are_descripcion VARCHAR(200)
 );
 
 # Esta tabla servirá para que los permisos de cada usuario sean personalizables.
-create table permisos_usuario(
-id_permiso_usuario int not null auto_increment primary key,
-per_ver boolean not null,
-per_crear boolean not null,
-per_modificar boolean not null,
-per_eliminar boolean not null
+CREATE TABLE permisos_usuario(
+id_permiso_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+per_ver BOOLEAN NOT NULL,
+per_crear BOOLEAN NOT NULL,
+per_modificar BOOLEAN NOT NULL,
+per_eliminar BOOLEAN NOT NULL
 );
 
 # Esta tabla guardará a todos los usuarios del sistema (cualquier tipo).
-create table usuario(
-id_usuario varchar(10) not null primary key,
-usu_id_permiso_usuario int not null,
-usu_id_area int not null,
-usu_tipo_usuario int(1) not null,
-usu_carrera varchar(20),
-usu_nombre varchar(30)not null,
-usu_primer_apellido varchar(20) not null,
-usu_segundo_apellido varchar(20) not null,
-usu_sexo varchar(1) not null,
-usu_email varchar(32),
+CREATE TABLE usuario(
+id_usuario VARCHAR(10) NOT NULL PRIMARY KEY,
+usu_id_permiso_usuario INT NOT NULL,
+usu_id_area INT NOT NULL,
+usu_tipo_usuario INT(1) NOT NULL,
+usu_carrera VARCHAR(20),
+usu_nombre VARCHAR(30)NOT NULL,
+usu_primer_apellido VARCHAR(20) NOT NULL,
+usu_segundo_apellido VARCHAR(20) NOT NULL,
+usu_sexo VARCHAR(1) NOT NULL,
+usu_email VARCHAR(32),
 usu_foto blob,
-usu_usuario varchar(20) not null,
-usu_contrasena varchar(30) not null,
-foreign key(usu_id_permiso_usuario) references permisos_usuario(id_permiso_usuario),
-foreign key(usu_id_area) references area(id_area)
+usu_usuario VARCHAR(20) NOT NULL,
+usu_contrasena VARCHAR(30) NOT NULL,
+FOREIGN KEY(usu_id_permiso_usuario) REFERENCES permisos_usuario(id_permiso_usuario),
+FOREIGN KEY(usu_id_area) REFERENCES area(id_area)
 );
 
 # Tabla materia para los maestros(usuarios) -> el id_materia = NRC
-create table materia(
-id_materia varchar(10) not null primary key,
-mat_id_usuario varchar(10) not null,
-mat_nombre varchar(35) not null,
-foreign key(mat_id_usuario) references usuario(id_usuario)
+CREATE TABLE materia(
+id_materia VARCHAR(10) NOT NULL PRIMARY KEY,
+mat_id_usuario VARCHAR(10) NOT NULL,
+mat_nombre VARCHAR(35) NOT NULL,
+FOREIGN KEY(mat_id_usuario) REFERENCES usuario(id_usuario)
 );
 
 # Esta tabla nos servirá para que un coordinador elija ver o no ver las notificaciones.
 # de centros de computo especificos
-create table notificacion_de_area(
-not_id_usuario varchar(10) not null,
-not_id_area int not null,
-not_recibir_notificacion boolean not null,
-primary key(not_id_usuario, not_id_area),
-foreign key (not_id_usuario) references usuario (id_usuario),
-foreign key (not_id_area) references area(id_area)
+CREATE TABLE notificacion_de_area(
+not_id_usuario VARCHAR(10) NOT NULL,
+not_id_area INT NOT NULL,
+not_recibir_notificacion BOOLEAN NOT NULL,
+PRIMARY KEY(not_id_usuario, not_id_area),
+FOREIGN KEY (not_id_usuario) REFERENCES usuario (id_usuario),
+FOREIGN KEY (not_id_area) REFERENCES area(id_area)
 );
 
-create table horario_cc(
-id_horario_area int not null auto_increment primary key,
-hor_id_area int not null,
-hor_id_usuario varchar(10) not null,
-hor_id_materia varchar(10) not null,
-hor_dia int not null,
-hor_hora int not null,
-hor_curso_materia varchar(35) not null,
-hor_fecha_inicio date not null,
-hor_fecha_fin date not null,
-foreign key (hor_id_area) references area(id_area),
-foreign key (hor_id_usuario) references usuario(id_usuario)
+CREATE TABLE horario_cc(
+id_horario_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+hor_id_area INT NOT NULL,
+hor_id_usuario VARCHAR(10) NOT NULL,
+hor_id_materia VARCHAR(10) NOT NULL,
+hor_dia INT NOT NULL,
+hor_hora INT NOT NULL,
+hor_curso_materia VARCHAR(35) NOT NULL,
+hor_fecha_inicio date NOT NULL,
+hor_fecha_fin date NOT NULL,
+FOREIGN KEY (hor_id_area) REFERENCES area(id_area),
+FOREIGN KEY (hor_id_usuario) REFERENCES usuario(id_usuario)
 );
 
 # Esta tabla permitirá asignar un horario a un servicio social de un centro de computo.
-create table horario_servicio_social(
-id_horario_servicio int not null auto_increment primary key,
-hor_id_usuario varchar(9) not null,
-hor_id_area int not null,
-hor_dia int not null,
-hor_hora int not null,
-hor_fecha_inicio date not null,
-hor_fecha_fin date not null,
-foreign key (hor_id_usuario) references usuario(id_usuario),
-foreign key (hor_id_area) references area(id_area)
+CREATE TABLE horario_servicio_social(
+id_horario_servicio INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+hor_id_usuario VARCHAR(9) NOT NULL,
+hor_id_area INT NOT NULL,
+hor_dia INT NOT NULL,
+hor_hora INT NOT NULL,
+hor_fecha_inicio date NOT NULL,
+hor_fecha_fin date NOT NULL,
+FOREIGN KEY (hor_id_usuario) REFERENCES usuario(id_usuario),
+FOREIGN KEY (hor_id_area) REFERENCES area(id_area)
 );
 
 
-create table inventario(
-num_inventario varchar(20) primary key,
-inv_id_area int not null,
-inv_tipo int(1) not null,
-inv_tipo_computadora int(1),
-inv_num_maq int(3),
+CREATE TABLE inventario(
+num_inventario VARCHAR(20) PRIMARY KEY,
+inv_id_area INT NOT NULL,
+inv_tipo INT(1) NOT NULL,
+inv_tipo_computadora INT(1),
+inv_num_maq INT(3),
 inv_ram double,
 inv_vel_procesador double,
 inv_capacidad double,
-inv_estado int not null,
-inv_no_serie varchar(20),
-inv_marca varchar(30),
-inv_disponibilidad boolean,
-inv_descripcion varchar(200),
-foreign key(inv_id_area) references area(id_area)
+inv_estado INT NOT NULL,
+inv_no_serie VARCHAR(20),
+inv_marca VARCHAR(30),
+inv_disponibilidad BOOLEAN,
+inv_descripcion VARCHAR(200),
+FOREIGN KEY(inv_id_area) REFERENCES area(id_area)
 );
 
 # Esta tabla llevará el registro de ingreso de usuarios a los centros de computo.
-create table entrada_a_centro_de_computo(
-id_entrada int not null auto_increment primary key,
-rac_id_usuario varchar(9) not null,
-rac_id_inventario varchar(20) not null,
-rac_fecha_registro date not null,
-rac_hora_inicio time not null,
-rac_hora_fin time not null,
+CREATE TABLE entrada_a_centro_de_computo(
+id_entrada INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+rac_id_usuario VARCHAR(9) NOT NULL,
+rac_id_inventario VARCHAR(20) NOT NULL,
+rac_fecha_registro date NOT NULL,
+rac_hora_inicio time NOT NULL,
+rac_hora_fin time NOT NULL,
 rac_tot_pago double,
-rac_salida boolean not null,
-foreign key (rac_id_usuario) references usuario (id_usuario),
-foreign key (rac_id_inventario) references inventario(num_inventario)
+rac_salida BOOLEAN NOT NULL,
+FOREIGN KEY (rac_id_usuario) REFERENCES usuario (id_usuario),
+FOREIGN KEY (rac_id_inventario) REFERENCES inventario(num_inventario)
 );
 
 # Catalogo de listas para la mesa de ayuda - tareas
-create table lista_trabajo(
-id_lista_trabajo int not null auto_increment primary key,
-lis_nombre varchar(30) not null
+CREATE TABLE lista_trabajo(
+id_lista_trabajo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+lis_nombre VARCHAR(30) NOT NULL
 );
 
 # Esta tabla nos ayudará a registrar un problema/tarea en la mesa de ayuda.
-create table tarea_lista(
-id_tarea_lista int not null auto_increment primary key,
-tar_id_lista_trabajo int not null,
-tar_id_area int not null,
-tar_nombre varchar(200) not null,
-tar_importancia int not null,
-tar_estado int not null,
-tar_solucion varchar(200),
-foreign key(tar_id_lista_trabajo) references lista_trabajo(id_lista_trabajo),
-foreign key(tar_id_area) references area(id_area)
+CREATE TABLE tarea_lista(
+id_tarea_lista INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+tar_id_lista_trabajo INT NOT NULL,
+tar_id_area INT NOT NULL,
+tar_nombre VARCHAR(200) NOT NULL,
+tar_importancia INT NOT NULL,
+tar_estado INT NOT NULL,
+tar_solucion VARCHAR(200),
+FOREIGN KEY(tar_id_lista_trabajo) REFERENCES lista_trabajo(id_lista_trabajo),
+FOREIGN KEY(tar_id_area) REFERENCES area(id_area)
 );
 
 # Esta tabla nos servirá para saber quien o quienes dieron solución a un problema/tarea.
 # de la mesa de ayuda
-create table usuario_asignado_tarea(
-ust_id_tarea_lista int not null,
-ust_id_usuario varchar(9) not null,
-primary key(ust_id_usuario, ust_id_tarea_lista),
-foreign key(ust_id_tarea_lista) references tarea_lista(id_tarea_lista),
-foreign key(ust_id_usuario) references usuario(id_usuario)
+CREATE TABLE usuario_asignado_tarea(
+ust_id_tarea_lista INT NOT NULL,
+ust_id_usuario VARCHAR(9) NOT NULL,
+PRIMARY KEY(ust_id_usuario, ust_id_tarea_lista),
+FOREIGN KEY(ust_id_tarea_lista) REFERENCES tarea_lista(id_tarea_lista),
+FOREIGN KEY(ust_id_usuario) REFERENCES usuario(id_usuario)
 );
 
-create table mesa_de_ayuda(
-id_mesa_de_ayuda varchar(13) not null primary key,
-mes_id_area int(3) not null,
-mes_id_usuario varchar(9) not null,
-mes_tipo_servicio int(1) not null,
-mes_otro_tipo_servicio varchar(30),
+CREATE TABLE mesa_de_ayuda(
+id_mesa_de_ayuda VARCHAR(13) NOT NULL PRIMARY KEY,
+mes_id_area INT(3) NOT NULL,
+mes_id_usuario VARCHAR(9) NOT NULL,
+mes_tipo_servicio INT(1) NOT NULL,
+mes_otro_tipo_servicio VARCHAR(30),
 mes_fecha_solicitado datetime,
 mes_fecha_limite datetime,
 mes_fecha_solucionado datetime,
-mes_estado int(1),
-mes_atendido boolean,
-mes_importancia int(1),
-mes_descripcion_problema varchar(250),
-foreign key(mes_id_area) references area(id_area),
-foreign key(mes_id_usuario) references usuario(id_usuario)
+mes_estado INT(1),
+mes_atendido BOOLEAN,
+mes_importancia INT(1),
+mes_descripcion_problema VARCHAR(250),
+FOREIGN KEY(mes_id_area) REFERENCES area(id_area),
+FOREIGN KEY(mes_id_usuario) REFERENCES usuario(id_usuario)
 );
 
-create table area_asignada_mesa_ayuda(
-aam_id_mesa_de_ayuda  varchar(13) not null,
-aam_id_area int not null,
-aam_atendiendo boolean,
+CREATE TABLE area_asignada_mesa_ayuda(
+aam_id_mesa_de_ayuda  VARCHAR(13) NOT NULL,
+aam_id_area INT NOT NULL,
+aam_atendiendo BOOLEAN,
 aam_fecha_asinacion datetime,
-primary key(aam_id_mesa_de_ayuda, aam_id_area),
-foreign key(aam_id_mesa_de_ayuda) references mesa_de_ayuda(id_mesa_de_ayuda),
-foreign key(aam_id_area) references area(id_area)
+PRIMARY KEY(aam_id_mesa_de_ayuda, aam_id_area),
+FOREIGN KEY(aam_id_mesa_de_ayuda) REFERENCES mesa_de_ayuda(id_mesa_de_ayuda),
+FOREIGN KEY(aam_id_area) REFERENCES area(id_area)
 );
 
-create table servicio_asignado_mesa_ayuda(
-uam_id_usuario varchar(10) not null,
-uam_id_mesa_ayuda varchar(13) not null,
-fecha_asignado date not null,
-evaluacion_rapidez_solucion int(1),
-primary key(uam_id_usuario, uam_id_mesa_ayuda),
-foreign key(uam_id_usuario) references usuario(id_usuario),
-foreign key(uam_id_mesa_ayuda) references mesa_de_ayuda(id_mesa_de_ayuda)
+CREATE TABLE servicio_asignado_mesa_ayuda(
+uam_id_usuario VARCHAR(10) NOT NULL,
+uam_id_mesa_ayuda VARCHAR(13) NOT NULL,
+fecha_asignado date NOT NULL,
+evaluacion_rapidez_solucion INT(1),
+PRIMARY KEY(uam_id_usuario, uam_id_mesa_ayuda),
+FOREIGN KEY(uam_id_usuario) REFERENCES usuario(id_usuario),
+FOREIGN KEY(uam_id_mesa_ayuda) REFERENCES mesa_de_ayuda(id_mesa_de_ayuda)
 );
 
 
@@ -223,3 +256,49 @@ VALUES(1, "Sin area!!", 1, "Este registro simula un centro de computo, solo sera
 INSERT INTO usuario(id_usuario, usu_tipo_usuario, usu_id_permiso_usuario, usu_id_area, usu_usuario, usu_contrasena)
 VALUES ("S11014636", 1, 1, 1, "admin", "secreto");
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* - Control de usuarios
+* - Control de inventarios
+* - Control de accesos
+*/
+CREATE TABLE atributo_area(
+id_atributo VARCHAR(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+attr_nombre VARCHAR(30),
+attr_descripcion VARCHAR(100)
+);
+
+
+
+
+
+/**
+* SYSTEM INSERTS (DON'T CHANGE - NO CAMBIAR!!)
+*/
+INSERT INTO atributo_area(id_atributo, attr_nombre, attr_descripcion)
+VALUES("users_control", "Control de usuarios", "Permitir que puedan tener un control sobre tipos usuarios especificos");
+
+INSERT INTO atributo_area(id_atributo, attr_nombre, attr_descripcion)
+VALUES("inventarios_control", "", "");
+
+INSERT INTO atributo_area(id_atributo, attr_nombre, attr_descripcion)
+VALUES("access_control", "Control de acceso", "Permitir que se pueda tener un control de acceso");

@@ -87,7 +87,6 @@ AbstractModel.prototype.delete = function (table, jsonIds, callback) {
   json = self.getKeyValueJson("AND", jsonIds);
   query = "DELETE FROM " + table +  " WHERE "+ json.keys ;
   console.log(query);
-  //connection.query("DELETE FROM " + table + whereids, json.arrayValues, callback);
   connection.query(query, json.arrayValues, callback);
 };
 
