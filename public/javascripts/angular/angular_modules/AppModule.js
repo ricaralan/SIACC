@@ -18,6 +18,8 @@ AppModule.directive("appForUsers", function() {
           accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
       });
+      document.getElementById("contentApp").removeAttribute("hidden");
+      document.getElementById("loadPage").remove();
 	};
   return {
     restrict : "E",

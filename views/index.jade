@@ -1,13 +1,54 @@
 extends layout
 
 block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
   div(ng-app="AppModule")
     app-for-users
-      h3 bienvenido
+      div(id="contentApp", hidden)
+        h3 Creación de tipos de áreas
+        input(type="text", placeholder="Nombre de la nueva área")
+        textarea(class="materialize-textarea", placeholder="Descripción de la nueva área")
+        p(class="divider")
+        h4 Modulos permitidos
+        table
+          tr
+            th Permiso
+            th Descripción
+          tr
+            td
+              input(type="checkbox", id="checkUsuarios")
+              label(for="checkUsuarios") Control de usuarios
+            td  Permitir que los usuarios designados en la área puedan tener una gestión de sus usuarios
+          tr
+            td
+              input(type="checkbox", id="checkInventarios")
+              label(for="checkInventarios") Control de Inventarios
+            td  Permitir control inventarios
+          tr
+            td
+              input(type="checkbox", id="checkControlAcceso", ng-model="checkControlAcceso")
+              label(for="checkControlAcceso") Control de acceso
+                p(ng-show="checkControlAcceso")
+                  input(type="radio", name="tipoControlAcceso", id="tipoControlAcceso1")
+                  label(for="tipoControlAcceso1") Control de entrada
+                  br
+                  input(type="radio", name="tipoControlAcceso", id="tipoControlAcceso2")
+                  label(for="tipoControlAcceso2") Control de entrada y uso de equipo de computo
+            td Permitir el control de entradas y salidas de usuario en el área
+          tr
+            td
+              input(type="checkbox", id="checkMesaAyuda", ng-model="checkMesaAyuda")
+              label(for="checkMesaAyuda") Mesa de ayuda
+                p(ng-show="checkMesaAyuda")
+                  input(type="radio", name="tipoMesa", id="tipoMesa1")
+                  label(for="tipoMesa1") Administrador
+                  br
+                  input(type="radio", name="tipoMesa", id="tipoMesa2")
+                  label(for="tipoMesa2") Solicitante
+            td Los usuarios asignados a esta área podrán administrar o solicitar los servicios en la mesa de ayuda
+        a(class="waves-effect waves-light btn right") Crear
 
   script(src="/javascripts/angular/angular.min.js")
   script(src="/javascripts/angular/angular_modules/AppModule.js")
-  script(src="/materialize/js/jquery-2.1.4.min.js")
-  script(src="/materialize/js/materialize.min.js")
-  link(rel='stylesheet', href='/materialize/css/materialize.min.css')
-  link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
+  

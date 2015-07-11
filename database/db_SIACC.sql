@@ -14,18 +14,18 @@ table_description VARCHAR(150)
 /**
 *	TABLE SYSTEM: El contenido de esta tabla estará por defecto en la instalación
 * del sistema para que no afecten el funcionamiento del mismo...
-* Ejemplos de atributos:
+* Ejemplos de modulos:
 * - Control de usuarios
 * - Control de inventarios
 * - Control de accesos
 * - Mesa de ayuda
 */
-CREATE TABLE atributo_area(
-id_atributo VARCHAR(15) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-attr_table_id INT NOT NULL,
-attr_nombre VARCHAR(30),
-attr_descripcion VARCHAR(100),
-FOREIGN KEY(attr_table_id) REFERENCES table_system(table_id)
+CREATE TABLE modulo_area(
+id_modulo VARCHAR(15) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+mod_table_id INT NOT NULL,
+mod_nombre VARCHAR(30),
+mod_descripcion VARCHAR(100),
+FOREIGN KEY(mod_table_id) REFERENCES table_system(table_id)
 );
 
 CREATE TABLE tipo_area(
@@ -33,7 +33,7 @@ id_tipo_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 tipo_nombre VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE atributo_en_area();
+CREATE TABLE modulo_en_area();
 
 CREATE TABLE area(
 id_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -281,10 +281,10 @@ VALUES ("S11014636", 1, 1, 1, "admin", "secreto");
 * - Control de inventarios
 * - Control de accesos
 */
-CREATE TABLE atributo_area(
-id_atributo VARCHAR(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-attr_nombre VARCHAR(30),
-attr_descripcion VARCHAR(100)
+CREATE TABLE modulo_area(
+id_modulo VARCHAR(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+mod_nombre VARCHAR(30),
+mod_descripcion VARCHAR(100)
 );
 
 
@@ -294,11 +294,11 @@ attr_descripcion VARCHAR(100)
 /**
 * SYSTEM INSERTS (DON'T CHANGE - NO CAMBIAR!!)
 */
-INSERT INTO atributo_area(id_atributo, attr_nombre, attr_descripcion)
+INSERT INTO modulo_area(id_modulo, mod_nombre, mod_descripcion)
 VALUES("users_control", "Control de usuarios", "Permitir que puedan tener un control sobre tipos usuarios especificos");
 
-INSERT INTO atributo_area(id_atributo, attr_nombre, attr_descripcion)
+INSERT INTO modulo_area(id_modulo, mod_nombre, mod_descripcion)
 VALUES("inventarios_control", "", "");
 
-INSERT INTO atributo_area(id_atributo, attr_nombre, attr_descripcion)
+INSERT INTO modulo_area(id_modulo, mod_nombre, mod_descripcion)
 VALUES("access_control", "Control de acceso", "Permitir que se pueda tener un control de acceso");
