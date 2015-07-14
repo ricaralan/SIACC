@@ -70,6 +70,54 @@ CREATE TABLE usuario(
   FOREIGN KEY(usu_id_area) REFERENCES area(id_area)
 );
 
+CREATE TABLE inventario(
+num_inventario VARCHAR(20) PRIMARY KEY,
+inv_id_area INT NOT NULL,
+inv_tipo INT(1) NOT NULL,
+inv_tipo_computadora INT(1),
+inv_num_maq INT(3),
+inv_ram double,
+inv_vel_procesador double,
+inv_capacidad double,
+inv_estado INT NOT NULL,
+inv_no_serie VARCHAR(20),
+inv_marca VARCHAR(30),
+inv_disponibilidad BOOLEAN,
+inv_descripcion VARCHAR(200),
+FOREIGN KEY(inv_id_area) REFERENCES area(id_area)
+);
+
+CREATE TABLE tipo_acceso(
+id_tipo_acceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+);
+
+# Esta tabla llevará el registro de ingreso de usuarios a los centros de computo.
+CREATE TABLE acceso_a_centro_de_computo(
+id_entrada INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+acc_id_usuario VARCHAR(9) NOT NULL,
+acc_id_inventario VARCHAR(20) NOT NULL,
+acc_fecha_registro date NOT NULL,
+acc_hora_inicio time NOT NULL,
+acc_hora_fin time NOT NULL,
+acc_tot_pago double,
+acc_salida BOOLEAN NOT NULL,
+FOREIGN KEY (acc_id_usuario) REFERENCES usuario (id_usuario),
+FOREIGN KEY (acc_id_inventario) REFERENCES inventario(num_inventario)
+);
+
+# Esta tabla llevará el registro de ingreso de usuarios a las areas.
+# Esto puede ser util para usar en una biblioteca o en un evento
+CREATE TABLE acceso_area(
+id_entrada INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+aa_id_usuario VARCHAR(9) NOT NULL,
+aa_fecha_registro date NOT NULL,
+aa_hora_inicio time NOT NULL,
+aa_hora_fin time NOT NULL,
+aa_salida BOOLEAN NOT NULL,
+FOREIGN KEY (aa_id_usuario) REFERENCES usuario (id_usuario)
+);
+
 
 /**
 * INSERT AREA DE PRUEBA
@@ -82,6 +130,7 @@ INSERT INTO tipo_usuario(tipo_nombre) VALUES("Coordinador");
 INSERT INTO tipo_usuario(tipo_nombre) VALUES("Encargado de area");
 INSERT INTO tipo_usuario(tipo_nombre) VALUES("Maestro");
 INSERT INTO tipo_usuario(tipo_nombre) VALUES("Directivo");
+INSERT INTO tipo_usuario(tipo_nombre) VALUES("Servicio Social");
 INSERT INTO tipo_usuario(tipo_nombre) VALUES("Alumno");
 /**
 * INSERT USUARIO DE PRUEBA
@@ -96,10 +145,3 @@ INSERT INTO tabla_catalogo(table_name, table_name_id, table_name_field) VALUES("
 * INSERT modulos de las áreas
 */
 INSERT INTO modulo_area(id_modulo, mod_table_id, mod_nombre) VALUES("usuarios",1, "Control de usuarios");
-
-/**
-* Con esta consulta se obtiene el nombre del módulo, el nombre de tabla(catalogo)
-* de la que depende y el nombre del field de la tabla(catalogo)
-*/
-SELECT id_modulo, mod_nombre, table_name, table_name_id, table_name_field FROM (modulo_area INNER JOIN
-tabla_catalogo ON mod_table_id=table_id), (select );
