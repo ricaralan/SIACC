@@ -53,7 +53,7 @@ block content
                   input(type="radio", name="tipoMesa", id="mesa_ayuda_solicitante")
                   label(for="mesa_ayuda_solicitante") Solicitante
             td Los usuarios asignados a esta área podrán administrar o solicitar los servicios en la mesa de ayuda
-        a(class="waves-effect waves-light btn right", ng-click="crearTipoDeArea()") Crear
+        button(class="waves-effect waves-light btn right", ng-click="crearTipoDeArea()", id="btnCreasTipoArea") Crear
 
   script(src="/javascripts/angular/angular.min.js")
   script(src="/javascripts/angular/angular_modules/AppModule.js")

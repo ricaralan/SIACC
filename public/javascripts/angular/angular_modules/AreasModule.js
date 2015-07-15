@@ -11,12 +11,20 @@ AreasModule.controller("TiposAreasController", function($scope, $http) {
   };
 
   $scope.crearTipoDeArea = function() {
+    btnCrearTipoArea = document.getElementById("btnCreasTipoArea");
+    btnCrearTipoArea.setAttribute("disabled", "");
     if($scope.verificarFormularioTipoUsuario()) {
       json = encodeURIComponent(JSON.stringify($scope.armarJSON()));
       $http.post("/tipoArea/create/"+json).success(function(data) {
-        console.log(data);
+        if(data.inserted) {
+          Materialize.toast('El tipo de área se creo correctamente!', 4000);
+          $scope.clean();
+        }
       });
     }
+    setTimeout(function(){
+      btnCrearTipoArea.removeAttribute("disabled");
+    }, 2000);
   };
 
   /**
@@ -104,6 +112,15 @@ AreasModule.controller("TiposAreasController", function($scope, $http) {
 
   $scope.isEmpty = function(value) {
     return value == null || value.length == 0;
+  };
+
+  $scope.clean = function() {
+    $scope.nombreTipoArea = "";
+    $scope.descripcionTipoArea = "";
+    $scope.checkUsuarios = false;
+    $scope.checkInventarios = false;
+    $scope.checkControlAcceso = false;
+    $scope.checkMesaAyuda = false;
   };
 
   $scope.initTiposUsuarios();
