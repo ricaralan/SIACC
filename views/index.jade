@@ -23,8 +23,8 @@ block content
               p(ng-show="checkUsuarios")
                 label  Selecciona los tipos de usuarios que el área puede controlar
               p(ng-repeat="tipoUsuario in tiposDeUsuarios", ng-show="checkUsuarios")
-                input(type="checkbox", id="check{{tipoUsuario.tipo_id}}")
-                label(for="check{{tipoUsuario.tipo_id}}") {{tipoUsuario.tipo_nombre}}
+                input(type="checkbox", id="checkUsu{{tipoUsuario.tipo_id}}")
+                label(for="checkUsu{{tipoUsuario.tipo_id}}") {{tipoUsuario.tipo_nombre}}
             td  Permitir que los usuarios designados en la área puedan tener una gestión de sus usuarios
           tr
             td
@@ -36,22 +36,22 @@ block content
               input(type="checkbox", id="checkControlAcceso", ng-model="checkControlAcceso")
               label(for="checkControlAcceso") Control de acceso
                 p(ng-show="checkControlAcceso")
-                  input(type="radio", name="tipoControlAcceso", id="tipoControlAcceso1")
-                  label(for="tipoControlAcceso1") Control de entrada
+                  input(type="radio", name="tipoControlAcceso", id="acceso_simple")
+                  label(for="acceso_simple") Control de entrada
                   br
-                  input(type="radio", name="tipoControlAcceso", id="tipoControlAcceso2")
-                  label(for="tipoControlAcceso2") Control de entrada y uso de equipo de computo
+                  input(type="radio", name="tipoControlAcceso", id="acceso_equipo_computo")
+                  label(for="acceso_equipo_computo") Control de entrada y uso de equipo de computo
             td Permitir el control de entradas y salidas de usuario en el área
           tr
             td
               input(type="checkbox", id="checkMesaAyuda", ng-model="checkMesaAyuda")
               label(for="checkMesaAyuda") Mesa de ayuda
                 p(ng-show="checkMesaAyuda")
-                  input(type="radio", name="tipoMesa", id="tipoMesa1")
-                  label(for="tipoMesa1") Administrador
+                  input(type="radio", name="tipoMesa", id="mesa_ayuda_administrador")
+                  label(for="mesa_ayuda_administrador") Administrador
                   br
-                  input(type="radio", name="tipoMesa", id="tipoMesa2")
-                  label(for="tipoMesa2") Solicitante
+                  input(type="radio", name="tipoMesa", id="mesa_ayuda_solicitante")
+                  label(for="mesa_ayuda_solicitante") Solicitante
             td Los usuarios asignados a esta área podrán administrar o solicitar los servicios en la mesa de ayuda
         a(class="waves-effect waves-light btn right", ng-click="crearTipoDeArea()") Crear
 

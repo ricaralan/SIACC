@@ -10,6 +10,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var modules = require('./routes/modules');
+var tipo_area = require('./routes/tipo_area');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/login', login);
 app.use('/modules', modules);
+app.use('/tipoArea', tipo_area);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
