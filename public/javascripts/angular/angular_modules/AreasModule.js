@@ -131,6 +131,7 @@ AreasModule.controller("AreasController", function($scope, $http) {
   $scope.areas = [];
   $scope.tiposAreas;
   $scope.formArea = {};
+  $scope.sePuedeCrearArea = true;
   $scope.modulosControladosPorAreas;
   $scope.modulosControladosPorAreaSeleccionada;
   $scope.socket = io();
@@ -161,6 +162,14 @@ AreasModule.controller("AreasController", function($scope, $http) {
     $scope.modulosControladosPorAreaSeleccionada = $scope.getModulosTipoArea(tipoArea);
   };
 
+  $scope.opcionArea = function() {
+    if($scope.sePuedeCrearArea) {
+      $scope.crearArea();
+    } else {
+      $scope.editarArea();
+    }
+  };
+
   $scope.crearArea = function() {
     if($scope.isEmpty($scope.formArea.are_nombre) &&
         $scope.isEmpty($scope.formArea.are_descripcion) &&
@@ -180,6 +189,41 @@ AreasModule.controller("AreasController", function($scope, $http) {
     }
   };
 
+  $scope.editarArea = function() {
+    if($scope.isEmpty($scope.formArea.are_nombre) &&
+        $scope.isEmpty($scope.formArea.are_descripcion) &&
+        $scope.isEmpty($scope.formArea.are_id_tipo_area)) {
+      Materialize.toast("Necesitas llenar todos los campos!", 4000);
+    } else {
+      delete $scope.formArea.$$hashKey
+      console.log($scope.formArea);
+      $http.put("/areas/update/" + encodeURIComponent(JSON.stringify($scope.formArea))
+        + "/" + $scope.formArea.id_area).success(function(data) {
+        if(data.success) {
+          Materialize.toast("Área editada correctamente!", 4000);
+          $scope.formArea = {};
+          $scope.socket.emit("areaEdited", data);
+        } else {
+          Materialize.toast("Ocurrio un error al editar el área...", 4000);
+        }
+      });
+    }
+  };
+
+  $scope.setDatosCrearArea = function() {
+    $scope.formArea = {};
+    $('#modalOpcionesArea').openModal();
+    document.getElementById("btnOpcionAreas").innerHTML = "CREAR";
+    $scope.sePuedeCrearArea = true;
+  };
+
+  $scope.setDatosEditarArea = function(idArea) {
+    $scope.formArea = $scope.getAreaById(idArea);
+    $('#modalOpcionesArea').openModal();
+    document.getElementById("btnOpcionAreas").innerHTML = "EDITAR";
+    $scope.sePuedeCrearArea = false;
+  };
+
   $scope.eliminarArea = function(idArea) {
     if(confirm("¿Esta seguro de eliminar el área?")) {
       $http.delete("/areas/delete/"+idArea).success(function(data) {
@@ -193,6 +237,15 @@ AreasModule.controller("AreasController", function($scope, $http) {
     return value == null || value.length == 0;
   };
 
+  $scope.getAreaById = function(idArea) {
+    for(var i = 0; i < $scope.areas.length; i++) {
+      if($scope.areas[i].id_area == idArea) {
+        return $scope.areas[i];
+      }
+    }
+    return null;
+  };
+
   $scope.initAreas();
   $scope.initTiposAreas();
   $scope.initModulosControladosPorAreas();
@@ -201,6 +254,10 @@ AreasModule.controller("AreasController", function($scope, $http) {
   * LISTEN SOCKETS
   */
   $scope.socket.on("newAreaCreated", function(datos){
+    $scope.initAreas();
+  });
+
+  $scope.socket.on("areaEdited", function(datos){
     $scope.initAreas();
   });
 

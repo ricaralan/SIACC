@@ -16,6 +16,10 @@ AreasController.prototype.create = function(jsonArea, callback) {
   self.abstractModel.insert(self.table, jsonArea, callback);
 };
 
+AreasController.prototype.update = function(jsonArea, idArea, callback) {
+  self.abstractModel.update(self.table, jsonArea, { id_area : idArea }, callback);
+};
+
 AreasController.prototype.delete = function(idArea, callback) {
   self.abstractModel.delete(self.table, { id_area : idArea }, callback);
 };

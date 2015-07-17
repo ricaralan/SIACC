@@ -6,10 +6,10 @@ block content
   div(ng-app="AreasModule")
     app-for-users
       div(id="contentApp", hidden, ng-controller="AreasController")
-        a(class="waves-effect waves-light btn modal-trigger right" href="#modal1") Crear nueva
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearArea()") Crear nueva
         h3 Áreas
         // MODAL REG AREA
-        div(id="modal1" class="modal")
+        div(id="modalOpcionesArea" class="modal")
           div(class="modal-content")
             h4 Crear área
             table
@@ -30,7 +30,7 @@ block content
                     label(for="area_name") Nombre del área
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-            button(class=" waves-effect waves-green btn-flat", ng-click="crearArea()") Crear
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionArea()", id="btnOpcionAreas") Crear
 
         // SHOW AREAS
         div(class="row")
@@ -49,7 +49,9 @@ block content
               ol
                 li(ng-repeat="modulo in modulosControladosPorAreaSeleccionada") {{modulo.mod_nombre}}
               p(class="red-text") DANGER ZONE
-                button(class="btn white-text red waves-effect", ng-click="eliminarArea(area.id_area)") ELIMINAR ÁREA
+                br
+                button(class="btn white-text waves-effect", ng-click="setDatosEditarArea(area.id_area)") EDITAR
+                button(class="btn white-text red waves-effect", ng-click="eliminarArea(area.id_area)") ELIMINAR
 
 
 
