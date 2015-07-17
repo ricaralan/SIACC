@@ -8,6 +8,10 @@ module.exports = function(server){
       io.emit("newAreaCreated", mensaje);
     });
 
+    socket.on("areaDeleted", function(mensaje) {
+      io.emit("areaDeleted", mensaje);
+    });
+
   });
 
 };

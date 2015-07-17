@@ -172,14 +172,19 @@ AreasModule.controller("AreasController", function($scope, $http) {
         if(data.success) {
           Materialize.toast("Área creada correctamente!", 4000);
           $scope.formArea = {};
-          try{
-            $scope.socket.emit("newAreaCreated", data);
-          }catch(e){
-            console.log(e);
-          }
+          $scope.socket.emit("newAreaCreated", data);
         } else {
           Materialize.toast("Ocurrio un error al crear el área...", 4000);
         }
+      });
+    }
+  };
+
+  $scope.eliminarArea = function(idArea) {
+    if(confirm("¿Esta seguro de eliminar el área?")) {
+      $http.delete("/areas/delete/"+idArea).success(function(data) {
+        Materialize.toast("El área se elimino correctamente!", 4000);
+        $scope.socket.emit("areaDeleted", data);
       });
     }
   };
@@ -196,6 +201,10 @@ AreasModule.controller("AreasController", function($scope, $http) {
   * LISTEN SOCKETS
   */
   $scope.socket.on("newAreaCreated", function(datos){
+    $scope.initAreas();
+  });
+
+  $scope.socket.on("areaDeleted", function(datos){
     $scope.initAreas();
   });
 

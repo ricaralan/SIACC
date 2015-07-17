@@ -48,10 +48,12 @@ block content
               label Control sobre modulos:
               ol
                 li(ng-repeat="modulo in modulosControladosPorAreaSeleccionada") {{modulo.mod_nombre}}
+              p(class="red-text") DANGER ZONE
+                button(class="btn white-text red waves-effect", ng-click="eliminarArea(area.id_area)") ELIMINAR ÁREA
 
 
 
   script(src="/javascripts/angular/angular.min.js")
-  script(src="/socket.io/socket.io.js") 
+  script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/angular_modules/AppModule.js")
   script(src="/javascripts/angular/angular_modules/AreasModule.js")

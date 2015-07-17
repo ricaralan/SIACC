@@ -14,4 +14,10 @@ router.post("/create/:jsonArea", function(req, res) {
   });
 });
 
+router.delete("/delete/:idArea", function(req, res) {
+  areasController.delete(req.params.idArea, function(err, data) {
+    res.send({success : (!err && data.affectedRows == 1)});
+  });
+});
+
 module.exports = router;
