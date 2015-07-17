@@ -12,4 +12,8 @@ AreasController.prototype.getAreas = function(callback) {
   ], {/* WHERE */}, callback);
 };
 
+AreasController.prototype.create = function(jsonArea, callback) {
+  self.abstractModel.insert(self.table, jsonArea, callback);
+};
+
 module.exports = new AreasController();

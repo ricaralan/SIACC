@@ -6,6 +6,10 @@ var TiposAreasController = function(){
   self.connection = require("../connection/mysql_connection");
 };
 
+TiposAreasController.prototype.getTiposArea = function(callback) {
+  self.abstractModel.select(self.table, ["id_tipo_area", "tipo_nombre", "tipo_descripcion"], {}, callback);
+};
+
 /**
 * Este método regresa un arreglo de json's de todas las tipos_areas... {tipo_area:[modulos_que_controla]}
 */

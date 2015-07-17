@@ -8,4 +8,10 @@ router.get("/getAreas", function(req, res) {
   });
 });
 
+router.post("/create/:jsonArea", function(req, res) {
+  areasController.create(JSON.parse(req.params.jsonArea), function(err, data) {
+    res.send({success : (!err && data.affectedRows == 1)});
+  });
+});
+
 module.exports = router;

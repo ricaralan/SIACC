@@ -17,6 +17,15 @@ AppModule.directive("appForUsers", function() {
         $('.collapsible').collapsible({
           accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+        $('.modal-trigger').leanModal({
+          dismissible: true, // Modal can be dismissed by clicking outside of the modal
+          opacity: .5, // Opacity of modal background
+          in_duration: 300, // Transition in duration
+          out_duration: 300, // Transition out duration
+          ready: function() {  }, // Callback for Modal open
+          complete: function() {  } // Callback for Modal close
+        });
       });
       document.getElementById("contentApp").removeAttribute("hidden");
       document.getElementById("loadPage").remove();

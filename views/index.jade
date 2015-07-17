@@ -6,7 +6,33 @@ block content
   div(ng-app="AreasModule")
     app-for-users
       div(id="contentApp", hidden, ng-controller="AreasController")
+        a(class="waves-effect waves-light btn modal-trigger right" href="#modal1") Crear nueva
         h3 Áreas
+        // MODAL REG AREA
+        div(id="modal1" class="modal")
+          div(class="modal-content")
+            h4 Crear área
+            table
+              tr
+                td
+                  select(class="browser-default", ng-model="formArea.are_id_tipo_area")
+                    option(value="" disabled selected) Selecciona el tipo de área
+                    option(ng-repeat="tipo in tiposAreas", value="{{tipo.id_tipo_area}}") {{tipo.tipo_nombre}}
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="area_name", type="text", class="validate", ng-model="formArea.are_nombre")
+                    label(for="area_name") Nombre del área
+              tr
+                td
+                  div(class="input-field col s6")
+                    textarea(id="area_name", class="materialize-textarea", class="validate", ng-model="formArea.are_descripcion")
+                    label(for="area_name") Nombre del área
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class=" waves-effect waves-green btn-flat", ng-click="crearArea()") Crear
+
+        // SHOW AREAS
         div(class="row")
           div(class="card small col s12 m6 l4", ng-repeat="area in areas")
             div(class="card-image waves-effect waves-block waves-light", ng-click="setModulosAreaSeleccionada(area.are_id_tipo_area)")
@@ -26,5 +52,6 @@ block content
 
 
   script(src="/javascripts/angular/angular.min.js")
+  script(src="/socket.io/socket.io.js") 
   script(src="/javascripts/angular/angular_modules/AppModule.js")
   script(src="/javascripts/angular/angular_modules/AreasModule.js")

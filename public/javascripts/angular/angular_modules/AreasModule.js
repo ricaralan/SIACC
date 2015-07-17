@@ -129,8 +129,17 @@ AreasModule.controller("TiposAreasController", function($scope, $http) {
 AreasModule.controller("AreasController", function($scope, $http) {
 
   $scope.areas = [];
+  $scope.tiposAreas;
+  $scope.formArea = {};
   $scope.modulosControladosPorAreas;
   $scope.modulosControladosPorAreaSeleccionada;
+  $scope.socket = io();
+
+  $scope.initTiposAreas = function() {
+    $http.get("/tipoArea/getTiposArea").success(function(tiposAreas) {
+      $scope.tiposAreas = tiposAreas;
+    });
+  };
 
   $scope.initModulosControladosPorAreas = function() {
     $http.get("/tipoArea/getModulosControladosPorAreas").success(function(tiposModulos) {
@@ -152,6 +161,42 @@ AreasModule.controller("AreasController", function($scope, $http) {
     $scope.modulosControladosPorAreaSeleccionada = $scope.getModulosTipoArea(tipoArea);
   };
 
+  $scope.crearArea = function() {
+    if($scope.isEmpty($scope.formArea.are_nombre) &&
+        $scope.isEmpty($scope.formArea.are_descripcion) &&
+        $scope.isEmpty($scope.formArea.are_id_tipo_area)) {
+      Materialize.toast("Necesitas llenar todos los campos!", 4000);
+    } else {
+      $http.post("/areas/create/" + encodeURIComponent(JSON.stringify($scope.formArea)))
+        .success(function(data) {
+        if(data.success) {
+          Materialize.toast("Área creada correctamente!", 4000);
+          $scope.formArea = {};
+          try{
+            $scope.socket.emit("newAreaCreated", data);
+          }catch(e){
+            console.log(e);
+          }
+        } else {
+          Materialize.toast("Ocurrio un error al crear el área...", 4000);
+        }
+      });
+    }
+  };
+
+  $scope.isEmpty = function(value) {
+    return value == null || value.length == 0;
+  };
+
   $scope.initAreas();
+  $scope.initTiposAreas();
   $scope.initModulosControladosPorAreas();
+
+  /**
+  * LISTEN SOCKETS
+  */
+  $scope.socket.on("newAreaCreated", function(datos){
+    $scope.initAreas();
+  });
+
 });
