@@ -125,3 +125,33 @@ AreasModule.controller("TiposAreasController", function($scope, $http) {
 
   $scope.initTiposUsuarios();
 });
+
+AreasModule.controller("AreasController", function($scope, $http) {
+
+  $scope.areas = [];
+  $scope.modulosControladosPorAreas;
+  $scope.modulosControladosPorAreaSeleccionada;
+
+  $scope.initModulosControladosPorAreas = function() {
+    $http.get("/tipoArea/getModulosControladosPorAreas").success(function(tiposModulos) {
+      $scope.modulosControladosPorAreas = tiposModulos;
+    });
+  };
+
+  $scope.initAreas = function() {
+    $http.get("/areas/getAreas").success(function(areas) {
+      $scope.areas = areas;
+    });
+  };
+
+  $scope.getModulosTipoArea = function(idTipoArea) {
+    return $scope.modulosControladosPorAreas[idTipoArea];
+  };
+
+  $scope.setModulosAreaSeleccionada = function(tipoArea) {
+    $scope.modulosControladosPorAreaSeleccionada = $scope.getModulosTipoArea(tipoArea);
+  };
+
+  $scope.initAreas();
+  $scope.initModulosControladosPorAreas();
+});

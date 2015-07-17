@@ -50,12 +50,10 @@
 
   CREATE TABLE area(
   id_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  are_centro_de_computo BOOLEAN,
+  are_id_tipo_area INT NOT NULL,
   are_nombre VARCHAR(40) NOT NULL,
-  are_total_computadoras INT,
-  are_capacidad_alumnos INT,
-  are_cuota_por_hora INT,
-  are_descripcion VARCHAR(200)
+  are_descripcion VARCHAR(200),
+  FOREIGN KEY(are_id_tipo_area) REFERENCES tipo_area(id_tipo_area)
   );
 
   CREATE TABLE tipo_usuario(
@@ -135,11 +133,6 @@
   FOREIGN KEY (aa_id_usuario) REFERENCES usuario (id_usuario)
   );
 
-
-  /**
-  * INSERT AREA DE PRUEBA
-  */
-  INSERT INTO area(are_nombre) VALUES("AREA DE PRUEBA");
   /**
   * INSERTS TIPOS DE USUARIO(CATALOGO)
   */
@@ -150,11 +143,6 @@
   /*  El servicio social solo será vizualizado por el área que lo cree y por el Coordinador =) */
   INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Servicio Social", false);
   INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Alumno", true);
-  /**
-  * INSERT USUARIO DE PRUEBA
-  */
-  INSERT INTO usuario(id_usuario, usu_id_area, usu_id_tipo_usuario, usu_usuario, usu_contrasena)
-  VALUES ("S11014636", 1, 1, "usuario", "secreto");
 
   /**
   * INSERT modulos de las áreas
@@ -169,3 +157,34 @@
   INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda", 1, "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
   /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
   INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda", 2, "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
+
+
+
+  /*****************************************************************************
+  * INSERT TIPO DE ÁREA
+  *****************************************************************************/
+  INSERT INTO tipo_area(tipo_nombre) VALUES("TIPO DE ÁREA PRINCIPAL");
+  /*****************************************************************************
+  * INSERT AREA DE PRUEBA
+  *****************************************************************************/
+  INSERT INTO area(are_nombre, are_id_tipo_area) VALUES("AREA DE PRUEBA", 1);
+  /*****************************************************************************
+  * INSERT MÓDULO EN ÁREA(MÓDULOS QUE CONTROLA EL ÁREA PRINCIPAL)
+  *****************************************************************************/
+  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "usuarios", 1);
+  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "inventarios", 1);
+  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "acceso_simple", 0);
+  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "acceso_equipo_computo", 1);
+  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_administrador", 1);
+  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_solicitante", 1);
+  /*****************************************************************************
+  * INSERT USUARIO DE PRUEBA
+  *****************************************************************************/
+  INSERT INTO usuario(id_usuario, usu_id_area, usu_id_tipo_usuario, usu_usuario, usu_contrasena)
+  VALUES ("S11014636", 1, 1, "usuario", "secreto");
+
+  /** QUERY QUE TRAIGA ÁREAS CON SU TIPO DE ÁREA  **/
+  SELECT are_nombre, tipo_nombre, moa_id_modulo, mod_nombre
+  FROM ((area INNER JOIN tipo_area ON are_id_tipo_area=id_tipo_area)
+  INNER JOIN modulo_en_area ON moa_id_tipo_area=id_tipo_area) LEFT JOIN modulo ON id_modulo=moa_id_modulo
+  WHERE moa_area_controla_mod=true;

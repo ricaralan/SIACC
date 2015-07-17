@@ -5,55 +5,25 @@ block content
       div(class="indeterminate")
   div(ng-app="AreasModule")
     app-for-users
-      div(id="contentApp", hidden, ng-controller="TiposAreasController")
-        h3 Creación de tipos de áreas
-        input(type="text", placeholder="Nombre de la nueva área", ng-model="nombreTipoArea")
-        textarea(class="materialize-textarea", placeholder="Descripción de la nueva área", ng-model="descripcionTipoArea")
-        p(class="divider")
-        h4 Modulos permitidos
-        table(class="bordered")
-          tr
-            th Permiso
-            th Descripción
-          tr
-            td
-              input(type="checkbox", id="checkUsuarios", ng-model="checkUsuarios")
-              label(for="checkUsuarios") Control de usuarios
-              p(ng-show="checkUsuarios", class="divider")
-              p(ng-show="checkUsuarios")
-                label  Selecciona los tipos de usuarios que el área puede controlar
-              p(ng-repeat="tipoUsuario in tiposDeUsuarios", ng-show="checkUsuarios")
-                input(type="checkbox", id="checkUsu{{tipoUsuario.tipo_id}}")
-                label(for="checkUsu{{tipoUsuario.tipo_id}}") {{tipoUsuario.tipo_nombre}}
-            td  Permitir que los usuarios designados en la área puedan tener una gestión de sus usuarios
-          tr
-            td
-              input(type="checkbox", id="checkInventarios", ng-model="checkInventarios")
-              label(for="checkInventarios") Control de Inventarios
-            td  Permitir control inventarios
-          tr
-            td
-              input(type="checkbox", id="checkControlAcceso", ng-model="checkControlAcceso")
-              label(for="checkControlAcceso") Control de acceso
-                p(ng-show="checkControlAcceso")
-                  input(type="radio", name="tipoControlAcceso", id="acceso_simple")
-                  label(for="acceso_simple") Control de entrada
-                  br
-                  input(type="radio", name="tipoControlAcceso", id="acceso_equipo_computo")
-                  label(for="acceso_equipo_computo") Control de entrada y uso de equipo de computo
-            td Permitir el control de entradas y salidas de usuario en el área
-          tr
-            td
-              input(type="checkbox", id="checkMesaAyuda", ng-model="checkMesaAyuda")
-              label(for="checkMesaAyuda") Mesa de ayuda
-                p(ng-show="checkMesaAyuda")
-                  input(type="radio", name="tipoMesa", id="mesa_ayuda_administrador")
-                  label(for="mesa_ayuda_administrador") Administrador
-                  br
-                  input(type="radio", name="tipoMesa", id="mesa_ayuda_solicitante")
-                  label(for="mesa_ayuda_solicitante") Solicitante
-            td Los usuarios asignados a esta área podrán administrar o solicitar los servicios en la mesa de ayuda
-        button(class="waves-effect waves-light btn right", ng-click="crearTipoDeArea()", id="btnCreasTipoArea") Crear
+      div(id="contentApp", hidden, ng-controller="AreasController")
+        h3 Áreas
+        div(class="row")
+          div(class="card small col s12 m6 l4", ng-repeat="area in areas")
+            div(class="card-image waves-effect waves-block waves-light", ng-click="setModulosAreaSeleccionada(area.are_id_tipo_area)")
+              img(class="activator" src="/images/system/escritorio-area.png")
+            div(class="card-content")
+              span(class="card-title activator grey-text text-darken-4") {{area.are_nombre}}
+                i(class="material-icons right", ng-click="setModulosAreaSeleccionada(area.are_id_tipo_area)") more_vert
+              p {{areas.are_descripcion}}
+            div(class="card-reveal")
+              span(class="card-title grey-text text-darken-4") {{area.are_nombre}}
+                i(class="material-icons right") close
+              p Tipo area: {{modulosControladosPorAreaSeleccionada[0].tipo_nombre}}
+              label Control sobre modulos:
+              ol
+                li(ng-repeat="modulo in modulosControladosPorAreaSeleccionada") {{modulo.mod_nombre}}
+
+
 
   script(src="/javascripts/angular/angular.min.js")
   script(src="/javascripts/angular/angular_modules/AppModule.js")

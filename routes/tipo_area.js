@@ -2,8 +2,10 @@ var express = require("express");
 var router = express.Router();
 var controller = require("../database/controllers/TipoAreasController");
 
-router.get("/", function(req, res) {
-  res.send("hello");
+router.get("/getModulosControladosPorAreas", function(req, res) {
+  controller.getModulosControladosPorAreas(function(modulos) {
+    res.send(modulos);
+  });
 });
 
 router.post("/create/:jsonData", function(req, res) {
