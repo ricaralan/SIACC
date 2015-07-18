@@ -20,6 +20,7 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
   $scope.tiposDeAreas;
   $scope.formTipoArea = {};
   $scope.registrarTipoArea = true;
+  $scope.socket = io();
 
   $scope.getTiposAreas = function() {
     $http.get("/tipoArea/getTiposArea").success(function(tiposAreas) {
@@ -39,7 +40,9 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
       //var uploadURI = "/tipoArea/subirFoto/";
       var uploadURI = "/tipoArea/create/";
       multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
-        console.log(data);
+        if(data.success) {
+          $scope.socket.emit("newTipoAreaCreated", {});
+        }
       });
     } else {
       // TODO ACTUALIZAR
@@ -171,6 +174,16 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
 
   $scope.initTiposUsuarios();
   */
+
+
+  /**
+  * LISTEN SOCKETS
+  */
+  $scope.socket.on("newTipoAreaCreated", function(datos){
+    $scope.getTiposAreas();
+  });
+
+
 }]);
 
 AreasModule.controller("AreasController", function($scope, $http) {

@@ -34,13 +34,12 @@ block content
 
 
         div(class="row")
-          div(class="col s12 m7")
-            div(class="card", ng-repeat="tipo in tiposAreas")
+            div(class="card card small col s12 m6 l4", ng-repeat="tipo in tiposAreas")
               div(class="card-image")
-                img(src="/images/system/escritorio-area.png")
+                img(src="{{tipo.tipo_imagen}}")
                 p(class="card-title white-text", style="background-color:rgba(0, 0, 0, .7);margin:0;width:100%;") {{tipo.tipo_nombre}}
               div(class="card-content")
-                p {{area.tipo_descripcion}}
+                p {{tipo.tipo_descripcion}}
               div(class="card-action")
                 button(class="btn-flat green white-text waves-effect") EDITAR
                 button(class="btn-flat red white-text right waves-effect") ELIMINAR
@@ -95,5 +94,6 @@ block content
         //button(class="waves-effect waves-light btn right", ng-click="crearTipoDeArea()", id="btnCreasTipoArea") Crear
 
   script(src="/javascripts/angular/angular.min.js")
+  script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/angular_modules/AppModule.js")
   script(src="/javascripts/angular/angular_modules/AreasModule.js")

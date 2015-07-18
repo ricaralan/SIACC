@@ -10,42 +10,44 @@ router.get("/getTiposArea", function(req, res) {
     }
   })
 });
-/*
+
+/** TODO REVISAR SI ESTO YA NO SE UTILIZARÁ... Para eliminar código basura
 router.get("/getModulosControladosPorAreas", function(req, res) {
   controller.getModulosControladosPorAreas(function(modulos) {
     res.send(modulos);
   });
 });
 */
-router.post("/create/", function(req, res) {
-  tipo_nombre = req.params.tipo_nombre;
-  tipo_descripcion = req.params.tipo_descripcion;
-  var file = req.files.tipo_foto,
-      name = file.name,
-      tipo = file.mimetype,
-      targetPath = "public/images/system/tipos_areas/" + name;
-      console.log("inicio");
-  fs.stat(file.path, function(err) {
-      if(tipo == "image/png" || tipo == "image/jpg" || tipo == "image/jpeg") {
-        fs.renameSync(file.path, targetPath, function(err) {
-          if(!err) {
-            console.log("rename exitoso!");
-          } else {
-            console.log(err);
-          }
-        });
-      }
-  });
-  res.send("Exito de envio!!");
-  /*controller.create(jsonData, function(err, modules){
-    res.send(modules);
-  });*/
-});
 
-router.post("/subirFoto", function(req, res) {
-  console.log(req.files);
-  console.log(req.body);
-  res.send("");
+router.post("/create/", function(req, res) {
+  var file = req.files.tipo_foto;
+  // Nombre de la nueva imagen
+  var nombreNuevaImagen = req.body.tipo_nombre.toLowerCase()
+    .replace(new RegExp(" ", 'g'),"_") +"."+file.name.split(".")[file.name.split(".").length-1];
+  var name = file.name,
+    tipo = file.mimetype,
+    targetPath = "public/images/tipos_areas/" + nombreNuevaImagen;
+  // JSON del nuevo tipo de área
+  jsonData = {
+    tipo_nombre : req.body.tipo_nombre,
+    tipo_descripcion : req.body.tipo_descripcion,
+    tipo_imagen : "/images/tipos_areas/" + nombreNuevaImagen
+  };
+  controller.create(jsonData, function(err, data){
+    if(!err && data.affectedRows == 1) {
+      fs.stat(file.path, function(err) {
+          if(tipo == "image/png" || tipo == "image/jpg" || tipo == "image/jpeg") {
+            // Sí es una foto subir...
+            fs.renameSync(file.path, targetPath, function(err) {
+            });
+          }
+      });
+      res.send({success : true});
+    }else {
+      res.send({success : false, err : err});
+    }
+  });
+
 });
 
 module.exports = router;

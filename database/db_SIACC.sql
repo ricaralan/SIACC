@@ -33,7 +33,8 @@
   CREATE TABLE tipo_area(
   id_tipo_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   tipo_nombre VARCHAR(30) NOT NULL,
-  tipo_descripcion VARCHAR(30) NOT NULL
+  tipo_descripcion VARCHAR(30) NOT NULL,
+  tipo_imagen VARCHAR(250) NOT NULL
   );
 
   CREATE TABLE area(
@@ -163,7 +164,7 @@
   /*****************************************************************************
   * INSERT TIPO DE ÁREA
   *****************************************************************************/
-  INSERT INTO tipo_area(tipo_nombre) VALUES("TIPO DE ÁREA PRINCIPAL");
+  INSERT INTO tipo_area(tipo_nombre, tipo_imagen) VALUES("TIPO DE ÁREA PRINCIPAL", "/images/system/escritorio-area.png");
   /*****************************************************************************
   * INSERT AREA DE PRUEBA
   *****************************************************************************/
