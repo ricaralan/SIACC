@@ -36,18 +36,6 @@
   tipo_descripcion VARCHAR(30) NOT NULL
   );
 
-  /**
-  * Esta tabla guardará los modulos que puede ver un área
-  */
-  CREATE TABLE modulo_en_area(
-  moa_id_modulo VARCHAR(25) NOT NULL,
-  moa_id_tipo_area INT NOT NULL,
-  moa_area_controla_mod BOOLEAN NOT NULL,
-  PRIMARY KEY(moa_id_modulo, moa_id_tipo_area),
-  FOREIGN KEY(moa_id_modulo) REFERENCES modulo(id_modulo),
-  FOREIGN KEY(moa_id_tipo_area) REFERENCES tipo_area(id_tipo_area)
-  );
-
   CREATE TABLE area(
   id_area INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   are_id_tipo_area INT NOT NULL,
@@ -57,7 +45,7 @@
   );
 
   CREATE TABLE tipo_usuario(
-  tipo_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_tipo_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   /**
   * Esto se refiere a que si lo pueden ver varias áreas o solo lo puede ver el área que lo creo
   * Ej: Si un área registra un servicio social... Solo esa área puede ver a ese servicio social...
@@ -66,6 +54,18 @@
   tipo_ver_por_varias_areas BOOLEAN NOT NULL,
   tipo_nombre VARCHAR(20) NOT NULL,
   tipo_descripcion VARCHAR(150)
+  );
+
+  /**
+  * Esta tabla guardará los modulos que puede ver un área
+  */
+  CREATE TABLE permiso_modulo_usuario(
+  moa_id_modulo VARCHAR(25) NOT NULL,
+  moa_id_tipo_usuario INT NOT NULL,
+  moa_area_controla_mod BOOLEAN NOT NULL,
+  PRIMARY KEY(moa_id_modulo, moa_id_tipo_usuario),
+  FOREIGN KEY(moa_id_modulo) REFERENCES modulo(id_modulo),
+  FOREIGN KEY(moa_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario)
   );
 
   CREATE TABLE usuario(
@@ -81,7 +81,7 @@
     usu_foto VARCHAR(250),
     usu_usuario VARCHAR(20) NOT NULL,
     usu_contrasena VARCHAR(30) NOT NULL,
-    FOREIGN KEY(usu_id_tipo_usuario) REFERENCES tipo_usuario(tipo_id),
+    FOREIGN KEY(usu_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario),
     FOREIGN KEY(usu_id_area) REFERENCES area(id_area)
   );
 
@@ -168,23 +168,19 @@
   * INSERT AREA DE PRUEBA
   *****************************************************************************/
   INSERT INTO area(are_nombre, are_id_tipo_area) VALUES("AREA DE PRUEBA", 1);
-  /*****************************************************************************
+
+  /*****************
   * INSERT MÓDULO EN ÁREA(MÓDULOS QUE CONTROLA EL ÁREA PRINCIPAL)
-  *****************************************************************************/
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "usuarios", 1);
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "inventarios", 1);
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "acceso_simple", 0);
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "acceso_equipo_computo", 1);
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_administrador", 1);
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_solicitante", 1);
+  *****************************************************************************/
+
   /*****************************************************************************
   * INSERT USUARIO DE PRUEBA
   *****************************************************************************/
   INSERT INTO usuario(id_usuario, usu_id_area, usu_id_tipo_usuario, usu_usuario, usu_contrasena)
   VALUES ("S11014636", 1, 1, "usuario", "secreto");
-
-  /** QUERY QUE TRAIGA ÁREAS CON SU TIPO DE ÁREA  **/
-  SELECT are_nombre, tipo_nombre, moa_id_modulo, mod_nombre
-  FROM ((area INNER JOIN tipo_area ON are_id_tipo_area=id_tipo_area)
-  INNER JOIN modulo_en_area ON moa_id_tipo_area=id_tipo_area) LEFT JOIN modulo ON id_modulo=moa_id_modulo
-  WHERE moa_area_controla_mod=true;

@@ -1,7 +1,53 @@
 var AreasModule = angular.module("AreasModule", ["AppModule"]);
+AreasModule.directive("fileread", [function () {
+    return {
+        scope: {
+            fileread: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                scope.$apply(function () {
+                    scope.fileread = changeEvent.target.files[0];
+                    // or all selected files:
+                    // scope.fileread = changeEvent.target.files;
+                });
+            });
+        }
+    }
+}]);
+AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm", function($scope, $http, multipartForm) {
 
-AreasModule.controller("TiposAreasController", function($scope, $http) {
+  $scope.tiposDeAreas;
+  $scope.formTipoArea = {};
+  $scope.registrarTipoArea = true;
 
+  $scope.getTiposAreas = function() {
+    $http.get("/tipoArea/getTiposArea").success(function(tiposAreas) {
+      $scope.tiposAreas = tiposAreas;
+    });
+  };
+
+  $scope.setDatosCrearTipoArea = function() {
+    $('#modalOpcionesTipoArea').openModal();
+    $scope.formTipoArea = {};
+    $scope.registrarTipoArea = true;
+  };
+
+  $scope.opcionTipoArea = function() {
+    if($scope.registrarTipoArea) {
+      // TODO REGISTRAR
+      //var uploadURI = "/tipoArea/subirFoto/";
+      var uploadURI = "/tipoArea/create/";
+      multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
+        console.log(data);
+      });
+    } else {
+      // TODO ACTUALIZAR
+    }
+  };
+
+  $scope.getTiposAreas();
+/*
   $scope.tiposDeUsuarios;
 
   $scope.initTiposUsuarios = function() {
@@ -29,7 +75,7 @@ AreasModule.controller("TiposAreasController", function($scope, $http) {
 
   /**
   * Este método arma el json para registrar un tipo de área... Con sus respectivos permisos
-  */
+  *
   $scope.armarJSON = function() {
     json = {modulos : []};
     json.nombreTipoArea = $scope.nombreTipoArea;
@@ -124,7 +170,8 @@ AreasModule.controller("TiposAreasController", function($scope, $http) {
   };
 
   $scope.initTiposUsuarios();
-});
+  */
+}]);
 
 AreasModule.controller("AreasController", function($scope, $http) {
 
@@ -132,8 +179,6 @@ AreasModule.controller("AreasController", function($scope, $http) {
   $scope.tiposAreas;
   $scope.formArea = {};
   $scope.sePuedeCrearArea = true;
-  $scope.modulosControladosPorAreas;
-  $scope.modulosControladosPorAreaSeleccionada;
   $scope.socket = io();
 
   $scope.initTiposAreas = function() {
@@ -142,24 +187,10 @@ AreasModule.controller("AreasController", function($scope, $http) {
     });
   };
 
-  $scope.initModulosControladosPorAreas = function() {
-    $http.get("/tipoArea/getModulosControladosPorAreas").success(function(tiposModulos) {
-      $scope.modulosControladosPorAreas = tiposModulos;
-    });
-  };
-
   $scope.initAreas = function() {
     $http.get("/areas/getAreas").success(function(areas) {
       $scope.areas = areas;
     });
-  };
-
-  $scope.getModulosTipoArea = function(idTipoArea) {
-    return $scope.modulosControladosPorAreas[idTipoArea];
-  };
-
-  $scope.setModulosAreaSeleccionada = function(tipoArea) {
-    $scope.modulosControladosPorAreaSeleccionada = $scope.getModulosTipoArea(tipoArea);
   };
 
   $scope.opcionArea = function() {
@@ -248,7 +279,6 @@ AreasModule.controller("AreasController", function($scope, $http) {
 
   $scope.initAreas();
   $scope.initTiposAreas();
-  $scope.initModulosControladosPorAreas();
 
   /**
   * LISTEN SOCKETS
@@ -266,3 +296,34 @@ AreasModule.controller("AreasController", function($scope, $http) {
   });
 
 });
+
+AreasModule.directive("fileModel", ["$parse", function($parse) {
+  return {
+    restrict : "A",
+    link : function(scope, element, attrs) {
+      var model = $parse(attrs.fileModel);
+      var modelSetter = model.assign;
+
+      element.bind("change", function() {
+        scope.$apply(function() {
+          modelSetter(scope, element[0].files[0]);
+        });
+      });
+    }
+  };
+}]);
+
+AreasModule.service("multipartForm", ["$http", function($http) {
+  this.post = function(uploadURI, data, success) {
+    var fd = new FormData();
+    for(key in data) {
+      fd.append(key, data[key]);
+    }
+    $http.post(uploadURI, fd,{
+      transformRequest : angular.indentity,
+      headers : {
+        "Content-Type" : undefined
+      }
+    }).success(success);
+  };
+}]);
