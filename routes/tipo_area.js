@@ -55,6 +55,35 @@ router.post("/create/", function(req, res) {
   });
 });
 
+router.put("/update", function(req, res) {
+  var file = req.files.tipo_foto;
+  if(file != undefined){
+    nombreNuevaImagen = "tipos_areas/"+req.body.tipo_nombre.toLowerCase()
+      .replace(new RegExp(" ", 'g'),"_") +"."+file.name.split(".")[file.name.split(".").length-1];
+    var name = file.name,
+      tipo = file.mimetype,
+      targetPath = "public/images/" + nombreNuevaImagen;
+      req.body.tipo_imagen = "images/" + nombreNuevaImagen;
+  }
+  jsonData = {
+    tipo_nombre : req.body.tipo_nombre,
+    tipo_descripcion : req.body.tipo_descripcion,
+    tipo_imagen : req.body.tipo_imagen
+  };
+  controller.update(jsonData, req.body.id_tipo_area, function(err, data) {
+    if(file != undefined){
+      fs.stat(file.path, function(err) {
+          if(!err && (tipo == "image/png" || tipo == "image/jpg" || tipo == "image/jpeg")) {
+            // Sí es una foto subir...
+            fs.renameSync(file.path, targetPath, function(err) {
+            });
+          }
+      });
+    }
+    res.send({success : data.affectedRows == 1});
+  });
+});
+
 router.delete("/delete/:id_tipo_area", function(req, res) {
   controller.delete(req.params.id_tipo_area, function(err, data) {
     res.send({success : !err && data.affectedRows == 1});

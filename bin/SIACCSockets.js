@@ -7,12 +7,9 @@ module.exports = function(server){
     /**
     * CRUD TIPOS ÁREAS SOCKETS
     **/
-    socket.on("newTipoAreaCreated", function(mensaje) {
-      io.emit("newTipoAreaCreated", mensaje);
-    });
-
-    socket.on("tipoAreaDeleted", function(mensaje) {
-      io.emit("tipoAreaDeleted", mensaje);
+    /* Como es poco probable que haya más de 10 tipos de áreas... solo habrá un socket  */
+    socket.on("changeOnTiposAreas", function(mensaje) {
+      io.emit("changeOnTiposAreas", mensaje);
     });
 
     /**

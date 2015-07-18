@@ -1,20 +1,5 @@
 var AreasModule = angular.module("AreasModule", ["AppModule"]);
-AreasModule.directive("fileread", [function () {
-    return {
-        scope: {
-            fileread: "="
-        },
-        link: function (scope, element, attributes) {
-            element.bind("change", function (changeEvent) {
-                scope.$apply(function () {
-                    scope.fileread = changeEvent.target.files[0];
-                    // or all selected files:
-                    // scope.fileread = changeEvent.target.files;
-                });
-            });
-        }
-    }
-}]);
+
 AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm", function($scope, $http, multipartForm) {
 
   $scope.tiposDeAreas;
@@ -32,16 +17,16 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
     $('#modalOpcionesTipoArea').openModal();
     $scope.formTipoArea = {};
     $scope.registrarTipoArea = true;
+    btnOpcionTipoAreas.innerHTML = "CREAR";
   };
 
   $scope.opcionTipoArea = function() {
     if($scope.registrarTipoArea && $scope.validarFormularioTipoArea()) {
       // TODO REGISTRAR
-      //var uploadURI = "/tipoArea/subirFoto/";
       var uploadURI = "/tipoArea/create/";
       multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
         if(data.success) {
-          $scope.socket.emit("newTipoAreaCreated", {});
+          $scope.socket.emit("changeOnTiposAreas", {});
           $scope.cleanFormTipoArea();
           Materialize.toast("El tipo de área se creó correctamente!", 4000);
         } else {
@@ -50,6 +35,16 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
       });
     } else {
       // TODO ACTUALIZAR
+      var uploadURI = "/tipoArea/update/";
+      multipartForm.put(uploadURI, $scope.formTipoArea, function(data) {
+        if(data.success) {
+          $scope.socket.emit("changeOnTiposAreas", {});
+          $scope.cleanFormTipoArea();
+          Materialize.toast("El tipo de área se editó correctamente!", 4000);
+        } else {
+          Materialize.toast("Ocurrio un error al editar...", 4000);
+        }
+      });
     }
   };
 
@@ -57,7 +52,7 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
     if(confirm("¿Esta seguro de eliminar el tipo de área?")) {
       $http.delete("/tipoArea/delete/" + id_tipo_area).success(function(data) {
         if(data.success) {
-          $scope.socket.emit("tipoAreaDeleted", {});
+          $scope.socket.emit("changeOnTiposAreas", {});
           Materialize.toast("El tipo de área se eliminó correctamente!", 4000);
         } else {
           Materialize.toast("Ocurrio un error al eliminar...", 4000);
@@ -72,6 +67,13 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
       return false;
     }
     return true;
+  };
+
+  $scope.setDatosEditarTipoArea = function(tipoArea) {
+    $scope.formTipoArea = tipoArea;
+    $scope.registrarTipoArea = false;
+    btnOpcionTipoAreas.innerHTML = "EDITAR";
+    $('#modalOpcionesTipoArea').openModal();
   };
 
   $scope.cleanFormTipoArea = function() {
@@ -214,11 +216,7 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
   /**
   * LISTEN SOCKETS
   */
-  $scope.socket.on("newTipoAreaCreated", function(datos){
-    $scope.getTiposAreas();
-  });
-
-  $scope.socket.on("tipoAreaDeleted", function(datos){
+  $scope.socket.on("changeOnTiposAreas", function(datos){
     $scope.getTiposAreas();
   });
 
@@ -367,15 +365,26 @@ AreasModule.directive("fileModel", ["$parse", function($parse) {
 
 AreasModule.service("multipartForm", ["$http", function($http) {
   this.post = function(uploadURI, data, success) {
-    var fd = new FormData();
-    for(key in data) {
-      fd.append(key, data[key]);
-    }
-    $http.post(uploadURI, fd,{
+    $http.post(uploadURI, this.getFormData(data),{
       transformRequest : angular.indentity,
       headers : {
         "Content-Type" : undefined
       }
     }).success(success);
+  };
+  this.put = function(uploadURI, data, success) {
+    $http.put(uploadURI, this.getFormData(data),{
+      transformRequest : angular.indentity,
+      headers : {
+        "Content-Type" : undefined
+      }
+    }).success(success);
+  };
+  this.getFormData = function(data) {
+    var fd = new FormData();
+    for(key in data) {
+      fd.append(key, data[key]);
+    }
+    return fd;
   };
 }]);
