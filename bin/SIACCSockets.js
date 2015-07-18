@@ -11,6 +11,10 @@ module.exports = function(server){
       io.emit("newTipoAreaCreated", mensaje);
     });
 
+    socket.on("tipoAreaDeleted", function(mensaje) {
+      io.emit("tipoAreaDeleted", mensaje);
+    });
+
     /**
     * CRUD ÁREAS SOCKETS
     ***/

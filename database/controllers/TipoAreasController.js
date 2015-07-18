@@ -36,4 +36,8 @@ TiposAreasController.prototype.create = function(jsonData, callback) {
     self.abstractModel.insert(self.table, jsonData, callback);
 };
 
+TiposAreasController.prototype.delete = function(id_tipo_area, callback) {
+  self.abstractModel.delete(self.table, { id_tipo_area : id_tipo_area }, callback);
+};
+
 module.exports = new TiposAreasController();

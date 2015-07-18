@@ -35,18 +35,53 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
   };
 
   $scope.opcionTipoArea = function() {
-    if($scope.registrarTipoArea) {
+    if($scope.registrarTipoArea && $scope.validarFormularioTipoArea()) {
       // TODO REGISTRAR
       //var uploadURI = "/tipoArea/subirFoto/";
       var uploadURI = "/tipoArea/create/";
       multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
         if(data.success) {
           $scope.socket.emit("newTipoAreaCreated", {});
+          $scope.cleanFormTipoArea();
+          Materialize.toast("El tipo de área se creó correctamente!", 4000);
+        } else {
+          Materialize.toast("Ocurrio un error al crear...", 4000);
         }
       });
     } else {
       // TODO ACTUALIZAR
     }
+  };
+
+  $scope.eliminarTipoArea = function(id_tipo_area) {
+    if(confirm("¿Esta seguro de eliminar el tipo de área?")) {
+      $http.delete("/tipoArea/delete/" + id_tipo_area).success(function(data) {
+        if(data.success) {
+          $scope.socket.emit("tipoAreaDeleted", {});
+          Materialize.toast("El tipo de área se eliminó correctamente!", 4000);
+        } else {
+          Materialize.toast("Ocurrio un error al eliminar...", 4000);
+        }
+      });
+    }
+  };
+
+  $scope.validarFormularioTipoArea = function() {
+    if($scope.isEmpty($scope.formTipoArea.tipo_nombre) || $scope.isEmpty($scope.formTipoArea.tipo_descripcion)) {
+      Materialize.toast("Tienes que llenar los campos!", 4000);
+      return false;
+    }
+    return true;
+  };
+
+  $scope.cleanFormTipoArea = function() {
+    $scope.formTipoArea = {};
+    document.getElementById("formTipoFoto").reset();
+    $('#modalOpcionesTipoArea').closeModal();
+  };
+
+  $scope.isEmpty = function(value) {
+    return value == null || value.length == 0;
   };
 
   $scope.getTiposAreas();
@@ -180,6 +215,10 @@ AreasModule.controller("TiposAreasController",["$scope","$http","multipartForm",
   * LISTEN SOCKETS
   */
   $scope.socket.on("newTipoAreaCreated", function(datos){
+    $scope.getTiposAreas();
+  });
+
+  $scope.socket.on("tipoAreaDeleted", function(datos){
     $scope.getTiposAreas();
   });
 

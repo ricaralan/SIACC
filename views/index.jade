@@ -27,6 +27,7 @@ block content
               tr
                 td
                   p Foto del área
+                    form(id="formTipoFoto")
                       input(type="file", id="tipo_foto", file-model="formTipoArea.tipo_foto")
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
@@ -42,7 +43,7 @@ block content
                 p {{tipo.tipo_descripcion}}
               div(class="card-action")
                 button(class="btn-flat green white-text waves-effect") EDITAR
-                button(class="btn-flat red white-text right waves-effect") ELIMINAR
+                button(class="btn-flat red white-text right waves-effect", ng-click="eliminarTipoArea(tipo.id_tipo_area)") ELIMINAR
 
 
         //input(type="text", placeholder="Nombre de la nueva área", ng-model="nombreTipoArea")
