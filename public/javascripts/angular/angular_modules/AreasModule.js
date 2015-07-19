@@ -263,6 +263,7 @@ AreasModule.controller("AreasController", function($scope, $http) {
           Materialize.toast("Área creada correctamente!", 4000);
           $scope.formArea = {};
           $scope.socket.emit("newAreaCreated", data);
+          $('#modalOpcionesArea').closeModal();
         } else {
           Materialize.toast("Ocurrio un error al crear el área...", 4000);
         }
@@ -284,6 +285,7 @@ AreasModule.controller("AreasController", function($scope, $http) {
           Materialize.toast("Área editada correctamente!", 4000);
           $scope.formArea = {};
           $scope.socket.emit("areaEdited", data);
+          $('#modalOpcionesArea').closeModal();
         } else {
           Materialize.toast("Ocurrio un error al editar el área...", 4000);
         }

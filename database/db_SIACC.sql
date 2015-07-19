@@ -1,8 +1,10 @@
-  CREATE DATABASE db_siacc2;
+  CREATE DATABASE db_siacc2
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
 
   use db_siacc2;
-
   /**
+
   * Modulos del sistema: El contenido de esta tabla estará por defecto en la instalación
   * del sistema para que no afecten el funcionamiento del mismo...
   * Ejemplos de modulos:
@@ -47,18 +49,12 @@
 
   CREATE TABLE tipo_usuario(
   id_tipo_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  /**
-  * Esto se refiere a que si lo pueden ver varias áreas o solo lo puede ver el área que lo creo
-  * Ej: Si un área registra un servicio social... Solo esa área puede ver a ese servicio social...
-  * Esa y el area administradora jejejej
-  */
-  tipo_ver_por_varias_areas BOOLEAN NOT NULL,
   tipo_nombre VARCHAR(20) NOT NULL,
   tipo_descripcion VARCHAR(150)
   );
 
   /**
-  * Esta tabla guardará los modulos que puede ver un área
+  * Esta tabla guardará los modulos que puede ver un tipo de usuario
   */
   CREATE TABLE permiso_modulo_usuario(
   moa_id_modulo VARCHAR(25) NOT NULL,
@@ -137,13 +133,13 @@
   /**
   * INSERTS TIPOS DE USUARIO(CATALOGO)
   */
-  INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Coordinador", true);
-  INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Encargado de area", true);
-  INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Maestro", true);
-  INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Directivo", true);
+  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Coordinador");
+  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Encargado de area");
+  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Maestro");
+  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Directivo");
   /*  El servicio social solo será vizualizado por el área que lo cree y por el Coordinador =) */
-  INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Servicio Social", false);
-  INSERT INTO tipo_usuario(tipo_nombre, tipo_ver_por_varias_areas) VALUES("Alumno", true);
+  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Servicio Social");
+  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Alumno");
 
   /**
   * INSERT modulos de las áreas
