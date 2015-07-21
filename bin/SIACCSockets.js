@@ -13,6 +13,14 @@ module.exports = function(server){
     });
 
     /**
+    * CRUD TIPOS ÁREAS SOCKETS
+    **/
+    /* Como es poco probable que haya más de 10 tipos de usuarios... solo habrá un socket  */
+    socket.on("changeOnTiposUsuarios", function(mensaje) {
+      io.emit("changeOnTiposUsuarios", mensaje);
+    });
+
+    /**
     * CRUD ÁREAS SOCKETS
     ***/
     socket.on("newAreaCreated", function(mensaje) {

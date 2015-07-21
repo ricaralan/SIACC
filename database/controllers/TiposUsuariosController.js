@@ -27,7 +27,11 @@ TiposUsuariosController.prototype.update = function(jsonData, id_tipo_usuario, c
 };
 
 TiposUsuariosController.prototype.delete = function(id_tipo_usuario, callback) {
-  self.abstractModel.delete(self.table, { id_tipo_usuario : id_tipo_usuario }, callback);
+  self.abstractModel.delete("permiso_modulo_usuario", {moa_id_tipo_usuario : id_tipo_usuario}, function(err, data) {
+    if(!err) {
+      self.abstractModel.delete(self.table, { id_tipo_usuario : id_tipo_usuario }, callback);
+    }
+  });
 };
 
 TiposUsuariosController.prototype.createPermisosPorModulo = function(idTipoUsuario, jsonPermisos) {

@@ -8,6 +8,17 @@ block content
       div(id="contentApp", hidden, ng-controller="TiposUsuarioController")
         a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoUsuario()") Crear nuevo
         h3 Tipos de usuario
+        table(class="bordered")
+          tr
+            th  Nombre
+            th  Descripción
+            th
+          tr(ng-repeat="tipo in tiposUsuario")
+            td {{tipo.tipo_nombre}}
+            td {{tipo.tipo_descripcion}}
+            td
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoUsuario(tipo.id_tipo_usuario)") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right") Editar
 
         // MODAL OPCION TIPO USUARIO
         div(id="modalOpcionesTipoUsuario" class="modal")

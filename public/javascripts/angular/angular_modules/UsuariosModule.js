@@ -2,15 +2,22 @@ var UsuariosModule = angular.module("UsuariosModule", ["AppModule"]);
 
 UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function($scope, $http) {
 
+  $scope.tiposUsuario = [];
   $scope.todosLosModulos = [];
   $scope.formTipoUsuario = {};
+  $scope.socket = io();
+
+  $scope.getTiposUsuario = function() {
+    $http.get("/tipo_usuario/getTiposUsuario/").success(function(tiposUsuario) {
+      $scope.tiposUsuario = tiposUsuario;
+    });
+  };
 
   $scope.setDatosCrearTipoUsuario = function() {
     $("#modalOpcionesTipoUsuario").openModal();
   };
 
   $scope.setTodosLosModulos = function() {
-    // TODO hacer que todos los módulos se carguen aquí
     $http.get("/modules/getModules").success(function(modulos) {
       $scope.todosLosModulos = modulos;
     });
@@ -23,7 +30,12 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
     }));
     jsonPermisosPorModulo = encodeURIComponent(JSON.stringify($scope.getPermisosPorModulo()));
     $http.post("/tipo_usuario/create/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
-      console.log(data);
+      if(data.success) {
+        $("#modalOpcionesTipoUsuario").closeModal();
+        $scope.cleanFormTipoUsuario();
+        $scope.socket.emit("changeOnTiposUsuarios", {});
+        Materialize.toast("El tipo de usuario se creó correctamente!", 4000);
+      }
     });
   };
 
@@ -39,6 +51,34 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
     return json;
   };
 
+  $scope.cleanFormTipoUsuario = function() {
+    $scope.formTipoUsuario = {};
+    $scope.cleanChecksPermisosTipoUsuario();
+  };
+
+  $scope.cleanChecksPermisosTipoUsuario = function() {
+    checks = document.getElementsByClassName("checksOpcUsuario");
+    for(var i = 0; i < checks.length; i++) {
+      checks[i].checked = false;
+    }
+  };
+
+  $scope.deleteTipoUsuario = function(idTipoUsuario) {
+    $http.delete("/tipo_usuario/delete/" + idTipoUsuario).success(function(data) {
+      if(data.affectedRows == 1) {
+        $scope.socket.emit("changeOnTiposUsuarios", {});
+        Materialize.toast("El tipo de usuario se eliminó correctamente!", 4000);
+      } else {
+        Materialize.toast("Ocurrio un error al eliminar", 4000);
+      }
+    });
+  };
+
   $scope.setTodosLosModulos();
+  $scope.getTiposUsuario();
+
+  $scope.socket.on("changeOnTiposUsuarios", function(data) {
+    $scope.getTiposUsuario();
+  });
 
 }]);
