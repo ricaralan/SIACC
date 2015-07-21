@@ -15,7 +15,7 @@
   */
   CREATE TABLE modulo(
   id_modulo VARCHAR(25) NOT NULL PRIMARY KEY,
-  mod_nombre VARCHAR(30),
+  mod_nombre VARCHAR(80),
   /**
   * TIPO (1,2,...)
   * la funcionalidad cambiara dependiendo el tipo dicha lógica se encontrará
@@ -147,13 +147,13 @@
   INSERT INTO modulo(id_modulo, mod_nombre, mod_descripcion) VALUES("usuarios", "Control de usuarios", "Este módulo da acceso al control de usuarios, pero los tipos de usuarios permitidos se dan en otra tabla...");
   INSERT INTO modulo(id_modulo, mod_nombre, mod_descripcion) VALUES("inventarios", "Control de inventarios", "Este módulo controla los inventarios de el área");
   /* Control de acceso de tipo 1: controla solo el acceso a un área */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("acceso_simple", "Control de acceso", 1, "Control de acceso de tipo 1: controla solo el acceso a un área");
+  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("acceso_simple", "Control de acceso de usuarios", 1, "Control de acceso de tipo 1: controla solo el acceso a un área");
   /* Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo  */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("acceso_equipo_computo", "Control de acceso", 2, "Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo");
+  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("acceso_equipo_computo", "Control de acceso de usuarios y uso de equipo de computo", 2, "Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo");
   /* Modulo de mesa de ayuda de tipo 1: Es control en modo administrador */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda", 1, "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
+  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda en modo administrador", 1, "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
   /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda", 2, "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
+  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda en modo solicitante", 2, "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
 
 
 

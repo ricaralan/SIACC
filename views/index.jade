@@ -12,24 +12,21 @@ block content
         // MODAL OPCION TIPO USUARIO
         div(id="modalOpcionesTipoUsuario" class="modal")
           div(class="modal-content")
-            h4 Crear tipo de área
+            h4 Crear tipo de usuario
             table
               tr
                 td
                   div(class="input-field col s6")
-                    input(id="area_name", type="text", class="validate", ng-model="formTipoArea.tipo_nombre")
-                    label(for="area_name") Nombre del tipo de área
+                    input(id="area_name", type="text", class="validate", ng-model="formTipoUsuario.tipo_nombre")
+                    label(for="area_name") Nombre del tipo de usuario
               tr
                 td
                   div(class="input-field col s6")
-                    textarea(id="area_name", class="materialize-textarea", class="validate", ng-model="formTipoArea.tipo_descripcion")
-                    label(for="area_name") Descripción del tipo de área
-              tr
-                td
-                  p Foto del área
-                    form(id="formTipoFoto")
-                      input(type="file", id="tipo_foto", file-model="formTipoArea.tipo_foto")
+                    textarea(id="area_name", class="materialize-textarea", class="validate", ng-model="formTipoUsuario.tipo_descripcion")
+                    label(for="area_name") Descripción del tipo de usuario
+
             p(class="divider")
+
             p Modulos permitidos
 
             table(class="bordered")
@@ -38,14 +35,14 @@ block content
                 th Descripción
               tr(ng-repeat="modulo in todosLosModulos")
                 td
-                  input(type="checkbox", id="check{{modulo.id_modulo}}")
+                  input(type="checkbox", id="check{{modulo.id_modulo}}", class="checksOpcUsuario", modulo="{{modulo.id_modulo}}")
                   label(for="check{{modulo.id_modulo}}") {{modulo.mod_nombre}}
                 td {{modulo.mod_descripcion}}
 
 
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoArea()", id="btnOpcionTipoAreas") Crear
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoUsuario()", id="btnOpcionTipoAreas") Crear
 
 
   script(src="/javascripts/angular/angular.min.js")
