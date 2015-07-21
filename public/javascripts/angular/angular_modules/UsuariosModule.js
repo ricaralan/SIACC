@@ -5,6 +5,7 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
   $scope.tiposUsuario = [];
   $scope.todosLosModulos = [];
   $scope.formTipoUsuario = {};
+  $scope.crearTipoUsuario = true;
   $scope.socket = io();
 
   $scope.getTiposUsuario = function() {
@@ -14,6 +15,9 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
   };
 
   $scope.setDatosCrearTipoUsuario = function() {
+    $scope.crearTipoUsuario = true;
+    document.getElementById("btnOpcionTipoUsuario").innerHTML = "CREAR";
+    $scope.cleanFormTipoUsuario();
     $("#modalOpcionesTipoUsuario").openModal();
   };
 
@@ -25,18 +29,28 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
 
   $scope.opcionTipoUsuario = function() {
     json = encodeURIComponent(JSON.stringify({
+      id_tipo_usuario : $scope.formTipoUsuario.id_tipo_usuario,
       tipo_nombre : $scope.formTipoUsuario.tipo_nombre,
       tipo_descripcion : $scope.formTipoUsuario.tipo_descripcion
     }));
     jsonPermisosPorModulo = encodeURIComponent(JSON.stringify($scope.getPermisosPorModulo()));
-    $http.post("/tipo_usuario/create/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
-      if(data.success) {
+    if($scope.crearTipoUsuario) {
+      $http.post("/tipo_usuario/create/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
+        if(data.success) {
+          $("#modalOpcionesTipoUsuario").closeModal();
+          $scope.cleanFormTipoUsuario();
+          $scope.socket.emit("changeOnTiposUsuarios", {});
+          Materialize.toast("El tipo de usuario se creó correctamente!", 4000);
+        }
+      });
+    } else {
+      $http.put("/tipo_usuario/update/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
         $("#modalOpcionesTipoUsuario").closeModal();
         $scope.cleanFormTipoUsuario();
         $scope.socket.emit("changeOnTiposUsuarios", {});
-        Materialize.toast("El tipo de usuario se creó correctamente!", 4000);
-      }
-    });
+        Materialize.toast("El tipo de usuario se editó correctamente!", 4000);
+      });
+    }
   };
 
   $scope.getPermisosPorModulo = function() {
@@ -60,6 +74,24 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
     checks = document.getElementsByClassName("checksOpcUsuario");
     for(var i = 0; i < checks.length; i++) {
       checks[i].checked = false;
+    }
+  };
+
+  $scope.setDatosEditarTipoUsuario = function(tipoUsuario) {
+    $scope.crearTipoUsuario = false;
+    document.getElementById("btnOpcionTipoUsuario").innerHTML = "EDITAR";
+    $scope.formTipoUsuario = tipoUsuario;
+    $http.get("/tipo_usuario/getPermisosPorModuloTipoUsuario/"+tipoUsuario.id_tipo_usuario)
+    .success(function(data) {
+      $scope.setSelectedPermisosTiposUsuario(data);
+    });
+    $("#modalOpcionesTipoUsuario").openModal();
+  };
+
+  $scope.setSelectedPermisosTiposUsuario = function(permisos) {
+    for(var i = 0; i < permisos.length; i++) {
+      check = document.getElementById("check"+permisos[i].moa_id_modulo);
+      check.checked = permisos[i].moa_area_controla_mod;
     }
   };
 

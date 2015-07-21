@@ -8,10 +8,26 @@ router.get("/getTiposUsuario", function(req, res) {
   });
 });
 
+router.get("/getPermisosPorModuloTipoUsuario/:idTipoUsuario", function(req, res) {
+  controllerTipoUsuario.getPermisosPorModuloTipoUsuario(req.params.idTipoUsuario, function(err, permisos) {
+    if(!err) {
+      res.send(permisos);
+    }
+  });
+});
+
 router.post("/create/:jsonTipoUsuario/:jsonPermisosPorModulo/", function(req, res) {
   var jsonTipoUsuario = JSON.parse(req.params.jsonTipoUsuario);
   var jsonPermisosPorModulo = JSON.parse(req.params.jsonPermisosPorModulo);
   controllerTipoUsuario.create(jsonTipoUsuario, jsonPermisosPorModulo, function(data) {
+    res.send(data);
+  });
+});
+
+router.put("/update/:jsonTipoUsuario/:jsonPermisosPorModulo/", function(req, res) {
+  var jsonTipoUsuario = JSON.parse(req.params.jsonTipoUsuario);
+  var jsonPermisosPorModulo = JSON.parse(req.params.jsonPermisosPorModulo);
+  controllerTipoUsuario.update(jsonTipoUsuario, jsonPermisosPorModulo, function(err, data) {
     res.send(data);
   });
 });

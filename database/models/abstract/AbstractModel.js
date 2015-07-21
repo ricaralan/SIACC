@@ -86,7 +86,6 @@ AbstractModel.prototype.update = function (table, jsonData, jsonIds, callback) {
 AbstractModel.prototype.delete = function (table, jsonIds, callback) {
   json = self.getKeyValueJson("AND", jsonIds);
   query = "DELETE FROM " + table +  " WHERE "+ json.keys ;
-  console.log(query);
   connection.query(query, json.arrayValues, callback);
 };
 
@@ -95,7 +94,7 @@ AbstractModel.prototype.getDataJsonUpdate = function (jsonData, jsonIds) {
   cont = 0, i = 0;
   json1 = self.getKeyValueJson(",", jsonData);
   sets += json1.keys;
-  json2 = self.getKeyValueJson(",", jsonIds);
+  json2 = self.getKeyValueJson(" AND ", jsonIds);
   whereids += json2.keys;
   return {
     sets      : sets,
