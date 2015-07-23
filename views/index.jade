@@ -5,55 +5,56 @@ block content
       div(class="indeterminate")
   div(ng-app="UsuariosModule")
     app-for-users
-      div(id="contentApp", hidden, ng-controller="TiposUsuarioController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoUsuario()") Crear nuevo
-        h3 Tipos de usuario
-        table(class="bordered")
-          tr
-            th  Nombre
-            th  Descripción
-            th
-          tr(ng-repeat="tipo in tiposUsuario")
-            td {{tipo.tipo_nombre}}
-            td {{tipo.tipo_descripcion}}
-            td
-              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoUsuario(tipo.id_tipo_usuario)") Eliminar
-              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarTipoUsuario(tipo)") Editar
+      div(id="contentApp", hidden, ng-controller="UsuariosController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearUsuario()") Crear nuevo
+        h3 Usuarios
 
-        // MODAL OPCION TIPO USUARIO
-        div(id="modalOpcionesTipoUsuario" class="modal")
+        // MODAL OPCION USUARIO
+        div(id="modalOpcionesUsuario" class="modal")
           div(class="modal-content")
-            h4 Crear tipo de usuario
+            h4 Crear usuario
+
             table
               tr
                 td
+                  div(class="input-field col s12")
+                    select(class="browser-default", ng-model="formUsuario.usu_id_tipo_usuario")
+                      option(value="" disabled selected) Selecciona el tipo de usuario
+                      option(ng-repeat="tipo in tiposUsuario", value="{{tipo.id_tipo_usuario}}") {{tipo.tipo_nombre}}
+                td
                   div(class="input-field col s6")
-                    input(id="area_name", type="text", class="validate", ng-model="formTipoUsuario.tipo_nombre")
-                    label(for="area_name") Nombre del tipo de usuario
+                    input(id="usuario_id", type="text", class="validate", ng-model="formUsuario.id_usuario")
+                    label(for="usuario_id") Identificador (No. Personal ó Matricula)
               tr
                 td
                   div(class="input-field col s6")
-                    textarea(id="area_name", class="materialize-textarea", class="validate", ng-model="formTipoUsuario.tipo_descripcion")
-                    label(for="area_name") Descripción del tipo de usuario
-
-            p(class="divider")
-
-            p Modulos permitidos
-
-            table(class="bordered")
-              tr
-                th Permiso
-                th Descripción
-              tr(ng-repeat="modulo in todosLosModulos")
+                    input(id="usuario_name", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
+                    label(for="usuario_name") Nombre
                 td
-                  input(type="checkbox", id="check{{modulo.id_modulo}}", class="checksOpcUsuario", modulo="{{modulo.id_modulo}}")
-                  label(for="check{{modulo.id_modulo}}") {{modulo.mod_nombre}}
-                td {{modulo.mod_descripcion}}
+                  div(class="input-field col s6")
+                    input(id="usuario_ape1", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
+                    label(for="usuario_ape1") Apellido Paterno
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="usuario_ape2", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
+                    label(for="usuario_ape2") Apellido Materno
+                td
+                  div(class="input-field col s6")
+                    input(id="usuario_email", type="email", class="validate", ng-model="formUsuario.tipo_nombre")
+                    label(for="usuario_email") Correo electronico
+              tr
+                td
+                  div(class="input-field col s12")
+                    select(ng-model="formArea.are_id_tipo_area")
+                      option(value="" disabled ) Selecciona el sexo del usuario
+                      option(value="M") Masculino
+                      option(value="F") Femenino
+                    label Selecciona el sexo del usuario
 
-
-          div(class="modal-footer")
-            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoUsuario()", id="btnOpcionTipoUsuario") Crear
+            div(class="modal-footer")
+              a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+              button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoUsuario()", id="btnOpcionTipoUsuario") Crear
 
 
   script(src="/javascripts/angular/angular.min.js")

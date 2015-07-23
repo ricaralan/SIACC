@@ -49,6 +49,8 @@
 
   CREATE TABLE tipo_usuario(
   id_tipo_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  tipo_asignar_area BOOLEAN,
+  tipo_asignar_carrera BOOLEAN,
   tipo_nombre VARCHAR(20) NOT NULL,
   tipo_descripcion VARCHAR(150)
   );
@@ -65,10 +67,15 @@
   FOREIGN KEY(moa_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario)
   );
 
+  CREATE TABLE carrera(
+  id_carrera INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  car_nombre VARCHAR(60)
+  );
+
   CREATE TABLE usuario(
     id_usuario VARCHAR(10) NOT NULL PRIMARY KEY,
-    usu_id_tipo_usuario INT NOT NULL,
-    usu_id_area INT NOT NULL,
+    usu_id_tipo_usuario INT,
+    usu_id_carrera INT,
     usu_carrera VARCHAR(20),
     usu_nombre VARCHAR(30)NOT NULL,
     usu_primer_apellido VARCHAR(20) NOT NULL,
@@ -76,10 +83,22 @@
     usu_sexo VARCHAR(1) NOT NULL,
     usu_email VARCHAR(32),
     usu_foto VARCHAR(250),
-    usu_usuario VARCHAR(20) NOT NULL,
-    usu_contrasena VARCHAR(30) NOT NULL,
+    usu_usuario VARCHAR(20) UNIQUE,
+    usu_contrasena VARCHAR(30),
     FOREIGN KEY(usu_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario),
-    FOREIGN KEY(usu_id_area) REFERENCES area(id_area)
+    FOREIGN KEY(usu_id_carrera) REFERENCES carrera(id_carrera)
+  );
+
+  /**
+  * Esta tabla almacenará las relaciones entre los usuarios y las áreas, lo que
+  * permite saber a que área pertenece un usuario
+  **/
+  CREATE TABLE usuario_area(
+    usa_id_area INT NOT NULL,
+    usa_id_usuario VARCHAR(10) NOT NULL,
+    PRIMARY KEY(usa_id_area, usa_id_usuario),
+    FOREIGN KEY(usa_id_area) REFERENCES area(id_area),
+    FOREIGN KEY(usa_id_usuario) REFERENCES usuario(id_usuario)
   );
 
   CREATE TABLE inventario(
@@ -100,7 +119,7 @@
   );
 
   CREATE TABLE tipo_acceso(
-  id_tipo_acceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_tipo_acceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY
 
   );
 
@@ -179,5 +198,5 @@
   /*****************************************************************************
   * INSERT USUARIO DE PRUEBA
   *****************************************************************************/
-  INSERT INTO usuario(id_usuario, usu_id_area, usu_id_tipo_usuario, usu_usuario, usu_contrasena)
-  VALUES ("S11014636", 1, 1, "usuario", "secreto");
+  INSERT INTO usuario(id_usuario, usu_id_tipo_usuario, usu_usuario, usu_contrasena)
+  VALUES ("S11014636", 1, "usuario", "secreto");

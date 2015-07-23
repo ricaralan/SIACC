@@ -109,8 +109,29 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
   $scope.setTodosLosModulos();
   $scope.getTiposUsuario();
 
+  /**
+  * LISTEN SOCKETS
+  **/
   $scope.socket.on("changeOnTiposUsuarios", function(data) {
     $scope.getTiposUsuario();
   });
+
+}]);
+
+UsuariosModule.controller("UsuariosController", ["$scope","$http", function($scope, $http) {
+
+  $scope.tiposUsuario = [];
+
+  $scope.getTiposUsuario = function() {
+    $http.get("/tipo_usuario/getTiposUsuario/").success(function(tiposUsuario) {
+      $scope.tiposUsuario = tiposUsuario;
+    });
+  };
+
+  $scope.setDatosCrearUsuario = function() {
+    $("#modalOpcionesUsuario").openModal();
+  };
+
+  $scope.getTiposUsuario();
 
 }]);

@@ -14,3 +14,7 @@ a {
 .icon-eliminar {
   color: red !important;
 }
+
+.input-field {
+  margin:0 !important;
+}

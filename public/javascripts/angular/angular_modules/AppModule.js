@@ -26,6 +26,7 @@ AppModule.directive("appForUsers", function() {
           ready: function() {  }, // Callback for Modal open
           complete: function() {  } // Callback for Modal close
         });
+        $('select').material_select();
       });
       document.getElementById("contentApp").removeAttribute("hidden");
       document.getElementById("loadPage").remove();
