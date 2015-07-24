@@ -122,7 +122,7 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
 
 }]);
 
-UsuariosModule.controller("UsuariosController", ["$scope","$http", function($scope, $http) {
+UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartForm", function($scope, $http, multipartForm) {
 
   $scope.tiposUsuario = [];
   $scope.tiposAreas = [];
@@ -154,7 +154,6 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", function($sco
 
   $scope.cambioTipoUsuario = function() {
     tipoUsuario = $scope.getTipoUsuarioById($scope.formUsuario.usu_id_tipo_usuario);
-    console.log(tipoUsuario);
     $scope.showCarreras = tipoUsuario.tipo_asignar_carrera;
     $scope.showAreas = tipoUsuario.tipo_asignar_area;
   };
@@ -168,8 +167,60 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", function($sco
     return null;
   };
 
+  $scope.opcionUsuario = function() {
+    var uploadURI = "/usuarios/create/";
+    multipartForm.post(uploadURI, $scope.formUsuario, function(data) {
+       if(data.success) {
+         
+       }
+    });
+  };
+
   $scope.getTiposUsuario();
   $scope.getCarreras();
   $scope.initTiposAreas();
 
+}]);
+
+
+UsuariosModule.directive("fileModel", ["$parse", function($parse) {
+  return {
+    restrict : "A",
+    link : function(scope, element, attrs) {
+      var model = $parse(attrs.fileModel);
+      var modelSetter = model.assign;
+
+      element.bind("change", function() {
+        scope.$apply(function() {
+          modelSetter(scope, element[0].files[0]);
+        });
+      });
+    }
+  };
+}]);
+
+UsuariosModule.service("multipartForm", ["$http", function($http) {
+  this.post = function(uploadURI, data, success) {
+    $http.post(uploadURI, this.getFormData(data),{
+      transformRequest : angular.indentity,
+      headers : {
+        "Content-Type" : undefined
+      }
+    }).success(success);
+  };
+  this.put = function(uploadURI, data, success) {
+    $http.put(uploadURI, this.getFormData(data),{
+      transformRequest : angular.indentity,
+      headers : {
+        "Content-Type" : undefined
+      }
+    }).success(success);
+  };
+  this.getFormData = function(data) {
+    var fd = new FormData();
+    for(key in data) {
+      fd.append(key, data[key]);
+    }
+    return fd;
+  };
 }]);

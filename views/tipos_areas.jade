@@ -28,7 +28,7 @@ block content
                 td
                   p Foto del área
                     form(id="formTipoFoto")
-                      input(type="file", id="tipo_foto", file-model="formTipoArea.tipo_foto")
+                      input(type="file", id="tipo_foto", file-model="formTipoArea.tipo_foto", accept="image/*")
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
             button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoArea()", id="btnOpcionTipoAreas") Crear

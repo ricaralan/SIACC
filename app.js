@@ -8,7 +8,7 @@ var expressSession = require("express-session");
 var multer = require("multer");
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var usuarios = require('./routes/usuarios');
 var login = require('./routes/login');
 var modules = require('./routes/modules');
 var tipo_area = require('./routes/tipo_area');
@@ -36,7 +36,7 @@ app.use(expressSession({secret:'@1[[de+WEDLN23EOIEFSIACC_*-*[*]]]'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/usuarios', usuarios);
 app.use('/login', login);
 app.use('/modules', modules);
 app.use('/tipoArea', tipo_area);

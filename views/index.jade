@@ -55,17 +55,20 @@ block content
                     input(id="usuario_email", type="email", class="validate", ng-model="formUsuario.usu_email")
                     label(for="usuario_email") Correo electronico
               tr
-                td(colspan="2")
+                td
                   div(class="input-field col s12")
                     select(ng-model="formArea.usu_sexo")
                       option(value="" disabled ) Selecciona el sexo del usuario
                       option(value="M") Masculino
                       option(value="F") Femenino
                     label Selecciona el sexo del usuario
+                td
+                  label(style="font-size:18px") Foto
+                  input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
 
             div(class="modal-footer")
               a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-              button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoUsuario()", id="btnOpcionTipoUsuario") Crear
+              button(class=" waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") Crear
 
 
   script(src="/javascripts/angular/angular.min.js")

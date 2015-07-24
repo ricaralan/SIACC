@@ -24,7 +24,6 @@ router.post("/create/", function(req, res) {
   // Nombre de la nueva imagen
   var nombreNuevaImagen = "system/escritorio-area.png";
   if(file != undefined){
-    console.log(file);
     nombreNuevaImagen = "tipos_areas/"+req.body.tipo_nombre.toLowerCase()
       .replace(new RegExp(" ", 'g'),"_") +"."+file.name.split(".")[file.name.split(".").length-1];
     var name = file.name,
