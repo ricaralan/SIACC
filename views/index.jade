@@ -27,13 +27,13 @@ block content
               tr(ng-show="showAreas")
                 td(colspan="2")
                   div(class="input-field col s12")
-                    select(class="browser-default", ng-model="formUsuario.usu_id_area")
+                    select(class="browser-default", ng-model="formUsuarioExtra.usu_id_area")
                       option(value="" disabled selected) Selecciona el área
                       option(ng-repeat="tipo in tiposAreas", value="{{tipo.id_tipo_area}}") {{tipo.tipo_nombre}}
               tr(ng-show="showCarreras")
                 td(colspan="2")
                   div(class="input-field col s12")
-                    select(class="browser-default", ng-model="formUsuario.usu_id_carrera")
+                    select(class="browser-default", ng-model="formUsuarioExtra.usu_id_carrera")
                       option(value="" disabled selected) Selecciona la carrera
                       option(ng-repeat="carrera in carreras", value="{{carrera.id_carrera}}") {{carrera.car_nombre}}
               tr

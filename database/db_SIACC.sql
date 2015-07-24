@@ -96,7 +96,7 @@
   CREATE TABLE usuario_area(
     usa_id_area INT NOT NULL,
     usa_id_usuario VARCHAR(10) NOT NULL,
-    PRIMARY KEY(usa_id_area, usa_id_usuario), 
+    PRIMARY KEY(usa_id_area, usa_id_usuario),
     FOREIGN KEY(usa_id_area) REFERENCES area(id_area),
     FOREIGN KEY(usa_id_usuario) REFERENCES usuario(id_usuario)
   );

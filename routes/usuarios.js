@@ -19,6 +19,8 @@ router.post("/create", function(req, res) {
   jsonData = req.body;
   jsonData.usu_foto = nombreNuevaImagen;
   controller.create(jsonData, function(err, data) {
+    console.log(err);
+    console.log(data);
     if(!err && file != undefined) {
       renameSync(file, targetPath);
       res.send( { success : true } );
@@ -29,8 +31,13 @@ router.post("/create", function(req, res) {
   console.log(jsonData);
 });
 
-router.put("/updateData/:jsonData/:idUsuario", function() {
-
+router.put("/update/:jsonData/:idUsuario", function(req, res) {
+  var jsonData = JSON.parse(req.params.jsonData);
+  controller.update(jsonData, req.params.idUsuario, function(err, data) {
+    console.log(err);
+    console.log(data);
+    res.send( { success : !err && data.affectedRows == 1 } );
+  });
 });
 
 function renameSync(file, targetPath) {

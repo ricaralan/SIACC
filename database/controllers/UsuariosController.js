@@ -14,12 +14,12 @@ UsuariosController.prototype.create = function(jsonDataUsuario, callback) {
   self.abstractModel.insert(self.table, jsonDataUsuario, callback);
 };
 
-UsuariosController.prototype.update = function(jsonDataTipoUsuario, jsonPermisosPorModulo, callback) {
-
+UsuariosController.prototype.update = function(jsonDataUsuario, idUsuario, callback) {
+  self.abstractModel.update(self.table, jsonDataUsuario, { id_usuario : idUsuario }, callback);
 };
 
-UsuariosController.prototype.delete = function(id_tipo_usuario, callback) {
-
+UsuariosController.prototype.delete = function(idUsuario, callback) {
+  self.abstractModel.delete(self.table, { id_usuario : idUsuario }, callback);
 };
 
 module.exports = new UsuariosController();

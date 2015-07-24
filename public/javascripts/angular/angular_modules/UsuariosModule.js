@@ -82,7 +82,6 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
     $scope.cleanFormTipoUsuario();
     document.getElementById("btnOpcionTipoUsuario").innerHTML = "EDITAR";
     $scope.formTipoUsuario = tipoUsuario;
-    console.log($scope.formTipoUsuario);
     document.getElementById("check_asignar_carrera").checked = $scope.formTipoUsuario.tipo_asignar_carrera;
     document.getElementById("check_asignar_area").checked = $scope.formTipoUsuario.tipo_asignar_area;
     $http.get("/tipo_usuario/getPermisosPorModuloTipoUsuario/"+tipoUsuario.id_tipo_usuario)
@@ -127,6 +126,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   $scope.tiposUsuario = [];
   $scope.tiposAreas = [];
   $scope.carreras = [];
+  $scope.formUsuarioExtra = {};
   $scope.showCarreras = false;
   $scope.showAreas = false;
 
@@ -171,7 +171,22 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
     var uploadURI = "/usuarios/create/";
     multipartForm.post(uploadURI, $scope.formUsuario, function(data) {
        if(data.success) {
-         
+         if($scope.showCarreras) {
+           json = encodeURIComponent(JSON.stringify({
+             usu_id_carrera : $scope.formUsuarioExtra.usu_id_carrera
+           }));
+           $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
+             console.log(data);
+           });
+         }
+         if($scope.showAreas) {
+           /*json = encodeURIComponent(JSON.stringify({
+             usu_id_area : $scope.usu_id_area
+           }));
+           $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
+             console.log(data);
+           });*/
+         }
        }
     });
   };
