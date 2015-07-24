@@ -13,7 +13,15 @@ module.exports = function(server){
     });
 
     /**
-    * CRUD TIPOS ÁREAS SOCKETS
+    * CRUD CARRERAS
+    **/
+    /* Como es poco probable que haya más de 10 tipos de áreas... solo habrá un socket  */
+    socket.on("changeOnCarreras", function(mensaje) {
+      io.emit("changeOnCarreras", mensaje);
+    });
+
+    /**
+    * CRUD TIPOS USUARIOS SOCKETS
     **/
     /* Como es poco probable que haya más de 10 tipos de usuarios... solo habrá un socket  */
     socket.on("changeOnTiposUsuarios", function(mensaje) {

@@ -1,63 +1,36 @@
 extends layout
 
 block content
-  div(class="progress", id="loadPage", style="margin:0;")
+  div(class="progress", id="loadPage")
       div(class="indeterminate")
-  div(ng-app="UsuariosModule")
+  div(ng-app="CarrerasModule")
     app-for-users
-      div(id="contentApp", hidden, ng-controller="UsuariosController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearUsuario()") Crear nuevo
-        h3 Usuarios
-
-        // MODAL OPCION USUARIO
-        div(id="modalOpcionesUsuario" class="modal")
+      div(id="contentApp", hidden, ng-controller="CarrerasController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearCarrera()") Crear nueva
+        h3 Carreras
+        // MODAL OPCION CARRERAS
+        div(id="modalOpcionesCarrera" class="modal")
           div(class="modal-content")
-            h4 Crear usuario
+            h4 Crear carrera
+            div(class="input-field col s6")
+              input(id="carrera_nombre", type="text", class="validate", ng-model="formCarrera.car_nombre")
+              label(for="carrera_nombre") Nombre de la carrera
 
-            table
-              tr
-                td
-                  div(class="input-field col s12")
-                    select(class="browser-default", ng-model="formUsuario.usu_id_tipo_usuario")
-                      option(value="" disabled selected) Selecciona el tipo de usuario
-                      option(ng-repeat="tipo in tiposUsuario", value="{{tipo.id_tipo_usuario}}") {{tipo.tipo_nombre}}
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_id", type="text", class="validate", ng-model="formUsuario.id_usuario")
-                    label(for="usuario_id") Identificador (No. Personal ó Matricula)
-              tr
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_name", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
-                    label(for="usuario_name") Nombre
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_ape1", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
-                    label(for="usuario_ape1") Apellido Paterno
-              tr
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_ape2", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
-                    label(for="usuario_ape2") Apellido Materno
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_email", type="email", class="validate", ng-model="formUsuario.tipo_nombre")
-                    label(for="usuario_email") Correo electronico
-              tr
-                td
-                  div(class="input-field col s12")
-                    select(ng-model="formArea.are_id_tipo_area")
-                      option(value="" disabled ) Selecciona el sexo del usuario
-                      option(value="M") Masculino
-                      option(value="F") Femenino
-                    label Selecciona el sexo del usuario
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionCarrera()", id="btnOpcionCarrera") Crear
 
-            div(class="modal-footer")
-              a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-              button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoUsuario()", id="btnOpcionTipoUsuario") Crear
-
+        table(class="bordered")
+          tr
+            th  Nombre
+            th
+          tr(ng-repeat="carrera in carreras")
+            td {{carrera.car_nombre}}
+            td
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteCarrera(carrera)") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarCarrera(carrera)") Editar
 
   script(src="/javascripts/angular/angular.min.js")
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/angular_modules/AppModule.js")
-  script(src="/javascripts/angular/angular_modules/UsuariosModule.js")
+  script(src="/javascripts/angular/angular_modules/CarrerasModule.js")
