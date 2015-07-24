@@ -127,6 +127,8 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", function($sco
   $scope.tiposUsuario = [];
   $scope.tiposAreas = [];
   $scope.carreras = [];
+  $scope.showCarreras = false;
+  $scope.showAreas = false;
 
   $scope.getTiposUsuario = function() {
     $http.get("/tipo_usuario/getTiposUsuario/").success(function(tiposUsuario) {
@@ -148,6 +150,22 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", function($sco
 
   $scope.setDatosCrearUsuario = function() {
     $("#modalOpcionesUsuario").openModal();
+  };
+
+  $scope.cambioTipoUsuario = function() {
+    tipoUsuario = $scope.getTipoUsuarioById($scope.formUsuario.usu_id_tipo_usuario);
+    console.log(tipoUsuario);
+    $scope.showCarreras = tipoUsuario.tipo_asignar_carrera;
+    $scope.showAreas = tipoUsuario.tipo_asignar_area;
+  };
+
+  $scope.getTipoUsuarioById = function(idTipoUsuario) {
+    for(var i = 0; i < $scope.tiposUsuario.length; i++) {
+      if($scope.tiposUsuario[i].id_tipo_usuario == idTipoUsuario) {
+        return $scope.tiposUsuario[i];
+      }
+    }
+    return null;
   };
 
   $scope.getTiposUsuario();
