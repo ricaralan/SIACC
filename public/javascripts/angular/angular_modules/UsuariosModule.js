@@ -31,14 +31,15 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
     json = encodeURIComponent(JSON.stringify({
       id_tipo_usuario : $scope.formTipoUsuario.id_tipo_usuario,
       tipo_nombre : $scope.formTipoUsuario.tipo_nombre,
-      tipo_descripcion : $scope.formTipoUsuario.tipo_descripcion
+      tipo_descripcion : $scope.formTipoUsuario.tipo_descripcion,
+      tipo_asignar_carrera : document.getElementById("check_asignar_carrera").checked,
+      tipo_asignar_area : document.getElementById("check_asignar_area").checked
     }));
     jsonPermisosPorModulo = encodeURIComponent(JSON.stringify($scope.getPermisosPorModulo()));
     if($scope.crearTipoUsuario) {
       $http.post("/tipo_usuario/create/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
         if(data.success) {
           $("#modalOpcionesTipoUsuario").closeModal();
-          $scope.cleanFormTipoUsuario();
           $scope.socket.emit("changeOnTiposUsuarios", {});
           Materialize.toast("El tipo de usuario se creó correctamente!", 4000);
         }
@@ -46,7 +47,6 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
     } else {
       $http.put("/tipo_usuario/update/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
         $("#modalOpcionesTipoUsuario").closeModal();
-        $scope.cleanFormTipoUsuario();
         $scope.socket.emit("changeOnTiposUsuarios", {});
         Materialize.toast("El tipo de usuario se editó correctamente!", 4000);
       });
@@ -79,8 +79,12 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
 
   $scope.setDatosEditarTipoUsuario = function(tipoUsuario) {
     $scope.crearTipoUsuario = false;
+    $scope.cleanFormTipoUsuario();
     document.getElementById("btnOpcionTipoUsuario").innerHTML = "EDITAR";
     $scope.formTipoUsuario = tipoUsuario;
+    console.log($scope.formTipoUsuario);
+    document.getElementById("check_asignar_carrera").checked = $scope.formTipoUsuario.tipo_asignar_carrera;
+    document.getElementById("check_asignar_area").checked = $scope.formTipoUsuario.tipo_asignar_area;
     $http.get("/tipo_usuario/getPermisosPorModuloTipoUsuario/"+tipoUsuario.id_tipo_usuario)
     .success(function(data) {
       $scope.setSelectedPermisosTiposUsuario(data);
@@ -121,10 +125,24 @@ UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function
 UsuariosModule.controller("UsuariosController", ["$scope","$http", function($scope, $http) {
 
   $scope.tiposUsuario = [];
+  $scope.tiposAreas = [];
+  $scope.carreras = [];
 
   $scope.getTiposUsuario = function() {
     $http.get("/tipo_usuario/getTiposUsuario/").success(function(tiposUsuario) {
       $scope.tiposUsuario = tiposUsuario;
+    });
+  };
+
+  $scope.getCarreras = function() {
+    $http.get("/carreras/getCarreras/").success(function(carreras) {
+      $scope.carreras = carreras;
+    });
+  };
+
+  $scope.initTiposAreas = function() {
+    $http.get("/tipoArea/getTiposArea").success(function(tiposAreas) {
+      $scope.tiposAreas = tiposAreas;
     });
   };
 
@@ -133,5 +151,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", function($sco
   };
 
   $scope.getTiposUsuario();
+  $scope.getCarreras();
+  $scope.initTiposAreas();
 
 }]);

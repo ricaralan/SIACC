@@ -26,27 +26,39 @@ block content
                     input(id="usuario_id", type="text", class="validate", ng-model="formUsuario.id_usuario")
                     label(for="usuario_id") Identificador (No. Personal ó Matricula)
               tr
+                td(colspan="2")
+                  div(class="input-field col s12")
+                    select(class="browser-default", ng-model="formUsuario.usu_id_area")
+                      option(value="" disabled selected) Selecciona el área
+                      option(ng-repeat="tipo in tiposAreas", value="{{tipo.id_tipo_area}}") {{tipo.tipo_nombre}}
+              tr
+                td(colspan="2")
+                  div(class="input-field col s12")
+                    select(class="browser-default", ng-model="formUsuario.usu_id_carrera")
+                      option(value="" disabled selected) Selecciona la carrera
+                      option(ng-repeat="carrera in carreras", value="{{carrera.id_carrera}}") {{carrera.car_nombre}}
+              tr
                 td
                   div(class="input-field col s6")
-                    input(id="usuario_name", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
+                    input(id="usuario_name", type="text", class="validate", ng-model="formUsuario.usu_nombre")
                     label(for="usuario_name") Nombre
                 td
                   div(class="input-field col s6")
-                    input(id="usuario_ape1", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
+                    input(id="usuario_ape1", type="text", class="validate", ng-model="formUsuario.usu_primer_apellido")
                     label(for="usuario_ape1") Apellido Paterno
               tr
                 td
                   div(class="input-field col s6")
-                    input(id="usuario_ape2", type="text", class="validate", ng-model="formUsuario.tipo_nombre")
+                    input(id="usuario_ape2", type="text", class="validate", ng-model="formUsuario.usu_segundo_apellido")
                     label(for="usuario_ape2") Apellido Materno
                 td
                   div(class="input-field col s6")
-                    input(id="usuario_email", type="email", class="validate", ng-model="formUsuario.tipo_nombre")
+                    input(id="usuario_email", type="email", class="validate", ng-model="formUsuario.usu_email")
                     label(for="usuario_email") Correo electronico
               tr
-                td
+                td(colspan="2")
                   div(class="input-field col s12")
-                    select(ng-model="formArea.are_id_tipo_area")
+                    select(ng-model="formArea.usu_sexo")
                       option(value="" disabled ) Selecciona el sexo del usuario
                       option(value="M") Masculino
                       option(value="F") Femenino

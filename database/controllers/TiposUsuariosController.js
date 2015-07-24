@@ -8,7 +8,7 @@ var TiposUsuariosController = function(){
 
 TiposUsuariosController.prototype.getTiposUsuario = function(callback) {
   self.abstractModel.select(self.table,[
-    "id_tipo_usuario", "tipo_nombre", "tipo_descripcion"
+    "id_tipo_usuario", "tipo_nombre", "tipo_descripcion", "tipo_asignar_area", "tipo_asignar_carrera"
     ], {}, callback);
 };
 
