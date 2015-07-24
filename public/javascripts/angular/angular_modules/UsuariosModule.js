@@ -180,12 +180,12 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
            });
          }
          if($scope.showAreas) {
-           /*json = encodeURIComponent(JSON.stringify({
-             usu_id_area : $scope.usu_id_area
+           json = encodeURIComponent(JSON.stringify({
+             usu_id_area : $scope.formUsuarioExtra.usu_id_area
            }));
            $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
              console.log(data);
-           });*/
+           });
          }
        }
     });

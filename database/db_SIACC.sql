@@ -75,6 +75,7 @@
   CREATE TABLE usuario(
     id_usuario VARCHAR(10) NOT NULL PRIMARY KEY,
     usu_id_tipo_usuario INT,
+    usu_id_area INT,
     usu_id_carrera INT,
     usu_carrera VARCHAR(20),
     usu_nombre VARCHAR(30)NOT NULL,
@@ -86,6 +87,7 @@
     usu_usuario VARCHAR(20) UNIQUE,
     usu_contrasena VARCHAR(30),
     FOREIGN KEY(usu_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario),
+    FOREIGN KEY(usu_id_area) REFERENCES area(id_area),
     FOREIGN KEY(usu_id_carrera) REFERENCES carrera(id_carrera)
   );
 
@@ -153,12 +155,21 @@
   * INSERTS TIPOS DE USUARIO(CATALOGO)
   */
   INSERT INTO tipo_usuario(tipo_nombre) VALUES("Coordinador");
-  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Encargado de area");
+  INSERT INTO tipo_usuario(tipo_nombre, tipo_asignar_area) VALUES("Encargado de area", true);
   INSERT INTO tipo_usuario(tipo_nombre) VALUES("Maestro");
   INSERT INTO tipo_usuario(tipo_nombre) VALUES("Directivo");
   /*  El servicio social solo será vizualizado por el área que lo cree y por el Coordinador =) */
-  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Servicio Social");
-  INSERT INTO tipo_usuario(tipo_nombre) VALUES("Alumno");
+  INSERT INTO tipo_usuario(tipo_nombre, tipo_asignar_carrera, tipo_asignar_area) VALUES("Servicio Social", true, true);
+  INSERT INTO tipo_usuario(tipo_nombre, tipo_asignar_carrera) VALUES("Alumno", true);
+
+  /**
+  * INSERTS CARRERAS
+  **/
+  INSERT INTO carrera(car_nombre) VALUES("Sistemas computacionales administrativos");
+  INSERT INTO carrera(car_nombre) VALUES("Contaduría");
+  INSERT INTO carrera(car_nombre) VALUES("Administración");
+  INSERT INTO carrera(car_nombre) VALUES("Gestión");
+  INSERT INTO carrera(car_nombre) VALUES("Otro");
 
   /**
   * INSERT modulos de las áreas
