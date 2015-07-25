@@ -8,21 +8,45 @@ router.get('/', function(req, res) {
   res.send(req.session.user);
 });
 
+router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:fin", function(req, res) {
+  var idTipoUsuario = req.params.idTipoUsuario;
+  var inicio = req.params.inicio;
+  var fin = req.params.fin;
+  controller.getUsuariosTipoLimit(idTipoUsuario, inicio, fin, function(err, usuarios) {
+    if(!err) {
+      res.send(usuarios);
+    } else {
+      res.send(null);
+    }
+  });
+});
+
+router.get("/countUsuariosTipo/:idTipoUsuario", function(req, res) {
+  var idTipoUsuario = req.params.idTipoUsuario;
+  controller.countUsuariosTipo(idTipoUsuario, function(err, count) {
+    if(!err) {
+      res.send(count);
+    } else {
+      res.send(null);
+    }
+  });
+});
+
 router.post("/create", function(req, res) {
   var file = req.files.usu_foto;
-  var nombreNuevaImagen = "/system/icon-user.png";
+  var nombreNuevaImagen = "/images/system/icon-user.png";
   if(file != undefined) {
-    nombreNuevaImagen = "images/usuarios/"+req.body.id_usuario.toLowerCase() + "."
+    nombreNuevaImagen = "/images/usuarios/"+req.body.id_usuario.toLowerCase() + "."
                       + file.name.split(".")[file.name.split(".").length-1];
-    var targetPath = "public/" + nombreNuevaImagen;
+    var targetPath = "public" + nombreNuevaImagen;
   }
   jsonData = req.body;
   jsonData.usu_foto = nombreNuevaImagen;
   controller.create(jsonData, function(err, data) {
-    console.log(err);
-    console.log(data);
-    if(!err && file != undefined) {
-      renameSync(file, targetPath);
+    if(!err) {
+      if(file != undefined){
+        renameSync(file, targetPath);
+      }
       res.send( { success : true } );
     } else {
       res.send( { success : false } );

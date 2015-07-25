@@ -129,6 +129,72 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   $scope.formUsuarioExtra = {};
   $scope.showCarreras = false;
   $scope.showAreas = false;
+  $scope.usuarios = [];
+  $scope.arrayPagination = [];
+
+  $scope.initTabs = function() {
+    setTimeout(function() {
+      $('ul.tabs').tabs();
+      document.getElementById("contentTabs").removeAttribute("hidden");
+    }, 2000);
+  };
+
+  $scope.selectionTipoUsuario = function(tipo) {
+    // Que tipo de usuario tenemos que llamar...
+    document.getElementById("caja2").removeAttribute("hidden");
+    if(tipo.start == undefined) {
+      // PAGINACIÓN
+      tipo.start = 0;
+      tipo.end   = 10;
+      document.getElementById("caja1").setAttribute("hidden", "true");
+    }
+    $scope.getUsuariosTypePagination(tipo.id_tipo_usuario, tipo.start, tipo.end);
+    /*$http.get("/usuarios/getUsuariosTipoLimit/"+tipo.id_tipo_usuario+"/"+tipo.start+"/"+tipo.end)
+    .success(function(data) {
+      // TIPOS DE USUARIO
+      $scope.usuarios = data;
+      document.getElementById("caja2").setAttribute("hidden", "true");
+
+      // GET COUNT USUARIOS TYPE
+      $http.get("/usuarios/countUsuariosTipo/"+tipo.id_tipo_usuario).success(function(count) {
+        var numberPagination = parseInt(parseInt(count[0].totalUsers) / 10);
+        if(count[0].totalUsers==0) {numberPagination = -1;}
+        $scope.arrayPagination = [];
+        for(var i = 0; i <= numberPagination; i++){
+          $scope.arrayPagination[i] = {
+            number : i + 1,
+            funcion : function() {
+              console.log("=)");
+            }
+          };
+        }
+      });
+    });*/
+  };
+
+  $scope.getUsuariosTypePagination = function(idTipoUsuario, start, end) {
+    $http.get("/usuarios/getUsuariosTipoLimit/"+idTipoUsuario+"/"+start+"/"+end)
+    .success(function(data) {
+      // TIPOS DE USUARIO
+      $scope.usuarios = data;
+      document.getElementById("caja2").setAttribute("hidden", "true");
+      // GET COUNT USUARIOS TYPE
+      $http.get("/usuarios/countUsuariosTipo/"+idTipoUsuario).success(function(count) {
+        var numberPagination = parseInt(parseInt(count[0].totalUsers) / 10);
+        if(count[0].totalUsers==0) {numberPagination = -1;}
+        $scope.arrayPagination = [];
+        for(var i = 0; i <= numberPagination; i++){
+          $scope.arrayPagination[i] = {
+            number : i + 1,
+            selected : start == i*10,
+            funcion : function() {
+              $scope.getUsuariosTypePagination  (idTipoUsuario, (this.number-1)*10, this.number*10);
+            }
+          };
+        }
+      });
+    });
+  };
 
   $scope.getTiposUsuario = function() {
     $http.get("/tipo_usuario/getTiposUsuario/").success(function(tiposUsuario) {
@@ -150,6 +216,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
 
   $scope.setDatosCrearUsuario = function() {
     $("#modalOpcionesUsuario").openModal();
+    $scope.cleanFormUsuario();
   };
 
   $scope.cambioTipoUsuario = function() {
@@ -187,8 +254,17 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
              console.log(data);
            });
          }
+         Materialize.toast("El usuario se creó correctamente!", 4000);
+         $("#modalOpcionesUsuario").closeModal();
        }
     });
+  };
+
+  $scope.cleanFormUsuario = function() {
+    $scope.formUsuario = {};
+    $scope.formUsuarioExtra = {};
+    $scope.showCarreras = false;
+    $scope.showAreas = false;
   };
 
   $scope.getTiposUsuario();
