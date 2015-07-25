@@ -63,14 +63,37 @@ router.post("/create", function(req, res) {
       res.send( { success : false } );
     }
   });
-  console.log(jsonData);
+});
+
+router.put("/updateUser", function(req, res) {
+  var file = req.files.usu_foto;
+  var nombreNuevaImagen = req.body.usu_foto;
+  if(file != undefined) {
+    nombreNuevaImagen = "/images/usuarios/"+req.body.id_usuario.toLowerCase() + "."
+                      + file.name.split(".")[file.name.split(".").length-1];
+    var targetPath = "public" + nombreNuevaImagen;
+  }
+  idUsuario = req.body._id_usuario;
+  controller.update({
+    id_usuario : req.body.id_usuario,
+    usu_nombre : req.body.usu_nombre,
+    usu_primer_apellido : req.body.usu_primer_apellido,
+    usu_segundo_apellido : req.body.usu_segundo_apellido,
+    usu_id_tipo_usuario : req.body.usu_id_tipo_usuario,
+    usu_email : req.body.usu_email,
+    usu_foto : nombreNuevaImagen,
+    usu_sexo : req.body.usu_sexo
+  }, idUsuario, function(err, data) {
+    if(file != undefined){
+      renameSync(file, targetPath);
+    }
+    res.send( { success : !err && data.affectedRows == 1 } );
+  });
 });
 
 router.put("/update/:jsonData/:idUsuario", function(req, res) {
   var jsonData = JSON.parse(req.params.jsonData);
   controller.update(jsonData, req.params.idUsuario, function(err, data) {
-    console.log(err);
-    console.log(data);
     res.send( { success : !err && data.affectedRows == 1 } );
   });
 });

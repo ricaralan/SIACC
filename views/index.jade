@@ -70,7 +70,7 @@ block content
                       option(ng-repeat="tipo in tiposUsuario", value="{{tipo.id_tipo_usuario}}") {{tipo.tipo_nombre}}
                 td
                   div(class="input-field col s6")
-                    input(id="usuario_id", type="text", class="validate", ng-model="formUsuario.id_usuario")
+                    input(id="usuario_id", type="text", class="validate", ng-model="formUsuario.id_usuario", length="10")
                     label(for="usuario_id") Identificador (No. Personal ó Matricula)
               tr(ng-show="showAreas")
                 td(colspan="2")
@@ -105,14 +105,14 @@ block content
               tr
                 td
                   div(class="input-field col s12")
-                    select(ng-model="formUsuario.usu_sexo")
+                    select(class="browser-default", ng-model="formUsuario.usu_sexo")
                       option(value="", disabled, selected) Selecciona el sexo del usuario
                       option(value="M") Masculino
                       option(value="F") Femenino
-                    label Selecciona el sexo del usuario
                 td
                   label(style="font-size:18px") Foto
-                  input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
+                  form(id="formFileUsuario")
+                    input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
 
             div(class="modal-footer")
               a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar

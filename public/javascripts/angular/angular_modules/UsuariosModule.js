@@ -132,6 +132,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   $scope.usuarios = [];
   $scope.arrayPagination = [];
   $scope.usuarioDetalle = {};
+  $scope.idUsuarioEditar;
 
   $scope.initTabs = function() {
     setTimeout(function() {
@@ -142,6 +143,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
 
   $scope.selectionTipoUsuario = function(tipo) {
     // Que tipo de usuario tenemos que llamar...
+    $scope.usuarios = [];
     document.getElementById("caja2").removeAttribute("hidden");
     if(tipo.start == undefined) {
       // PAGINACIÓN
@@ -149,6 +151,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
       tipo.end   = 10;
       document.getElementById("caja1").setAttribute("hidden", "true");
     }
+    $scope.usuarioDetalle = {};
     $scope.getUsuariosTypePagination(tipo.id_tipo_usuario, tipo.start, tipo.end);
   };
 
@@ -180,12 +183,14 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
     $scope.cleanFormUsuario();
     $("#modalOpcionesUsuario").openModal();
     $scope.formUsuario = $scope.usuarioDetalle;
+    $scope.crearUsuario = false;
     $scope.formUsuarioExtra = {
       usu_id_carrera : $scope.usuarioDetalle.usu_id_carrera,
       usu_id_area : $scope.usuarioDetalle.usu_id_area
     };
-    console.log($scope.formUsuarioExtra);
+    $scope.formUsuario._id_usuario = $scope.formUsuario.id_usuario;
     $scope.cambioTipoUsuario();
+    console.log($scope.formUsuario);
   };
 
   $scope.getDetalleUsuario = function(usuario) {
@@ -215,6 +220,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   $scope.setDatosCrearUsuario = function() {
     $("#modalOpcionesUsuario").openModal();
     $scope.cleanFormUsuario();
+    $scope.crearUsuario = true;
   };
 
   $scope.cambioTipoUsuario = function() {
@@ -233,29 +239,57 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   };
 
   $scope.opcionUsuario = function() {
-    var uploadURI = "/usuarios/create/";
-    multipartForm.post(uploadURI, $scope.formUsuario, function(data) {
-       if(data.success) {
-         if($scope.showCarreras) {
-           json = encodeURIComponent(JSON.stringify({
-             usu_id_carrera : $scope.formUsuarioExtra.usu_id_carrera
-           }));
-           $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
-             console.log(data);
-           });
+    if($scope.crearUsuario) {
+      // ACCIONES PARA CREAR
+      uploadURI = "/usuarios/create/";
+      multipartForm.post(uploadURI, $scope.formUsuario, function(data) {
+         if(data.success) {
+           if($scope.showCarreras) {
+             json = encodeURIComponent(JSON.stringify({
+               usu_id_carrera : $scope.formUsuarioExtra.usu_id_carrera
+             }));
+             $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
+               console.log(data);
+             });
+           }
+           if($scope.showAreas) {
+             json = encodeURIComponent(JSON.stringify({
+               usu_id_area : $scope.formUsuarioExtra.usu_id_area
+             }));
+             $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
+               console.log(data);
+             });
+           }
+           Materialize.toast("El usuario se creó correctamente!", 4000);
+           $("#modalOpcionesUsuario").closeModal();
          }
-         if($scope.showAreas) {
-           json = encodeURIComponent(JSON.stringify({
-             usu_id_area : $scope.formUsuarioExtra.usu_id_area
-           }));
-           $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
-             console.log(data);
-           });
+      });
+    } else {
+      // TODO ACCIONES PARA EDITAR
+      uploadURI = "/usuarios/updateUser";
+      multipartForm.put(uploadURI, $scope.formUsuario, function(data) {
+         if(data.success) {
+           if($scope.showCarreras) {
+             json = encodeURIComponent(JSON.stringify({
+               usu_id_carrera : $scope.formUsuarioExtra.usu_id_carrera
+             }));
+             $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
+               console.log(data);
+             });
+           }
+           if($scope.showAreas) {
+             json = encodeURIComponent(JSON.stringify({
+               usu_id_area : $scope.formUsuarioExtra.usu_id_area
+             }));
+             $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
+               console.log(data);
+             });
+           }
+           Materialize.toast("El usuario se editó correctamente!", 4000);
+           $("#modalOpcionesUsuario").closeModal();
          }
-         Materialize.toast("El usuario se creó correctamente!", 4000);
-         $("#modalOpcionesUsuario").closeModal();
-       }
-    });
+      });
+    }
   };
 
   $scope.cleanFormUsuario = function() {
@@ -263,6 +297,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
     $scope.formUsuarioExtra = {};
     $scope.showCarreras = false;
     $scope.showAreas = false;
+    document.getElementById("formFileUsuario").reset();
   };
 
   $scope.getTiposUsuario();
