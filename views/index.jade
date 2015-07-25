@@ -54,6 +54,8 @@ block content
                 p(ng-show="usuarioDetalle.usu_id_carrera") Carrera
                   label {{usuarioDetalle.car_nombre}}
 
+                button(class="btn waves-effect", ng-click="setDatosEditar()") EDITAR
+
 
         // MODAL OPCION USUARIO
         div(id="modalOpcionesUsuario" class="modal")
@@ -114,7 +116,7 @@ block content
 
             div(class="modal-footer")
               a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-              button(class=" waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") Crear
+              button(class="waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") Crear
 
 
   script(src="/javascripts/angular/angular.min.js")

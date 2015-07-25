@@ -176,6 +176,18 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
     });
   };
 
+  $scope.setDatosEditar = function() {
+    $scope.cleanFormUsuario();
+    $("#modalOpcionesUsuario").openModal();
+    $scope.formUsuario = $scope.usuarioDetalle;
+    $scope.formUsuarioExtra = {
+      usu_id_carrera : $scope.usuarioDetalle.usu_id_carrera,
+      usu_id_area : $scope.usuarioDetalle.usu_id_area
+    };
+    console.log($scope.formUsuarioExtra);
+    $scope.cambioTipoUsuario();
+  };
+
   $scope.getDetalleUsuario = function(usuario) {
     $http.get("/usuarios/getDataUsuario/"+usuario.id_usuario).success(function(usuario) {
       $scope.usuarioDetalle = usuario;
