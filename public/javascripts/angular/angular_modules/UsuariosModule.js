@@ -131,6 +131,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   $scope.showAreas = false;
   $scope.usuarios = [];
   $scope.arrayPagination = [];
+  $scope.usuarioDetalle = {};
 
   $scope.initTabs = function() {
     setTimeout(function() {
@@ -149,27 +150,6 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
       document.getElementById("caja1").setAttribute("hidden", "true");
     }
     $scope.getUsuariosTypePagination(tipo.id_tipo_usuario, tipo.start, tipo.end);
-    /*$http.get("/usuarios/getUsuariosTipoLimit/"+tipo.id_tipo_usuario+"/"+tipo.start+"/"+tipo.end)
-    .success(function(data) {
-      // TIPOS DE USUARIO
-      $scope.usuarios = data;
-      document.getElementById("caja2").setAttribute("hidden", "true");
-
-      // GET COUNT USUARIOS TYPE
-      $http.get("/usuarios/countUsuariosTipo/"+tipo.id_tipo_usuario).success(function(count) {
-        var numberPagination = parseInt(parseInt(count[0].totalUsers) / 10);
-        if(count[0].totalUsers==0) {numberPagination = -1;}
-        $scope.arrayPagination = [];
-        for(var i = 0; i <= numberPagination; i++){
-          $scope.arrayPagination[i] = {
-            number : i + 1,
-            funcion : function() {
-              console.log("=)");
-            }
-          };
-        }
-      });
-    });*/
   };
 
   $scope.getUsuariosTypePagination = function(idTipoUsuario, start, end) {
@@ -193,6 +173,12 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
           };
         }
       });
+    });
+  };
+
+  $scope.getDetalleUsuario = function(usuario) {
+    $http.get("/usuarios/getDataUsuario/"+usuario.id_usuario).success(function(usuario) {
+      $scope.usuarioDetalle = usuario;
     });
   };
 

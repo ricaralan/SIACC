@@ -30,7 +30,7 @@ block content
                       div(class="circle")
               //{{usuarios}}
               div(style="height:300px;overflow-y:auto;")
-                a(ng-repeat="usuario in usuarios", href="#!")
+                a(ng-repeat="usuario in usuarios", href="#!", ng-click="getDetalleUsuario(usuario)")
                   div(class="card", style="padding:5px;")
                     img(src="{{usuario.usu_foto}}", width="50px",style="border-radius:50px;")
                     label {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
@@ -43,6 +43,16 @@ block content
             div(class="", style="height:500px;overflow-y:auto;")
               h5(class="center-align") Detalle
               p(class="divider")
+              div(ng-show="usuarioDetalle.id_usuario == undefined")
+                h4 Aún no se ha seleccionado un usuario
+              div(ng-show="usuarioDetalle.id_usuario != undefined")
+                img(src="{{usuarioDetalle.usu_foto}}", width="100px;")
+                label
+                  h5 {{usuarioDetalle.usu_nombre}} {{usuarioDetalle.usu_primer_apellido}} {{usuarioDetalle.usu_segundo_apellido}}
+                p(ng-show="usuarioDetalle.usu_id_area") Área
+                  label {{usuarioDetalle.are_nombre}}
+                p(ng-show="usuarioDetalle.usu_id_carrera") Carrera
+                  label {{usuarioDetalle.car_nombre}}
 
 
         // MODAL OPCION USUARIO

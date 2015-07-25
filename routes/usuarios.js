@@ -8,6 +8,17 @@ router.get('/', function(req, res) {
   res.send(req.session.user);
 });
 
+router.get("/getDataUsuario/:idUsuario", function(req, res) {
+  var idUsuario = req.params.idUsuario;
+  controller.getDataUsuario(idUsuario, function(err, usuario) {
+    if(!err) {
+      res.send(usuario[0]);
+    } else {
+      res.send( { error : "No se pudo encontrar el usuario" } );
+    }
+  });
+});
+
 router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:fin", function(req, res) {
   var idTipoUsuario = req.params.idTipoUsuario;
   var inicio = req.params.inicio;

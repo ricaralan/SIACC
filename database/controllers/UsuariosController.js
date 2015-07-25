@@ -6,6 +6,14 @@ var UsuariosController = function(){
   self.connection = require("../connection/mysql_connection");
 };
 
+UsuariosController.prototype.getDataUsuario = function(idUsuario, callback) {
+  var query = "select id_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido,usu_foto,"
+              +"usu_id_carrera,usu_id_area,car_nombre,are_nombre from "
+              +"(usuario LEFT JOIN carrera ON id_carrera=usu_id_carrera)"
+              +"LEFT JOIN area on id_area=usu_id_area  where id_usuario='"+idUsuario+"'";
+  self.connection.query(query, callback);
+};
+
 UsuariosController.prototype.getUsuariosTipoLimit = function(idTipoUsuario, inicio, fin, callback) {
   // TODO DIVIDIR POR TIPOS DE USUARIO O VER COMO PAGINAR Ó AUTOMATIZAR...
   var query = "select id_usuario, usu_nombre, usu_primer_apellido, usu_segundo_apellido, usu_id_tipo_usuario, usu_foto from usuario "
