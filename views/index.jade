@@ -54,7 +54,8 @@ block content
                 p(ng-show="usuarioDetalle.usu_id_carrera") Carrera
                   label {{usuarioDetalle.car_nombre}}
 
-                button(class="btn waves-effect", ng-click="setDatosEditar()") EDITAR
+                button(class="btn waves-effect blue white-text", ng-click="setDatosEditar()") EDITAR
+                button(class="btn waves-effect red white-text", ng-click="eliminarUsuario(usuarioDetalle.id_usuario)") ELIMINAR
 
 
         // MODAL OPCION USUARIO

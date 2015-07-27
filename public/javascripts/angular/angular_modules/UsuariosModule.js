@@ -313,10 +313,6 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
       });
     }
     $scope.socket.emit("changeOnUsuarios", {});
-    setTimeout(function() {
-      $scope.getUsuariosTypePagination();
-      $scope.getDetalleUsuario();
-    }, 1000);
   };
 
   $scope.cleanFormUsuario = function() {
@@ -325,6 +321,19 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
     $scope.showCarreras = false;
     $scope.showAreas = false;
     document.getElementById("formFileUsuario").reset();
+  };
+
+  $scope.eliminarUsuario = function(idUsuario) {
+    if(confirm("¿Realmente deseas eliminar el usuario?")) {
+      $http.delete("/usuarios/delete/"+idUsuario).success(function(res) {
+        if(res.success) {
+          $scope.socket.emit("changeOnUsuarios", {});
+          Materialize.toast("El usuario se eliminó correctamente!", 4000);
+        } else {
+          Materialize.toast("Ocurrio un error...", 4000);
+        }
+      });
+    }
   };
 
   $scope.getTiposUsuario();

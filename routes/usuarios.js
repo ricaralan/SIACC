@@ -98,6 +98,13 @@ router.put("/update/:jsonData/:idUsuario", function(req, res) {
   });
 });
 
+router.delete("/delete/:idUsuario", function(req, res) {
+  idUsuario = req.params.idUsuario;
+  controller.delete(idUsuario, function(err, data) {
+    res.send({success : (!err && data.affectedRows == 1)});
+  });
+});
+
 function renameSync(file, targetPath) {
   tipo = file.mimetype;
   fs.stat(file.path, function(err) {
