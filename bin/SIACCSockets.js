@@ -43,6 +43,13 @@ module.exports = function(server){
       io.emit("areaDeleted", mensaje);
     });
 
+    /**
+    * ACTIONS USUARIO
+    **/
+    socket.on("changeOnUsuarios", function(mensaje) {
+      io.emit("changeOnUsuarios", mensaje);
+    });
+
   });
 
 };

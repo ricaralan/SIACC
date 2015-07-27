@@ -133,6 +133,10 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   $scope.arrayPagination = [];
   $scope.usuarioDetalle = {};
   $scope.idUsuarioEditar;
+  $scope.accionUsuario = "Crear";
+  $scope.typeUserPagination = {};
+  $scope.usuarioId = 0;
+  $scope.socket = io();
 
   $scope.initTabs = function() {
     setTimeout(function() {
@@ -152,26 +156,39 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
       document.getElementById("caja1").setAttribute("hidden", "true");
     }
     $scope.usuarioDetalle = {};
-    $scope.getUsuariosTypePagination(tipo.id_tipo_usuario, tipo.start, tipo.end);
+    $scope.setTypeUserPagination(tipo);
+    $scope.getUsuariosTypePagination();
   };
 
-  $scope.getUsuariosTypePagination = function(idTipoUsuario, start, end) {
-    $http.get("/usuarios/getUsuariosTipoLimit/"+idTipoUsuario+"/"+start+"/"+end)
-    .success(function(data) {
+  $scope.setTypeUserPagination = function(tipo) {
+    $scope.typeUserPagination = tipo;
+  };
+
+  $scope.getTipeUserPagination = function() {
+    return $scope.typeUserPagination;
+  };
+
+  $scope.getUsuariosTypePagination = function() {
+    tipo = $scope.getTipeUserPagination();
+    URI = "/usuarios/getUsuariosTipoLimit/"+tipo.id_tipo_usuario+"/"+tipo.start+"/"+tipo.end;
+    $http.get(URI).success(function(data) {
       // TIPOS DE USUARIO
       $scope.usuarios = data;
       document.getElementById("caja2").setAttribute("hidden", "true");
       // GET COUNT USUARIOS TYPE
-      $http.get("/usuarios/countUsuariosTipo/"+idTipoUsuario).success(function(count) {
+      $http.get("/usuarios/countUsuariosTipo/"+tipo.id_tipo_usuario).success(function(count) {
         var numberPagination = parseInt(parseInt(count[0].totalUsers) / 10);
         if(count[0].totalUsers==0) {numberPagination = -1;}
         $scope.arrayPagination = [];
         for(var i = 0; i <= numberPagination; i++){
           $scope.arrayPagination[i] = {
             number : i + 1,
-            selected : start == i*10,
+            selected : tipo.start == i*10,
             funcion : function() {
-              $scope.getUsuariosTypePagination  (idTipoUsuario, (this.number-1)*10, this.number*10);
+              tipo.start = (this.number-1)*10;
+              tipo.end = this.number*10;
+              $scope.setTypeUserPagination(tipo);
+              $scope.getUsuariosTypePagination();
             }
           };
         }
@@ -189,13 +206,17 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
       usu_id_area : $scope.usuarioDetalle.usu_id_area
     };
     $scope.formUsuario._id_usuario = $scope.formUsuario.id_usuario;
+    $scope.accionUsuario = "Editar";
     $scope.cambioTipoUsuario();
-    console.log($scope.formUsuario);
   };
 
-  $scope.getDetalleUsuario = function(usuario) {
-    $http.get("/usuarios/getDataUsuario/"+usuario.id_usuario).success(function(usuario) {
-      $scope.usuarioDetalle = usuario;
+  $scope.setIdUsuarioDetalle = function(usuarioId) {
+    $scope.usuarioId = usuarioId;
+  };
+
+  $scope.getDetalleUsuario = function() {
+    $http.get("/usuarios/getDataUsuario/"+$scope.usuarioId).success(function(usuario) {
+        $scope.usuarioDetalle = usuario;
     });
   };
 
@@ -221,6 +242,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
     $("#modalOpcionesUsuario").openModal();
     $scope.cleanFormUsuario();
     $scope.crearUsuario = true;
+    $scope.accionUsuario = "Crear";
   };
 
   $scope.cambioTipoUsuario = function() {
@@ -290,6 +312,11 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
          }
       });
     }
+    $scope.socket.emit("changeOnUsuarios", {});
+    setTimeout(function() {
+      $scope.getUsuariosTypePagination();
+      $scope.getDetalleUsuario();
+    }, 1000);
   };
 
   $scope.cleanFormUsuario = function() {
@@ -303,6 +330,14 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   $scope.getTiposUsuario();
   $scope.getCarreras();
   $scope.initTiposAreas();
+
+  /**
+  * LISTEN SOCKETS
+  **/
+  $scope.socket.on("changeOnUsuarios", function(data) {
+    $scope.getUsuariosTypePagination();
+    $scope.getDetalleUsuario();
+  });
 
 }]);
 

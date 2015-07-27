@@ -28,9 +28,9 @@ block content
                   div(class="spinner-layer spinner-blue-only", id="caja2", hidden)
                     div(class="circle-clipper left")
                       div(class="circle")
-              //{{usuarios}}
+
               div(style="height:300px;overflow-y:auto;")
-                a(ng-repeat="usuario in usuarios", href="#!", ng-click="getDetalleUsuario(usuario)")
+                a(ng-repeat="usuario in usuarios", href="#!", ng-click="setIdUsuarioDetalle(usuario.id_usuario);getDetalleUsuario();")
                   div(class="card", style="padding:5px;")
                     img(src="{{usuario.usu_foto}}", width="50px",style="border-radius:50px;")
                     label {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
@@ -60,7 +60,7 @@ block content
         // MODAL OPCION USUARIO
         div(id="modalOpcionesUsuario" class="modal")
           div(class="modal-content")
-            h4 Crear usuario
+            h4 {{accionUsuario}} usuario
             table
               tr
                 td
@@ -116,7 +116,7 @@ block content
 
             div(class="modal-footer")
               a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-              button(class="waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") Crear
+              button(class="waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") {{accionUsuario}}
 
 
   script(src="/javascripts/angular/angular.min.js")
