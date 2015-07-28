@@ -30,14 +30,10 @@ block content
                       div(class="circle")
 
               div(style="height:300px;overflow-y:auto;")
-                a(ng-repeat="usuario in usuarios", href="#!", ng-click="setIdUsuarioDetalle(usuario.id_usuario);getDetalleUsuario();")
-                  div(class="card", style="padding:5px;")
-                    img(src="{{usuario.usu_foto}}", width="50px",style="border-radius:50px;")
-                    label {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+                card-line-user(ng-repeat="usuario in usuarios", user="{{usuario}}", ng-click="setIdUsuarioDetalle(usuario.id_usuario);getDetalleUsuario();")
               ul(class="pagination")
                 li(class="waves-effect {{pagination.selected?'active':''}}", ng-repeat="pagination in arrayPagination", ng-click="pagination.funcion()")
                   a(href="#!") {{pagination.number}}
-              {{array}}
 
           div(class="col s8", style="border:solid 1px rgba(0, 0, 0, .1);")
             div(class="", style="height:500px;overflow-y:auto;")
@@ -46,16 +42,17 @@ block content
               div(ng-show="usuarioDetalle.id_usuario == undefined")
                 h4 Aún no se ha seleccionado un usuario
               div(ng-show="usuarioDetalle.id_usuario != undefined")
-                img(src="{{usuarioDetalle.usu_foto}}", width="100px;")
-                label
-                  h5 {{usuarioDetalle.usu_nombre}} {{usuarioDetalle.usu_primer_apellido}} {{usuarioDetalle.usu_segundo_apellido}}
-                p(ng-show="usuarioDetalle.usu_id_area") Área
-                  label {{usuarioDetalle.are_nombre}}
-                p(ng-show="usuarioDetalle.usu_id_carrera") Carrera
-                  label {{usuarioDetalle.car_nombre}}
+                //img(src="{{usuarioDetalle.usu_foto}}", width="100px;")
+                //label
+                //  h5 {{usuarioDetalle.usu_nombre}} {{usuarioDetalle.usu_primer_apellido}} {{usuarioDetalle.usu_segundo_apellido}}
+                //p(ng-show="usuarioDetalle.usu_id_area") Área
+                //  label {{usuarioDetalle.are_nombre}}
+                //p(ng-show="usuarioDetalle.usu_id_carrera") Carrera
+                //  label {{usuarioDetalle.car_nombre}}
+                card-detail-user(user="{{usuarioDetalle}}")
 
-                button(class="btn waves-effect blue white-text", ng-click="setDatosEditar()") EDITAR
-                button(class="btn waves-effect red white-text", ng-click="eliminarUsuario(usuarioDetalle.id_usuario)") ELIMINAR
+                //button(class="btn waves-effect blue white-text", ng-click="setDatosEditar()") EDITAR
+                //button(class="btn waves-effect red white-text", ng-click="eliminarUsuario(usuarioDetalle.id_usuario)") ELIMINAR
 
 
         // MODAL OPCION USUARIO
@@ -114,6 +111,19 @@ block content
                   label(style="font-size:18px") Foto
                   form(id="formFileUsuario")
                     input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
+            p(class="divider")
+            //input(type="checkbox", id="check", ng-model="formUsuario.definirUsuario")
+            //label(for="check") Definir usuario
+            //table(class="bordered", ng-show="formUsuario.definirUsuario")
+            //  tr
+            //    td
+            //      div(class="input-field col s6")
+            //        input(id="usuario_usuario", type="text", class="validate", ng-model="formUsuario.usu_usuario")
+            //        label(for="usuario_usuario") Usuario
+            //    td
+            //      div(class="input-field col s6")
+                    input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
+            //        label(for="usuario_contra") Contraseña
 
             div(class="modal-footer")
               a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar

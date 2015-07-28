@@ -1,0 +1,51 @@
+<style type="text/css">
+	#header-detail {
+		position: relative;
+	}
+	#contentDetailHeaderUser {
+		display: inline-block;
+		width: (100%)-120px !important;
+		height: 100%;
+		position: absolute;
+		padding:10px;
+	}
+	#contentDetailHeaderUser p {
+		font-size: 23px;
+	}
+</style>
+<div>
+	<div id="header-detail">
+		<img src="{{userCardDetail.usu_foto}}" alt="" width="120px" height="120px"/>
+		<div id="contentDetailHeaderUser">
+			<p>
+				{{userCardDetail.usu_nombre}} {{userCardDetail.usu_primer_apellido}} {{userCardDetail.usu_segundo_apellido}}
+			</p>
+			<div class="">
+				<button type="button" class="btn waves-effect blue white-text" ng-click="setDatosEditar()">Editar</button>
+				<button type="button" class="btn waves-effect red white-text" ng-click="eliminarUsuario(userCardDetail.id_usuario)">Eliminar</button>
+			</div>
+		</div>
+	</div>
+	<p class="divider"></p>
+	<div class="">
+		<div class="" ng-show="userCardDetail.usu_id_area!=null">
+				<h6>Area: {{userCardDetail.are_nombre}}</h6>
+				<a class="waves-effect waves-teal btn-flat", onclick="$('#modalHorarioAula').openModal()">
+					<i class="material-icons">visibility</i>
+					<i class="material-icons">today</i>
+				</a>
+				<p class="divider"></p>
+		</div>
+		<div class="" ng-show="userCardDetail.usu_id_carrera!=null">
+				<h6>Carrera: {{userCardDetail.car_nombre}}</h6>
+			<p class="divider"></p>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="modalHorarioAula">
+	<div class="modal-content">
+		<h4>Horario en área</h4>
+		<horario-semana id="horarioArea"></horario-semana>
+	</div>
+</div>

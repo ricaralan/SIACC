@@ -38,3 +38,80 @@ AppModule.directive("appForUsers", function() {
     transclude : true
   };
 });
+
+AppModule.directive("cardLineUser", function() {
+  return {
+    restrict : "E",
+    templateUrl : "/prefabs/card-line-user.html",
+    link : function(scope, element, attributes) {
+      scope.userCardLine = JSON.parse(attributes.user);
+    }
+  };
+});
+
+AppModule.directive("cardDetailUser", function() {
+  return {
+    restrict : "E",
+    templateUrl : "/prefabs/card-detail-user.html",
+    link : function(scope, element, attributes) {
+      attributes.$observe("user", function() {
+        scope.userCardDetail = JSON.parse(attributes.user);
+      });
+    }
+  };
+});
+
+AppModule.directive("horarioSemana", function() {
+  return {
+    restrict : "E",
+    template : "<div></div>",
+    link : function(scope, element, attributes) {
+      diasSemana = 7;
+      horaInicio = 7;
+      horaFin    = 20;
+      arrayDias = ["H", "L", "M", "M", "J", "V", "S", "D"];
+      caja  = document.getElementById(attributes.id);
+      tabla = document.createElement("table");
+      caja.appendChild(tabla);
+      for(var j = horaInicio - 1; j <= horaFin; j++) {
+        tr = document.createElement("tr");
+        for(var i = 0; i <= diasSemana; i++) {
+          td = document.createElement("td");
+          td.setAttribute("d", j);
+          td.setAttribute("h", i);
+          if (j == (horaInicio - 1)) {
+            td.innerHTML = arrayDias[i];
+            td.style.backgroundColor = "#2B8DAC";
+            td.id = "h" + i;
+          } else if(i == 0) {
+            td.innerHTML = j;
+            td.id = "d" + j;
+            td.style.width = "30px";
+            td.style.backgroundColor = "#2B8DAC";
+          } else {
+            td.addEventListener("mouseover", function() {
+              dia  = document.getElementById("d"+this.getAttribute("d"));
+              hora = document.getElementById("h"+this.getAttribute("h"));
+              dia.style.backgroundColor = "#fff";
+              hora.style.backgroundColor = "#fff";
+              this.style.backgroundColor = "#2B8DAC";
+            });
+            td.addEventListener("mouseleave", function() {
+              dia  = document.getElementById("d"+this.getAttribute("d"));
+              hora = document.getElementById("h"+this.getAttribute("h"));
+              dia.style.backgroundColor = "#2B8DAC";
+              hora.style.backgroundColor = "#2B8DAC";
+              this.style.backgroundColor = "#fff";
+            });
+          }
+          td.style.borderRight = "1px solid #d0d0d0";
+          td.style.textAlign = "center";
+          tr.appendChild(td);
+        }
+        tr.style.borderBottom = "1px solid #d0d0d0";
+        tabla.appendChild(tr);
+      }
+      tabla.style.width = "100%";
+    }
+  };
+});

@@ -1,0 +1,24 @@
+<style type="text/css">
+	.cardLineUser {
+		height: 50px;
+	}
+	.cardLineUser:hover {
+		cursor: pointer !important;
+	}
+	.cardLineUserText {
+		font-size: 17px;
+		padding-bottom: 20px !important;
+		width: (100%)-50px !important;
+		display: inline-block;
+		position: absolute;
+		height: 100% !important;
+		padding: 5px;
+		margin-top: 0 !important;
+	}
+</style>
+<div class="card cardLineUser">
+	<img src="{{userCardLine.usu_foto}}" height="50px" width="50px" />
+	<p class="cardLineUserText">
+		{{userCardLine.usu_nombre}} {{userCardLine.usu_primer_apellido}} {{userCardLine.usu_segundo_apellido}}
+	</p>
+</div>
