@@ -27,6 +27,12 @@ AppModule.directive("appForUsers", function() {
           complete: function() {  } // Callback for Modal close
         });
         $('select').material_select();
+        $('.datepicker').pickadate({
+          selectMonths: true,
+          selectYears: 15,
+          format: 'yyyy-mm-dd',
+          min: true
+        });
       });
       document.getElementById("contentApp").removeAttribute("hidden");
       document.getElementById("loadPage").remove();
@@ -61,26 +67,25 @@ AppModule.directive("cardDetailUser", function() {
   };
 });
 
-AppModule.directive("horarioSemana", function() {
+AppModule.directive("horarioSemana", function($parse) {
   return {
     restrict : "E",
-    template : "<div></div>",
+    //template : "",
     link : function(scope, element, attributes) {
-      diasSemana = 7;
       horaInicio = 7;
       horaFin    = 20;
-      arrayDias = ["H", "L", "M", "M", "J", "V", "S", "D"];
+      diasSemana = ["H", "L", "M", "M", "J", "V", "S"];
       caja  = document.getElementById(attributes.id);
       tabla = document.createElement("table");
       caja.appendChild(tabla);
       for(var j = horaInicio - 1; j <= horaFin; j++) {
         tr = document.createElement("tr");
-        for(var i = 0; i <= diasSemana; i++) {
+        for(var i = 0; i < diasSemana.length; i++) {
           td = document.createElement("td");
-          td.setAttribute("d", j);
-          td.setAttribute("h", i);
+          td.setAttribute("h", j);
+          td.setAttribute("d", i);
           if (j == (horaInicio - 1)) {
-            td.innerHTML = arrayDias[i];
+            td.innerHTML = diasSemana[i];
             td.style.backgroundColor = "#2B8DAC";
             td.id = "h" + i;
           } else if(i == 0) {
@@ -89,19 +94,41 @@ AppModule.directive("horarioSemana", function() {
             td.style.width = "30px";
             td.style.backgroundColor = "#2B8DAC";
           } else {
+            // TODO hay mucho código repetitivo... Hay que automatizar esto (utilizar más funciones)
             td.addEventListener("mouseover", function() {
-              dia  = document.getElementById("d"+this.getAttribute("d"));
-              hora = document.getElementById("h"+this.getAttribute("h"));
+              dia  = document.getElementById("d"+this.getAttribute("h"));
+              hora = document.getElementById("h"+this.getAttribute("d"));
               dia.style.backgroundColor = "#fff";
               hora.style.backgroundColor = "#fff";
               this.style.backgroundColor = "#2B8DAC";
             });
             td.addEventListener("mouseleave", function() {
-              dia  = document.getElementById("d"+this.getAttribute("d"));
-              hora = document.getElementById("h"+this.getAttribute("h"));
+              dia  = document.getElementById("d"+this.getAttribute("h"));
+              hora = document.getElementById("h"+this.getAttribute("d"));
               dia.style.backgroundColor = "#2B8DAC";
               hora.style.backgroundColor = "#2B8DAC";
               this.style.backgroundColor = "#fff";
+            });
+            td.className = "celdaHorario";
+            td.addEventListener("click", function() {
+              if(this.getAttribute("selected") == null) {
+                this.setAttribute("selected", "true");
+                this.style.boxShadow = "0px 0px 13px 7px rgba(0, 0, 0, .3) inset";
+              } else {
+                this.removeAttribute("selected");
+                this.style.boxShadow = "";
+              }
+              this.id = "d"+this.getAttribute("d")+"-h"+this.getAttribute("h");
+              eval("scope."+attributes.callback)({
+                add  : (this.getAttribute("selected") != null),
+                area : document.getElementById(attributes.id).getAttribute("area"),
+                usuario : document.getElementById(attributes.id).getAttribute("usuario"),
+                id : this.id,
+                diaHora : {
+                  h  : this.getAttribute("h"),
+                  d  : this.getAttribute("d")
+                }
+              });
             });
           }
           td.style.borderRight = "1px solid #d0d0d0";

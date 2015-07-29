@@ -103,6 +103,37 @@
     FOREIGN KEY(usa_id_usuario) REFERENCES usuario(id_usuario)
   );
 
+  CREATE TABLE materia(
+    /* id_materia == NRC */
+    id_materia VARCHAR(10) NOT NULL PRIMARY KEY,
+    mat_nombre VARCHAR(40) NOT NULL,
+    mat_descripcion VARCHAR(200)
+  );
+
+  /**
+  * Esta tabla guardará el horario de el usuario en un área
+  * donde podremos saber el horario de atención en un área
+  * y el horario de clases en un área
+  **/
+  CREATE TABLE horario_area(
+    hua_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    hua_id_area INT NOT NULL,
+    hua_id_usuario VARCHAR(10) NOT NULL,
+    hua_id_materia VARCHAR(10),
+    /**
+    * hua_tipo == 1: Horario de usuario en área
+    * hua_tipo == 2: Horario de clase de área
+    */
+    hua_tipo INT,
+    hua_dia INT NOT NULL,
+    hua_hora INT NOT NULL,
+    hua_fecha_inicio DATE,
+    hua_fecha_fin DATE,
+    FOREIGN KEY(hua_id_area) REFERENCES area(id_area),
+    FOREIGN KEY(hua_id_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY(hua_id_materia) REFERENCES materia(id_materia)
+  );
+
   CREATE TABLE inventario(
   num_inventario VARCHAR(20) PRIMARY KEY,
   inv_id_area INT NOT NULL,

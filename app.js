@@ -15,6 +15,7 @@ var tipo_area = require('./routes/tipo_area');
 var tipo_usuario = require('./routes/tipo_usuario');
 var areas = require('./routes/areas');
 var carreras = require('./routes/carreras');
+var horarios = require('./routes/horarios');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/tipoArea', tipo_area);
 app.use('/tipo_usuario', tipo_usuario);
 app.use('/areas', areas);
 app.use('/carreras', carreras);
+app.use('/horarios', horarios);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

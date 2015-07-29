@@ -1,4 +1,4 @@
-var UsuariosModule = angular.module("UsuariosModule", ["AppModule"]);
+var UsuariosModule = angular.module("UsuariosModule", ["AppModule", "HorariosModule"]);
 
 UsuariosModule.controller("TiposUsuarioController", ["$scope", "$http", function($scope, $http) {
 
@@ -233,7 +233,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
   };
 
   $scope.initTiposAreas = function() {
-    $http.get("/tipoArea/getTiposArea").success(function(tiposAreas) {
+    $http.get("/areas/getAreas").success(function(tiposAreas) {
       $scope.tiposAreas = tiposAreas;
     });
   };
@@ -312,6 +312,7 @@ UsuariosModule.controller("UsuariosController", ["$scope","$http", "multipartFor
          }
       });
     }
+             console.log($scope.formUsuarioExtra.usu_id_area);
     $scope.socket.emit("changeOnUsuarios", {});
   };
 

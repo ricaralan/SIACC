@@ -16,7 +16,6 @@ block content
                 a(href="!#", ng-click="selectionTipoUsuario(tipo)") {{tipo.tipo_nombre}}
         div(class="row card")
           div(class="col s4", style="border:solid 1px rgba(0, 0, 0, .1);")
-            //div(class="", style="height:500px;overflow-y:auto;")
             div(class="")
               h5(class="center-align") Usuarios
               p(class="divider")
@@ -42,17 +41,7 @@ block content
               div(ng-show="usuarioDetalle.id_usuario == undefined")
                 h4 Aún no se ha seleccionado un usuario
               div(ng-show="usuarioDetalle.id_usuario != undefined")
-                //img(src="{{usuarioDetalle.usu_foto}}", width="100px;")
-                //label
-                //  h5 {{usuarioDetalle.usu_nombre}} {{usuarioDetalle.usu_primer_apellido}} {{usuarioDetalle.usu_segundo_apellido}}
-                //p(ng-show="usuarioDetalle.usu_id_area") Área
-                //  label {{usuarioDetalle.are_nombre}}
-                //p(ng-show="usuarioDetalle.usu_id_carrera") Carrera
-                //  label {{usuarioDetalle.car_nombre}}
                 card-detail-user(user="{{usuarioDetalle}}")
-
-                //button(class="btn waves-effect blue white-text", ng-click="setDatosEditar()") EDITAR
-                //button(class="btn waves-effect red white-text", ng-click="eliminarUsuario(usuarioDetalle.id_usuario)") ELIMINAR
 
 
         // MODAL OPCION USUARIO
@@ -75,7 +64,7 @@ block content
                   div(class="input-field col s12")
                     select(class="browser-default", ng-model="formUsuarioExtra.usu_id_area")
                       option(value="" disabled selected) Selecciona el área
-                      option(ng-repeat="tipo in tiposAreas", value="{{tipo.id_tipo_area}}") {{tipo.tipo_nombre}}
+                      option(ng-repeat="tipo in tiposAreas", value="{{tipo.id_area}}") {{tipo.are_nombre}}
               tr(ng-show="showCarreras")
                 td(colspan="2")
                   div(class="input-field col s12")
@@ -122,15 +111,38 @@ block content
             //        label(for="usuario_usuario") Usuario
             //    td
             //      div(class="input-field col s6")
-                    input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
+            //        input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
             //        label(for="usuario_contra") Contraseña
 
             div(class="modal-footer")
               a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
               button(class="waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") {{accionUsuario}}
 
+      div(ng-controller="HorariosController")
+        div(class="fixed-action-btn", style="top: 23%; right: 21%;z-index:9999;", ng-show="horarios.length > 0 && !asignarHorario")
+          a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="setDatosAsignarHorario()")
+            i {{horarios.length}} +
+        div(class="modal", id="modalHorarioAula")
+          div(class="modal-content")
+            h4 Horario en
+            a(href="#", ng-click="asignarHorario=false") show horario
+            div
+              table(class="bordered")
+                tr
+                  td Inicio
+                  td
+                    input(type="date", ng-model="horarioAsignar.fecha_inicio", class="datepicker", id="fecha_inicio")
+                  td Fin
+                  td
+                    input(type="date", ng-model="horarioAsignar.fecha_fin", class="datepicker", id="fecha_fin")
+                  td
+                    button(class="btn waves-effect white-text", ng-click="createHorario()") Crear
+            div(ng-show="!asignarHorario")
+              horario-semana(id="horarioArea", callback="calendar", area="0")
+
 
   script(src="/javascripts/angular/angular.min.js")
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/angular_modules/AppModule.js")
+  script(src="/javascripts/angular/angular_modules/HorariosModule.js")
   script(src="/javascripts/angular/angular_modules/UsuariosModule.js")
