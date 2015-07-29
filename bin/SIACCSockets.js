@@ -31,16 +31,8 @@ module.exports = function(server){
     /**
     * CRUD ÁREAS SOCKETS
     ***/
-    socket.on("newAreaCreated", function(mensaje) {
-      io.emit("newAreaCreated", mensaje);
-    });
-
-    socket.on("areaEdited", function(mensaje) {
-      io.emit("areaEdited", mensaje);
-    });
-
-    socket.on("areaDeleted", function(mensaje) {
-      io.emit("areaDeleted", mensaje);
+    socket.on("changeOnAreas", function(mensaje) {
+      io.emit("changeOnAreas", mensaje);
     });
 
     /**

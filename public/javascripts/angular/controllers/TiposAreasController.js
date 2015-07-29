@@ -1,4 +1,4 @@
-SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", function($scope, $http, multipartForm) {
+SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "util", function($scope, $http, multipartForm, util) {
 
   $scope.tiposDeAreas;
   $scope.formTipoArea = {};
@@ -19,30 +19,32 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", f
   };
 
   $scope.opcionTipoArea = function() {
-    if($scope.registrarTipoArea && $scope.validarFormularioTipoArea()) {
-      // TODO REGISTRAR
-      var uploadURI = "/tipoArea/create/";
-      multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
-        if(data.success) {
-          $scope.socket.emit("changeOnTiposAreas", {});
-          $scope.cleanFormTipoArea();
-          Materialize.toast("El tipo de área se creó correctamente!", 4000);
-        } else {
-          Materialize.toast("Ocurrio un error al crear...", 4000);
-        }
-      });
-    } else {
-      // TODO ACTUALIZAR
-      var uploadURI = "/tipoArea/update/";
-      multipartForm.put(uploadURI, $scope.formTipoArea, function(data) {
-        if(data.success) {
-          $scope.socket.emit("changeOnTiposAreas", {});
-          $scope.cleanFormTipoArea();
-          Materialize.toast("El tipo de área se editó correctamente!", 4000);
-        } else {
-          Materialize.toast("Ocurrio un error al editar...", 4000);
-        }
-      });
+    if($scope.validarFormularioTipoArea()) {
+      if($scope.registrarTipoArea) {
+        // TODO REGISTRAR
+        var uploadURI = "/tipoArea/create/";
+        multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
+          if(data.success) {
+            $scope.socket.emit("changeOnTiposAreas", {});
+            $scope.cleanFormTipoArea();
+            Materialize.toast("El tipo de área se creó correctamente!", 4000);
+          } else {
+            Materialize.toast("Ocurrio un error al crear...", 4000);
+          }
+        });
+      } else {
+        // TODO ACTUALIZAR
+        var uploadURI = "/tipoArea/update/";
+        multipartForm.put(uploadURI, $scope.formTipoArea, function(data) {
+          if(data.success) {
+            $scope.socket.emit("changeOnTiposAreas", {});
+            $scope.cleanFormTipoArea();
+            Materialize.toast("El tipo de área se editó correctamente!", 4000);
+          } else {
+            Materialize.toast("Ocurrio un error al editar...", 4000);
+          }
+        });
+      }
     }
   };
 
@@ -60,7 +62,7 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", f
   };
 
   $scope.validarFormularioTipoArea = function() {
-    if($scope.isEmpty($scope.formTipoArea.tipo_nombre) || $scope.isEmpty($scope.formTipoArea.tipo_descripcion)) {
+    if(util.empty($scope.formTipoArea.tipo_nombre) || util.empty($scope.formTipoArea.tipo_descripcion)) {
       Materialize.toast("Tienes que llenar los campos!", 4000);
       return false;
     }
@@ -78,10 +80,6 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", f
     $scope.formTipoArea = {};
     document.getElementById("formTipoFoto").reset();
     $('#modalOpcionesTipoArea').closeModal();
-  };
-
-  $scope.isEmpty = function(value) {
-    return value == null || value.length == 0;
   };
 
   $scope.getTiposAreas();

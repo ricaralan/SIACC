@@ -1,4 +1,4 @@
-SIACCApp.service("is", [function() {
+SIACCApp.service("util", [function() {
 
   this.empty = function(value) {
     return value == undefined || value == null || value.length == 0;
