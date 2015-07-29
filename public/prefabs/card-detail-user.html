@@ -30,7 +30,7 @@
 	<div class="">
 		<div class="" ng-show="userCardDetail.usu_id_area!=null">
 				<h6>Area: {{userCardDetail.are_nombre}}
-					<a class="waves-effect waves-teal btn-flat", onclick="$('#modalHorarioAula').openModal({complete:function(){scope.cleanSelecteds();}});document.getElementById('horarioArea').setAttribute('area', this.getAttribute('area'));document.getElementById('horarioArea').setAttribute('usuario', this.getAttribute('usuario'))" title="Ver horario en área" area="{{userCardDetail.usu_id_area}}" usuario="{{userCardDetail.id_usuario}}">
+					<a class="waves-effect waves-teal btn-flat", onclick="scope.clearCeldasHorarios();$('#modalHorarioAula').openModal({complete:function(){scope.cleanSelecteds();}});document.getElementById('horarioArea').setAttribute('area', this.getAttribute('area'));document.getElementById('horarioArea').setAttribute('usuario', this.getAttribute('usuario'))" title="Ver horario en área" area="{{userCardDetail.usu_id_area}}" usuario="{{userCardDetail.id_usuario}}">
 						<i class="material-icons">visibility</i>
 						<i class="material-icons">today</i>
 					</a>

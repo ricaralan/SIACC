@@ -1,15 +1,18 @@
 extends layout
 
 block content
-  div(ng-app="LoginModule")
-    div(ng-controller="loginController")
+  div(ng-app="SIACCApp")
+    div(ng-controller="LoginController")
       h1= title
-      input(type="text", placeholder="Usuario", ng-model="textUser")
-      input(type="password", placeholder="Contraseña", ng-model="textPassword")
-      button(class="btn waves-effect waves-light", ng-click="login()") Entrar
+      form(ng-submit="login()")
+        input(type="text", placeholder="Usuario", ng-model="textUser")
+        input(type="password", placeholder="Contraseña", ng-model="textPassword")
+        button(class="btn") Entrar
 
   script(src="/javascripts/angular/angular.min.js")
-  script(src="/javascripts/angular/angular_modules/LoginModule.js")
+  script(src="/javascripts/angular/modules/SIACCApp.js")
+  script(src="/javascripts/angular/controllers/LoginController.js")
+  script(src="/javascripts/angular/services/empty.js")
   script(src="/materialize/js/jquery-2.1.4.min.js")
   script(src="/materialize/js/materialize.min.js")
   link(rel='stylesheet', href='/materialize/css/materialize.min.css')

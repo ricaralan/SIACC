@@ -30,8 +30,7 @@ AppModule.directive("appForUsers", function() {
         $('.datepicker').pickadate({
           selectMonths: true,
           selectYears: 15,
-          format: 'yyyy-mm-dd',
-          min: true
+          format: 'yyyy-mm-dd'
         });
       });
       document.getElementById("contentApp").removeAttribute("hidden");
