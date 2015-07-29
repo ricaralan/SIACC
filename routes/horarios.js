@@ -17,5 +17,11 @@ router.post("/createHorario", function(req, res) {
   });
 });
 
+router.delete("/delete/:idHorario", function(req, res) {
+  controller.delete(req.params.idHorario, function(err, data) {
+    res.send({success : (!err && data.affectedRows == 1)});
+  });
+});
+
 
 module.exports = router;

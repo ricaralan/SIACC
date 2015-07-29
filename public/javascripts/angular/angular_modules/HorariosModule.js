@@ -13,47 +13,85 @@ HorariosModule.controller("HorariosController", ["$scope", "$http", "$timeout", 
   $scope.fechaInicio;
   $scope.fechaFin;
 
-  $scope.setDatosAsignarHorario = function() {
-    $scope.asignarHorario = true;
-    console.log($scope.horarios);
-  };
-
   $scope.getHorarioUsuario = function() {
-    $scope.setFechas();
-    $scope.idUsuario = document.getElementById("horarioArea").getAttribute("usuario");
-    $http.get("/horarios/getHorario/"+$scope.idUsuario+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
-    .success(function(horarios) {
-      $scope.horarioUsuario = horarios;
-      $scope.setHorarioSemanaUsuario();
-    });
+    if($scope.validarCampos()) {
+      $scope.idUsuario = document.getElementById("horarioArea").getAttribute("usuario");
+      $http.get("/horarios/getHorario/"+$scope.idUsuario+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
+      .success(function(horarios) {
+        $timeout(function(){
+          $scope.horarioUsuario = horarios;
+          $scope.horarios = [];
+          $scope.setHorarioSemanaUsuario();
+        }, 0);
+      });
+    }
   };
 
   $scope.setHorarioSemanaUsuario = function() {
+    $scope.clearCeldasHorarios();
     for(var i = 0; i < $scope.horarioUsuario.length; i++) {
       id = "d"+$scope.horarioUsuario[i].hua_dia+"-h"+$scope.horarioUsuario[i].hua_hora;
-      console.log(id);
       horaSemana = document.getElementById(id);
-      console.log(horaSemana);
-      label = document.createElement("label");
-      label.innerHTML = $scope.horarioUsuario[i].usu_nombre;
+      div = document.createElement("div");
+      div.innerHTML = $scope.horarioUsuario[i].usu_nombre;
+      div.style.backgroundColor = "#e3e3e3";
+      div.style.position = "absolute";
+      div.style.paddingRight = "30px";
+      div.style.top = 0;
+      div.style.overflow = "hidden";
+      equis = document.createElement("button");
+      equis.innerHTML = "x";
+      equis.style.position = "absolute";
+      equis.style.height = "25px";
+      equis.style.right = "0";
+      equis.style.top = "-5px";
+      equis.backgroundColor = "#e3e3e3";
+      equis.setAttribute("i", i);
+      equis.addEventListener("click", function(e) {
+        if(confirm("¿Esta seguro de eliminar esta hora del usuario?")){
+          id = $scope.horarioUsuario[this.getAttribute("i")].hua_id;
+          $http.delete("/horarios/delete/"+id).success(function(data) {
+            if(data.success == 1) {
+              $scope.getHorarioUsuario();
+            }
+          });
+        }
+      });
+      div.appendChild(equis);
+      div.appendChild(equis);
       horaSemana.innerHTML = "";
-      horaSemana.appendChild(label);
+      horaSemana.appendChild(div);
+    }
+  };
+
+  $scope.clearCeldasHorarios = function() {
+    celdas = document.getElementsByClassName("celdaHorario");
+    for(var i = 0; i < celdas.length; i++) {
+      celdas[i].removeAttribute("selected");
+      celdas[i].style.boxShadow = "";
+      celdas[i].innerHTML = "";
     }
   };
 
   $scope.calendar = function(horario) {
     cuadro = document.getElementById(horario.id);
     if(horario.add) {
-      if($scope.idArea != horario.area) {
-        $scope.cleanSelecteds();
-        $scope.idArea = horario.area;
-        $scope.idUsuario = horario.usuario;
-        cuadro.setAttribute("selected", "true");
-        cuadro.style.boxShadow = "0px 0px 13px 7px rgba(0, 0, 0, .3) inset";
+      cuadro = document.getElementById(horario.id);
+      if(cuadro.innerHTML == ""){
+        if($scope.idArea != horario.area) {
+          $scope.cleanSelecteds();
+          $scope.idArea = horario.area;
+          $scope.idUsuario = horario.usuario;
+          cuadro.setAttribute("selected", "true");
+          cuadro.style.boxShadow = "0px 0px 13px 7px rgba(0, 0, 0, .3) inset";
+        }
+        $timeout(function(){
+          $scope.horarios.push(horario);
+        }, 0);
+      } else {
+        cuadro.removeAttribute("selected");
+        cuadro.style.boxShadow = "";
       }
-      $timeout(function(){
-        $scope.horarios.push(horario);
-      }, 0);
     } else {
       $timeout(function(){
         $scope.delHorario(horario);
@@ -88,7 +126,7 @@ HorariosModule.controller("HorariosController", ["$scope", "$http", "$timeout", 
     } else {
       $http.post("/horarios/createHorario", {jsonHorario : $scope.getJsonHorario()})
       .success(function(data) {
-        console.log(data);
+        $scope.getHorarioUsuario();
       });
     }
   };

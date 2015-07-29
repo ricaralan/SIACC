@@ -85,6 +85,7 @@ AppModule.directive("horarioSemana", function($parse) {
           td.setAttribute("h", j);
           td.setAttribute("d", i);
           td.id = "d"+td.getAttribute("d")+"-h"+td.getAttribute("h");
+          td.style.position = "relative";
           if (j == (horaInicio - 1)) {
             td.innerHTML = diasSemana[i];
             td.style.backgroundColor = "#2B8DAC";

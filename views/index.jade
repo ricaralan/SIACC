@@ -120,24 +120,29 @@ block content
 
       div(ng-controller="HorariosController")
         div(class="fixed-action-btn", style="top: 23%; right: 21%;z-index:9999;", ng-show="horarios.length > 0 && !asignarHorario")
-          a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="setDatosAsignarHorario()")
+          //a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="setDatosAsignarHorario()")
+          a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="createHorario()")
             i {{horarios.length}} +
         div(class="modal", id="modalHorarioAula")
           div(class="modal-content")
-            h4 Horario en
-            a(href="#", ng-click="asignarHorario=false") show horario
+            h4 Horario de
             div
               table(class="bordered")
                 tr
                   td Inicio
                   td
-                    input(type="date", ng-model="horarioAsignar.fecha_inicio", class="datepicker", id="fecha_inicio")
+                    input(type="date", ng-model="fecha_inicio", class="datepicker", id="fecha_inicio", ng-change="getHorarioUsuario()")
                   td Fin
                   td
-                    input(type="date", ng-model="horarioAsignar.fecha_fin", class="datepicker", id="fecha_fin")
-                  td
-                    button(class="btn waves-effect white-text", ng-click="createHorario()") Crear
-                    button(ng-click="getHorarioUsuario()") cargarHorario
+                    input(type="date", ng-model="fecha_fin", class="datepicker", id="fecha_fin", ng-change="getHorarioUsuario()")
+                  td(ng-show="!isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
+                    button(class="btn waves-effect white-text", ng-click="getHorarioUsuario()") Recargar
+                tr(ng-show="!isEmpty(fechaInicio) && !isEmpty(fechaFin)")
+                  td(colspan="5")
+                    p Total horas entre {{fechaInicio}} y {{fechaFin}}:
+                      label(style="font-size:20px") 
+                        i {{horarioUsuario.length}} hrs.
+              p(class="divider")
             div(ng-show="!asignarHorario")
               horario-semana(id="horarioArea", callback="calendar", area="0")
 

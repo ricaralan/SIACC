@@ -44,12 +44,8 @@ HorariosController.prototype.create = function(jsonHorario, callback) {
   self.abstractModel.insert(self.table, jsonHorario, callback);
 };
 
-HorariosController.prototype.update = function(jsonDataUsuario, idUsuario, callback) {
-  self.abstractModel.update(self.table, jsonDataUsuario, { id_usuario : idUsuario }, callback);
-};
-
-HorariosController.prototype.delete = function(idUsuario, callback) {
-  self.abstractModel.delete(self.table, { id_usuario : idUsuario }, callback);
+HorariosController.prototype.delete = function(idHorario, callback) {
+  self.abstractModel.delete(self.table, { hua_id : idHorario }, callback);
 };
 
 module.exports = new HorariosController();
