@@ -5,66 +5,154 @@ block content
       div(class="indeterminate")
   div(ng-app="SIACCApp")
     app-for-users
-      div(id="contentApp", hidden, ng-controller="TiposUsuarioController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoUsuario()") Crear nuevo
-        h3 Tipos de usuario
-        table(class="bordered")
-          tr
-            th  Nombre
-            th  Descripción
-            th
-          tr(ng-repeat="tipo in tiposUsuario")
-            td {{tipo.tipo_nombre}}
-            td {{tipo.tipo_descripcion}}
-            td
-              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoUsuario(tipo.id_tipo_usuario)") Eliminar
-              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarTipoUsuario(tipo)") Editar
+      div(id="contentApp", hidden, ng-controller="UsuariosController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearUsuario()") Crear nuevo
+        h3 Usuarios
 
-        // MODAL OPCION TIPO USUARIO
-        div(id="modalOpcionesTipoUsuario" class="modal")
+        div(class="row", id="contentTabs", hidden)
+          div(class="col s12")
+            ul(class="tabs card", ng-init="initTabs()")
+              li(class="tab col s2", ng-repeat="tipo in tiposUsuario")
+                a(href="!#", ng-click="selectionTipoUsuario(tipo)") {{tipo.tipo_nombre}}
+        div(class="row card")
+          div(class="col s4", style="border:solid 1px rgba(0, 0, 0, .1);")
+            div(class="")
+              h5(class="center-align") Usuarios
+              p(class="divider")
+              input(type="text", placeholder="Buscar...")
+              div(style="position:relative;")
+                div(id="caja1", style="postion:absolute;")
+                  h5(style="background-color:rgba(0, 0, 0, .7);padding:5px;" class="white-text") Selecciona un tipo de usuario
+                div(class="preloader-wrapper big active", style="margin-left:35%;position:absolute")
+                  div(class="spinner-layer spinner-blue-only", id="caja2", hidden)
+                    div(class="circle-clipper left")
+                      div(class="circle")
+
+              div(style="height:300px;overflow-y:auto;")
+                card-line-user(ng-repeat="usuario in usuarios", user="{{usuario}}", ng-click="setIdUsuarioDetalle(usuario.id_usuario);getDetalleUsuario();")
+              ul(class="pagination")
+                li(class="waves-effect {{pagination.selected?'active':''}}", ng-repeat="pagination in arrayPagination", ng-click="pagination.funcion()")
+                  a(href="#!") {{pagination.number}}
+
+          div(class="col s8", style="border:solid 1px rgba(0, 0, 0, .1);")
+            div(class="", style="height:500px;overflow-y:auto;")
+              h5(class="center-align") Detalle
+              p(class="divider")
+              div(ng-show="usuarioDetalle.id_usuario == undefined")
+                h4 Aún no se ha seleccionado un usuario
+              div(ng-show="usuarioDetalle.id_usuario != undefined")
+                card-detail-user(user="{{usuarioDetalle}}")
+
+
+        // MODAL OPCION USUARIO
+        div(id="modalOpcionesUsuario" class="modal")
           div(class="modal-content")
-            h4 Crear tipo de usuario
+            h4 {{accionUsuario}} usuario
             table
               tr
-                td(colspan="2")
+                td
+                  div(class="input-field col s12")
+                    select(class="browser-default", ng-model="formUsuario.usu_id_tipo_usuario", ng-change="cambioTipoUsuario()")
+                      option(value="" disabled selected) Selecciona el tipo de usuario
+                      option(ng-repeat="tipo in tiposUsuario", value="{{tipo.id_tipo_usuario}}") {{tipo.tipo_nombre}}
+                td
                   div(class="input-field col s6")
-                    input(id="area_name", type="text", class="validate", ng-model="formTipoUsuario.tipo_nombre")
-                    label(for="area_name") Nombre del tipo de usuario
-              tr
+                    input(id="usuario_id", type="text", class="validate", ng-model="formUsuario.id_usuario", length="10")
+                    label(for="usuario_id") Identificador (No. Personal ó Matricula)
+              tr(ng-show="showAreas")
                 td(colspan="2")
-                  div(class="input-field col s6")
-                    textarea(id="area_name", class="materialize-textarea", class="validate", ng-model="formTipoUsuario.tipo_descripcion")
-                    label(for="area_name") Descripción del tipo de usuario
+                  div(class="input-field col s12")
+                    select(class="browser-default", ng-model="formUsuarioExtra.usu_id_area")
+                      option(value="" disabled selected) Selecciona el área
+                      option(ng-repeat="tipo in tiposAreas", value="{{tipo.id_area}}") {{tipo.are_nombre}}
+              tr(ng-show="showCarreras")
+                td(colspan="2")
+                  div(class="input-field col s12")
+                    select(class="browser-default", ng-model="formUsuarioExtra.usu_id_carrera")
+                      option(value="" disabled selected) Selecciona la carrera
+                      option(ng-repeat="carrera in carreras", value="{{carrera.id_carrera}}") {{carrera.car_nombre}}
               tr
                 td
-                  input(type="checkbox", id="check_asignar_carrera", ng-model="formTipoUsuario.tipo_asignar_carrera")
-                  label(for="check_asignar_carrera") Asignación de carrera
+                  div(class="input-field col s6")
+                    input(id="usuario_name", type="text", class="validate", ng-model="formUsuario.usu_nombre")
+                    label(for="usuario_name") Nombre
                 td
-                  input(type="checkbox", id="check_asignar_area", ng-model="formTipoUsuario.tipo_asignar_area")
-                  label(for="check_asignar_area") Asignado a un área
-
+                  div(class="input-field col s6")
+                    input(id="usuario_ape1", type="text", class="validate", ng-model="formUsuario.usu_primer_apellido")
+                    label(for="usuario_ape1") Apellido Paterno
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="usuario_ape2", type="text", class="validate", ng-model="formUsuario.usu_segundo_apellido")
+                    label(for="usuario_ape2") Apellido Materno
+                td
+                  div(class="input-field col s6")
+                    input(id="usuario_email", type="email", class="validate", ng-model="formUsuario.usu_email")
+                    label(for="usuario_email") Correo electronico
+              tr
+                td
+                  div(class="input-field col s12")
+                    select(class="browser-default", ng-model="formUsuario.usu_sexo")
+                      option(value="", disabled, selected) Selecciona el sexo del usuario
+                      option(value="M") Masculino
+                      option(value="F") Femenino
+                td
+                  label(style="font-size:18px") Foto
+                  form(id="formFileUsuario")
+                    input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
             p(class="divider")
+            //input(type="checkbox", id="check", ng-model="formUsuario.definirUsuario")
+            //label(for="check") Definir usuario
+            //table(class="bordered", ng-show="formUsuario.definirUsuario")
+            //  tr
+            //    td
+            //      div(class="input-field col s6")
+            //        input(id="usuario_usuario", type="text", class="validate", ng-model="formUsuario.usu_usuario")
+            //        label(for="usuario_usuario") Usuario
+            //    td
+            //      div(class="input-field col s6")
+            //        input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
+            //        label(for="usuario_contra") Contraseña
 
-            p Modulos permitidos
+            div(class="modal-footer")
+              a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+              button(class="waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") {{accionUsuario}}
 
-            table(class="bordered")
-              tr
-                th Permiso
-                th Descripción
-              tr(ng-repeat="modulo in todosLosModulos")
-                td
-                  input(type="checkbox", id="check{{modulo.id_modulo}}", class="checksOpcUsuario", modulo="{{modulo.id_modulo}}")
-                  label(for="check{{modulo.id_modulo}}") {{modulo.mod_nombre}}
-                td {{modulo.mod_descripcion}}
-
-
-          div(class="modal-footer")
-            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoUsuario()", id="btnOpcionTipoUsuario") Crear
+      div(ng-controller="HorariosController")
+        div(class="fixed-action-btn", style="top: 23%; right: 21%;z-index:9999;", ng-show="horarios.length > 0 && !asignarHorario")
+          //a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="setDatosAsignarHorario()")
+          a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="createHorario()")
+            i {{horarios.length}} +
+        div(class="modal", id="modalHorarioAula")
+          div(class="modal-content")
+            h4 Horario de usuario en área
+            div
+              table(class="bordered")
+                tr
+                  td Inicio
+                  td
+                    input(type="date", ng-model="fecha_inicio", class="datepicker", id="fecha_inicio", ng-change="getHorarioUsuario()")
+                  td Fin
+                  td
+                    input(type="date", ng-model="fecha_fin", class="datepicker", id="fecha_fin", ng-change="getHorarioUsuario()")
+                  td(ng-show="!isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
+                    button(class="btn waves-effect white-text", ng-click="getHorarioUsuario()") Recargar
+                tr(ng-show="!isEmpty(fechaInicio) && !isEmpty(fechaFin)")
+                  td(colspan="5")
+                    p Total horas entre {{fechaInicio}} y {{fechaFin}}:
+                      label(style="font-size:20px")
+                        i {{horarioUsuario.length}} hrs.
+            div(ng-show="!asignarHorario")
+              horario-semana(id="horarioArea", callback="calendar", area="0")
 
 
   script(src="/socket.io/socket.io.js")
-  //script(src="/javascripts/angular/angular_modules/AppModule.js")
-  //script(src="/javascripts/angular/angular_modules/UsuariosModule.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
-  script(src="/javascripts/angular/controllers/TiposUsuarioController.js")
+  script(src="/javascripts/angular/directives/fileModel.js")
+  script(src="/javascripts/angular/directives/horarioSemana.js")
+  script(src="/javascripts/angular/directives/cardLineUser.js")
+  script(src="/javascripts/angular/directives/cardDetailUser.js")
+  script(src="/javascripts/angular/services/util.js")
+  script(src="/javascripts/angular/services/multipartForm.js")
+  script(src="/javascripts/angular/controllers/UsuariosController.js")
+  script(src="/javascripts/angular/controllers/HorariosController.js")
