@@ -1,7 +1,7 @@
-SIACCApp.controller("LoginController",["$scope", "$http", "$location", "empty", function($scope, $http, $location, empty) {
+SIACCApp.controller("LoginController",["$scope", "$http", "$location", "is", function($scope, $http, $location, is) {
 
   $scope.login = function() {
-    if(!empty.empty($scope.textUser) && !empty.empty($scope.textPassword)){
+    if(!is.empty($scope.textUser) && !is.empty($scope.textPassword)){
       $http.post("/login/verificarUsuario/"+$scope.textUser+"/"+$scope.textPassword)
       .success(function(data) {
         if(data) {

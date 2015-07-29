@@ -5,8 +5,14 @@ block content
     div(ng-controller="LoginController")
       h1= title
       form(ng-submit="login()")
-        input(type="text", placeholder="Usuario", ng-model="textUser")
-        input(type="password", placeholder="Contraseña", ng-model="textPassword")
+        div(class="input-field col s6")
+          i(class="material-icons prefix") account_circle
+          input(type="text", ng-model="textUser")
+          label(for="icon_prefix") Usuario
+        div(class="input-field col s6")
+          i(class="material-icons prefix") vpn_key
+          input(type="password", ng-model="textPassword")
+          label(for="icon_prefix") Contraseña
         button(class="btn") Entrar
 
   script(src="/javascripts/angular/angular.min.js")
@@ -14,6 +20,3 @@ block content
   script(src="/javascripts/angular/controllers/LoginController.js")
   script(src="/javascripts/angular/services/empty.js")
   script(src="/materialize/js/jquery-2.1.4.min.js")
-  script(src="/materialize/js/materialize.min.js")
-  link(rel='stylesheet', href='/materialize/css/materialize.min.css')
-  link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
