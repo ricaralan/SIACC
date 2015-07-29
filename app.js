@@ -20,7 +20,7 @@ var horarios = require('./routes/horarios');
 var app = express();
 
 // view engine setup
-app.set('images', __dirname + 'public/images');
+app.set('images', __dirname + 'public/images/temp');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
