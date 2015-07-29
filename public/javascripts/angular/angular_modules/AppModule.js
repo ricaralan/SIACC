@@ -84,6 +84,7 @@ AppModule.directive("horarioSemana", function($parse) {
           td = document.createElement("td");
           td.setAttribute("h", j);
           td.setAttribute("d", i);
+          td.id = "d"+td.getAttribute("d")+"-h"+td.getAttribute("h");
           if (j == (horaInicio - 1)) {
             td.innerHTML = diasSemana[i];
             td.style.backgroundColor = "#2B8DAC";
@@ -118,7 +119,6 @@ AppModule.directive("horarioSemana", function($parse) {
                 this.removeAttribute("selected");
                 this.style.boxShadow = "";
               }
-              this.id = "d"+this.getAttribute("d")+"-h"+this.getAttribute("h");
               eval("scope."+attributes.callback)({
                 add  : (this.getAttribute("selected") != null),
                 area : document.getElementById(attributes.id).getAttribute("area"),

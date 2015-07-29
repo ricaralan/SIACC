@@ -6,6 +6,16 @@ var HorariosController = function(){
   self.connection = require("../connection/mysql_connection");
 };
 
+HorariosController.prototype.getHorarioUsuario = function(idUsuario, fechaInicio, fechaFin, callback) {
+  query = "SELECT hua_id,id_area,id_usuario,are_nombre,usu_nombre,usu_primer_apellido,"
+          + "usu_segundo_apellido,hua_id_materia,hua_dia,hua_hora,hua_fecha_inicio,"
+          + "hua_fecha_fin FROM (usuario INNER JOIN horario_area ON "
+          + "id_usuario=hua_id_usuario) INNER JOIN area ON usu_id_area=id_area "
+          + "WHERE hua_fecha_inicio>='" + fechaInicio + "' AND "
+          + "hua_fecha_fin<='" + fechaFin + "' AND hua_id_usuario='" + idUsuario + "';";
+  self.connection.query(query, callback);
+};
+
 /**
 * Horario de un usuario en una área... Sin asignación de una materia
 * Ejemplo: json = {

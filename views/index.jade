@@ -137,6 +137,7 @@ block content
                     input(type="date", ng-model="horarioAsignar.fecha_fin", class="datepicker", id="fecha_fin")
                   td
                     button(class="btn waves-effect white-text", ng-click="createHorario()") Crear
+                    button(ng-click="getHorarioUsuario()") cargarHorario
             div(ng-show="!asignarHorario")
               horario-semana(id="horarioArea", callback="calendar", area="0")
 

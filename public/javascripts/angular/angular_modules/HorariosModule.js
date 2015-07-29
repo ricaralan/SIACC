@@ -9,10 +9,36 @@ HorariosModule.controller("HorariosController", ["$scope", "$http", "$timeout", 
   $scope.asignarHorario = false;
   $scope.idArea = null;
   $scope.idUsuario = null;
+  $scope.horarioUsuario = [];
+  $scope.fechaInicio;
+  $scope.fechaFin;
 
   $scope.setDatosAsignarHorario = function() {
     $scope.asignarHorario = true;
     console.log($scope.horarios);
+  };
+
+  $scope.getHorarioUsuario = function() {
+    $scope.setFechas();
+    $scope.idUsuario = document.getElementById("horarioArea").getAttribute("usuario");
+    $http.get("/horarios/getHorario/"+$scope.idUsuario+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
+    .success(function(horarios) {
+      $scope.horarioUsuario = horarios;
+      $scope.setHorarioSemanaUsuario();
+    });
+  };
+
+  $scope.setHorarioSemanaUsuario = function() {
+    for(var i = 0; i < $scope.horarioUsuario.length; i++) {
+      id = "d"+$scope.horarioUsuario[i].hua_dia+"-h"+$scope.horarioUsuario[i].hua_hora;
+      console.log(id);
+      horaSemana = document.getElementById(id);
+      console.log(horaSemana);
+      label = document.createElement("label");
+      label.innerHTML = $scope.horarioUsuario[i].usu_nombre;
+      horaSemana.innerHTML = "";
+      horaSemana.appendChild(label);
+    }
   };
 
   $scope.calendar = function(horario) {
@@ -68,14 +94,11 @@ HorariosModule.controller("HorariosController", ["$scope", "$http", "$timeout", 
   };
 
   $scope.validarCampos = function() {
+    $scope.setFechas();
     return (
-      !$scope.isEmpty($scope.getValueElementById("fecha_inicio")) &&
-      !$scope.isEmpty($scope.getValueElementById("fecha_fin"))
+      !$scope.isEmpty($scope.fechaInicio) &&
+      !$scope.isEmpty($scope.fechaFin)
     );
-  };
-
-  $scope.getValueElementById = function(id) {
-    return document.getElementById(id).value;
   };
 
   $scope.isEmpty = function(value) {
@@ -90,13 +113,19 @@ HorariosModule.controller("HorariosController", ["$scope", "$http", "$timeout", 
         hua_hora : $scope.horarios[i].diaHora.h
       };
     }
+    $scope.setFechas();
     return {
       hua_id_usuario : $scope.idUsuario,
       hua_id_area    : $scope.idArea,
-      hua_fecha_inicio : document.getElementById("fecha_inicio").value,
-      hua_fecha_fin : document.getElementById("fecha_fin").value,
+      hua_fecha_inicio : $scope.fechaInicio,
+      hua_fecha_fin : $scope.fechaFin,
       diasHoras : diasHoras
     };
+  };
+
+  $scope.setFechas = function() {
+    $scope.fechaInicio = document.getElementById("fecha_inicio").value
+    $scope.fechaFin = document.getElementById("fecha_fin").value;
   };
 
   scope = $scope;
