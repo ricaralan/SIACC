@@ -7,7 +7,7 @@ block content
     app-for-users
       div(id="contentApp", hidden, ng-controller="MateriasController")
         a(class="waves-effect waves-light btn right" ng-click="setDatosCrearMateria()") Crear nueva
-        h3 Áreas
+        h3 Materias
         // MODAL OPCION MATERIAS
         div(id="modalOpcionesMaterias" class="modal")
           div(class="modal-content")
@@ -33,7 +33,26 @@ block content
             button(class=" waves-effect waves-green btn-flat", ng-click="opcionAccionMateria()", id="btnOpcionAreas") {{opcionMateria}}
 
         // SHOW MATERIAS
-        // TABLE
+        div(class="input-field col s6")
+          i(class="material-icons prefix") search
+          input(type="text", ng-model="x", ng-change="getMateriasByText(x)")
+          label(for="icon_prefix") Buscar materia
+        table(class="bordered")
+          tr
+            th NRC
+            th Nombre
+            th Descripción
+            th
+          tr(ng-repeat="materia in materias")
+            td {{materia.id_materia}}
+            td {{materia.mat_nombre}}
+            td {{materia.mat_descripcion}}
+            td
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteMateria(materia)") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarMateria(materia)") Editar
+        ul(class="pagination")
+          li(class="{{pag.selected?'active':'waves-effect'}}", ng-repeat="pag in pagination", ng-click="pag.paginate()")
+            a(href="#!") {{pag.number}}
 
   script(src="/socket.io/socket.io.js")
   //script(src="/javascripts/angular/angular_modules/AppModule.js")

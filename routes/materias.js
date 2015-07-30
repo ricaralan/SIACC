@@ -2,8 +2,29 @@ var express = require("express");
 var router  = express.Router();
 var controller = require("../database/controllers/MateriasController");
 
-router.get("/", function(req, res) {
-  res.send("materias");
+router.get("/getMateria/:idMateria", function(req, res) {
+  controller.getMateria(req.params.idMateria, function(err, materia) {
+    if(!err) {
+      res.send(materia);
+    }
+  });
+});
+
+router.get("/getMaterias/:inicio/:numRows", function(req, res) {
+  inicio = req.params.inicio;
+  numRows = req.params.numRows;
+  controller.getMateriasLimit(inicio, numRows, function(err, dataMaterias) {
+    res.send(dataMaterias);
+  });
+});
+
+router.get("/getMateriasByText/:text/:inicio/:numRows", function(req, res) {
+  inicio = req.params.inicio;
+  numRows = req.params.numRows;
+  text = req.params.text;
+  controller.getMateriasLimitByText(text, inicio, numRows, function(err, dataMaterias) {
+    res.send(dataMaterias);
+  });
 });
 
 router.post("/create", function(req, res) {
@@ -18,8 +39,8 @@ router.put("/update", function(req, res) {
   });
 });
 
-router.delete("/delete", function(req, res) {
-  controller.delete(req.body.id, function(err, data) {
+router.delete("/delete/:id_materia", function(req, res) {
+  controller.delete(req.params.id_materia, function(err, data) {
     res.send({success : !err && data.affectedRows == 1});
   });
 });

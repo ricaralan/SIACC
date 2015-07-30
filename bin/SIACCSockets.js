@@ -13,7 +13,7 @@ module.exports = function(server){
     });
 
     /**
-    * CRUD CARRERAS
+    * CHANGE ON CARRERAS
     **/
     /* Como es poco probable que haya más de 10 tipos de áreas... solo habrá un socket  */
     socket.on("changeOnCarreras", function(mensaje) {
@@ -21,7 +21,7 @@ module.exports = function(server){
     });
 
     /**
-    * CRUD TIPOS USUARIOS SOCKETS
+    * CHANGE ON TIPOS USUARIOS SOCKETS
     **/
     /* Como es poco probable que haya más de 10 tipos de usuarios... solo habrá un socket  */
     socket.on("changeOnTiposUsuarios", function(mensaje) {
@@ -29,14 +29,21 @@ module.exports = function(server){
     });
 
     /**
-    * CRUD ÁREAS SOCKETS
+    * CHANGE ON ÁREAS SOCKETS
     ***/
     socket.on("changeOnAreas", function(mensaje) {
       io.emit("changeOnAreas", mensaje);
     });
 
     /**
-    * ACTIONS USUARIO
+    * CHANGE ON MATERIAS SOCKETS
+    ***/
+    socket.on("changeOnMaterias", function(mensaje) {
+      io.emit("changeOnMaterias", mensaje);
+    });
+
+    /**
+    * CHANGE ON USUARIOS SOCKETS
     **/
     socket.on("changeOnUsuarios", function(mensaje) {
       io.emit("changeOnUsuarios", mensaje);
