@@ -16,6 +16,7 @@ var tipo_usuario = require('./routes/tipo_usuario');
 var areas = require('./routes/areas');
 var carreras = require('./routes/carreras');
 var horarios = require('./routes/horarios');
+var materias = require('./routes/materias');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use('/tipo_usuario', tipo_usuario);
 app.use('/areas', areas);
 app.use('/carreras', carreras);
 app.use('/horarios', horarios);
+app.use('/materias', materias);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
