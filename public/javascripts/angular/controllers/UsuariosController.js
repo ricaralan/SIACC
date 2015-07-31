@@ -234,7 +234,11 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "u
   * LISTEN SOCKETS
   **/
   $scope.socket.on("changeOnUsuarios", function(data) {
-    $scope.getUsuariosTypePagination();
+    if(util.empty($scope.wordSearch)) {
+      $scope.getUsuariosTypePagination();
+    } else {
+      $scope.findUsuariosTipoLimit($scope.wordSearch);
+    }
     $scope.getDetalleUsuario();
   });
 
