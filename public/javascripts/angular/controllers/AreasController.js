@@ -4,6 +4,7 @@ SIACCApp.controller("AreasController", function($scope, $http) {
   $scope.tiposAreas;
   $scope.formArea = {};
   $scope.sePuedeCrearArea = true;
+  $scope.opcAccion;
   $scope.socket = io();
 
   $scope.initTiposAreas = function() {
@@ -70,14 +71,14 @@ SIACCApp.controller("AreasController", function($scope, $http) {
   $scope.setDatosCrearArea = function() {
     $scope.formArea = {};
     $('#modalOpcionesArea').openModal();
-    document.getElementById("btnOpcionAreas").innerHTML = "CREAR";
+    $scope.opcAccion = "Crear";
     $scope.sePuedeCrearArea = true;
   };
 
   $scope.setDatosEditarArea = function(idArea) {
     $scope.formArea = $scope.getAreaById(idArea);
     $('#modalOpcionesArea').openModal();
-    document.getElementById("btnOpcionAreas").innerHTML = "EDITAR";
+    $scope.opcAccion = "Editar";
     $scope.sePuedeCrearArea = false;
   };
 

@@ -11,7 +11,7 @@ block content
         // MODAL OPCION AREA
         div(id="modalOpcionesArea" class="modal")
           div(class="modal-content")
-            h4 Crear área
+            h4 {{opcAccion}} área
             table
               tr
                 td
@@ -30,7 +30,7 @@ block content
                     label(for="area_name") Descripción del área
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-            button(class=" waves-effect waves-green btn-flat", ng-click="opcionArea()", id="btnOpcionAreas") Crear
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionArea()", id="btnOpcionAreas") {{opcAccion}}
 
         // SHOW AREAS
         div(class="row")

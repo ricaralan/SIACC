@@ -3,6 +3,7 @@ SIACCApp.controller("CarrerasController", ["$scope", "$http", function($scope, $
   $scope.formCarrera = {};
   $scope.crearCarrera = true;
   $scope.carreras = [];
+  $scope.opcAccion;
   $scope.socket = io();
 
   $scope.getCarreras = function() {
@@ -15,14 +16,14 @@ SIACCApp.controller("CarrerasController", ["$scope", "$http", function($scope, $
     $scope.crearCarrera = true;
     $scope.formCarrera = {};
     $("#modalOpcionesCarrera").openModal();
-    document.getElementById("btnOpcionCarrera").innerHTML = "CREAR";
+    $scope.opcAccion = "Crear";
   };
 
   $scope.setDatosEditarCarrera = function(carrera) {
     $scope.formCarrera = carrera;
     $scope.crearCarrera = false;
     $("#modalOpcionesCarrera").openModal();
-    document.getElementById("btnOpcionCarrera").innerHTML = "EDITAR";
+    $scope.opcAccion = "Editar";
   };
 
   $scope.opcionCarrera = function() {

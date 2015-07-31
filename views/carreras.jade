@@ -11,14 +11,14 @@ block content
         // MODAL OPCION CARRERAS
         div(id="modalOpcionesCarrera" class="modal")
           div(class="modal-content")
-            h4 Crear carrera
+            h4 {{opcAccion}} carrera
             div(class="input-field col s6")
               input(id="carrera_nombre", type="text", class="validate", ng-model="formCarrera.car_nombre")
               label(for="carrera_nombre") Nombre de la carrera
 
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-            button(class=" waves-effect waves-green btn-flat", ng-click="opcionCarrera()", id="btnOpcionCarrera") Crear
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionCarrera()", id="btnOpcionCarrera") {{opcAccion}}
 
         table(class="bordered")
           tr

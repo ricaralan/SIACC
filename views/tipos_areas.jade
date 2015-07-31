@@ -12,7 +12,7 @@ block content
         // MODAL OPCION TIPO AREA
         div(id="modalOpcionesTipoArea" class="modal")
           div(class="modal-content")
-            h4 Crear tipo de área
+            h4 {{opcAccion}} tipo de área
             table
               tr
                 td
@@ -31,7 +31,7 @@ block content
                       input(type="file", id="tipo_foto", file-model="formTipoArea.tipo_foto", accept="image/*")
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoArea()", id="btnOpcionTipoAreas") Crear
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoArea()", id="btnOpcionTipoAreas") {{opcAccion}}
 
 
         div(class="row")

@@ -4,6 +4,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
   $scope.todosLosPermisos = [];
   $scope.formTipoUsuario = {};
   $scope.crearTipoUsuario = true;
+  $scope.opcAccion;
   $scope.socket = io();
 
   $scope.getTiposUsuario = function() {
@@ -14,7 +15,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
 
   $scope.setDatosCrearTipoUsuario = function() {
     $scope.crearTipoUsuario = true;
-    document.getElementById("btnOpcionTipoUsuario").innerHTML = "CREAR";
+    $scope.opcAccion = "Crear"
     $scope.cleanFormTipoUsuario();
     $("#modalOpcionesTipoUsuario").openModal();
   };
@@ -78,7 +79,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
   $scope.setDatosEditarTipoUsuario = function(tipoUsuario) {
     $scope.crearTipoUsuario = false;
     $scope.cleanFormTipoUsuario();
-    document.getElementById("btnOpcionTipoUsuario").innerHTML = "EDITAR";
+    $scope.opcAccion = "Editar";
     $scope.formTipoUsuario = tipoUsuario;
     document.getElementById("check_asignar_carrera").checked = $scope.formTipoUsuario.tipo_asignar_carrera;
     document.getElementById("check_asignar_area").checked = $scope.formTipoUsuario.tipo_asignar_area;

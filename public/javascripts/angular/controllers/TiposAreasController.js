@@ -3,6 +3,7 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
   $scope.tiposDeAreas;
   $scope.formTipoArea = {};
   $scope.registrarTipoArea = true;
+  $scope.opcAccion;
   $scope.socket = io();
 
   $scope.getTiposAreas = function() {
@@ -15,7 +16,7 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
     $('#modalOpcionesTipoArea').openModal();
     $scope.formTipoArea = {};
     $scope.registrarTipoArea = true;
-    btnOpcionTipoAreas.innerHTML = "CREAR";
+    $scope.opcAccion = "Crear";
   };
 
   $scope.opcionTipoArea = function() {
@@ -72,7 +73,7 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
   $scope.setDatosEditarTipoArea = function(tipoArea) {
     $scope.formTipoArea = tipoArea;
     $scope.registrarTipoArea = false;
-    btnOpcionTipoAreas.innerHTML = "EDITAR";
+    $scope.opcAccion = "Editar";
     $('#modalOpcionesTipoArea').openModal();
   };
 

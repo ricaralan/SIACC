@@ -8,6 +8,7 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
   $scope.inicioMaterias = 0;
   $scope.numRowsMaterias = 10;
   $scope.pagination = [];
+  $scope.opcAccion;
   $scope.idMateriaEditar;
 
   $scope.getMaterias = function() {
