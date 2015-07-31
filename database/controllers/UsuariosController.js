@@ -14,10 +14,20 @@ UsuariosController.prototype.getDataUsuario = function(idUsuario, callback) {
   self.connection.query(query, callback);
 };
 
-UsuariosController.prototype.getUsuariosTipoLimit = function(idTipoUsuario, inicio, fin, callback) {
+UsuariosController.prototype.getUsuariosTipoLimit = function(idTipoUsuario, inicio, rows, callback) {
   // TODO DIVIDIR POR TIPOS DE USUARIO O VER COMO PAGINAR Ó AUTOMATIZAR...
   var query = "select id_usuario, usu_nombre, usu_primer_apellido, usu_segundo_apellido, usu_id_tipo_usuario, usu_foto from usuario "
-            + "where usu_id_tipo_usuario="+idTipoUsuario+" limit "+inicio+","+fin+";";
+            + "WHERE usu_id_tipo_usuario="+idTipoUsuario+" limit "+inicio+","+rows+";";
+  self.connection.query(query, callback);
+};
+
+UsuariosController.prototype.findUsuariosTipoLimit = function(word, idTipoUsuario, callback) {
+  // TODO DIVIDIR POR TIPOS DE USUARIO O VER COMO PAGINAR Ó AUTOMATIZAR...
+  var query = "select id_usuario, usu_nombre, usu_primer_apellido, usu_segundo_apellido,"
+            + "usu_id_tipo_usuario, usu_foto from usuario WHERE usu_id_tipo_usuario="
+            + idTipoUsuario + " AND (id_usuario LIKE '%" + word + "%' OR usu_nombre LIKE '%"
+            + word + "%' OR usu_primer_apellido LIKE '%" + word + "%' OR "
+            + "usu_segundo_apellido LIKE '%"+word+"%') limit 0,10;";
   self.connection.query(query, callback);
 };
 

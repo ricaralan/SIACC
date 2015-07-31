@@ -1,4 +1,4 @@
-SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", function($scope, $http, multipartForm) {
+SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "util", function($scope, $http, multipartForm, util) {
 
   $scope.tiposUsuario = [];
   $scope.tiposAreas = [];
@@ -48,9 +48,9 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", fu
   $scope.getUsuariosTypePagination = function() {
     tipo = $scope.getTipeUserPagination();
     URI = "/usuarios/getUsuariosTipoLimit/"+tipo.id_tipo_usuario+"/"+tipo.start+"/"+tipo.end;
-    $http.get(URI).success(function(data) {
+    $http.get(URI).success(function(usuarios) {
       // TIPOS DE USUARIO
-      $scope.usuarios = data;
+      $scope.usuarios = usuarios;
       document.getElementById("caja2").setAttribute("hidden", "true");
       // GET COUNT USUARIOS TYPE
       $http.get("/usuarios/countUsuariosTipo/"+tipo.id_tipo_usuario).success(function(count) {
@@ -63,7 +63,6 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", fu
             selected : tipo.start == i*10,
             funcion : function() {
               tipo.start = (this.number-1)*10;
-              tipo.end = this.number*10;
               $scope.setTypeUserPagination(tipo);
               $scope.getUsuariosTypePagination();
             }
@@ -71,6 +70,19 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", fu
         }
       });
     });
+  };
+
+  $scope.findUsuariosTipoLimit = function(word) {
+    if(!util.empty(word)){
+      tipo = $scope.getTipeUserPagination();
+      $http.get("/usuarios/findUsuariosTipoLimit/"+encodeURIComponent(word)+"/"
+      +tipo.id_tipo_usuario).success(function(usuarios) {
+          $scope.arrayPagination = [];
+          $scope.usuarios = usuarios;
+      });
+    } else {
+      $scope.getUsuariosTypePagination();
+    }
   };
 
   $scope.setDatosEditar = function() {

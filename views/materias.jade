@@ -1,0 +1,62 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp")
+    app-for-users
+      div(id="contentApp", hidden, ng-controller="MateriasController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearMateria()") Crear nueva
+        h3 Materias
+        // MODAL OPCION MATERIAS
+        div(id="modalOpcionesMaterias" class="modal")
+          div(class="modal-content")
+            h4 {{opcionMateria}} área
+            table
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="mat_id", type="text", class="validate", ng-model="formMateria.id_materia")
+                    label(for="mat_id") NRC de la materia
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="mat_name", type="text", class="validate", ng-model="formMateria.mat_nombre")
+                    label(for="mat_name") Nombre de la materia
+              tr
+                td
+                  div(class="input-field col s6")
+                    textarea(id="mat_descripcion", class="materialize-textarea", class="validate", ng-model="formMateria.mat_descripcion")
+                    label(for="mat_descripcion") Descripción del materia
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionAccionMateria()", id="btnOpcionAreas") {{opcionMateria}}
+
+        // SHOW MATERIAS
+        div(class="input-field col s6")
+          i(class="material-icons prefix") search
+          input(type="text", ng-model="x", ng-change="getMateriasByText(x)")
+          label(for="icon_prefix") Buscar materia
+        table(class="bordered")
+          tr
+            th NRC
+            th Nombre
+            th Descripción
+            th
+          tr(ng-repeat="materia in materias")
+            td {{materia.id_materia}}
+            td {{materia.mat_nombre}}
+            td {{materia.mat_descripcion}}
+            td
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteMateria(materia)") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarMateria(materia)") Editar
+        ul(class="pagination")
+          li(class="{{pag.selected?'active':'waves-effect'}}", ng-repeat="pag in pagination", ng-click="pag.paginate()")
+            a(href="#!") {{pag.number}}
+
+  script(src="/socket.io/socket.io.js")
+  //script(src="/javascripts/angular/angular_modules/AppModule.js")
+  //script(src="/javascripts/angular/angular_modules/AreasModule.js")
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/services/util.js")
+  script(src="/javascripts/angular/controllers/MateriasController.js")

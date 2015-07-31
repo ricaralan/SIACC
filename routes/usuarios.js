@@ -19,11 +19,24 @@ router.get("/getDataUsuario/:idUsuario", function(req, res) {
   });
 });
 
-router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:fin", function(req, res) {
+router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:rows", function(req, res) {
   var idTipoUsuario = req.params.idTipoUsuario;
   var inicio = req.params.inicio;
-  var fin = req.params.fin;
-  controller.getUsuariosTipoLimit(idTipoUsuario, inicio, fin, function(err, usuarios) {
+  var rows = req.params.rows;
+  controller.getUsuariosTipoLimit(idTipoUsuario, inicio, rows, function(err, usuarios) {
+    if(!err) {
+      res.send(usuarios);
+    } else {
+      res.send(null);
+    }
+  });
+});
+
+router.get("/findUsuariosTipoLimit/:word/:idTipoUsuario/", function(req, res) {
+  var word = req.params.word;
+  var idTipoUsuario = req.params.idTipoUsuario;
+  var inicio = req.params.inicio;
+  controller.findUsuariosTipoLimit(word, idTipoUsuario, function(err, usuarios) {
     if(!err) {
       res.send(usuarios);
     } else {
