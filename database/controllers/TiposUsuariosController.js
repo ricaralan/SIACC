@@ -12,38 +12,38 @@ TiposUsuariosController.prototype.getTiposUsuario = function(callback) {
     ], {}, callback);
 };
 
-TiposUsuariosController.prototype.getPermisosPorModuloTipoUsuario = function(idTipoUsuario, callback) {
-  self.abstractModel.select("permiso_modulo_usuario",[
-    "moa_id_tipo_usuario", "moa_area_controla_mod", "moa_id_modulo"
+TiposUsuariosController.prototype.getPermisosTipoUsuario = function(idTipoUsuario, callback) {
+  self.abstractModel.select("permiso_usuario",[
+    "moa_id_tipo_usuario", "moa_area_controla_mod", "moa_id_permiso"
     ], { moa_id_tipo_usuario : idTipoUsuario }, callback);
 };
 
-TiposUsuariosController.prototype.create = function(jsonDataTipoUsuario, jsonPermisosPorModulo, callback) {
+TiposUsuariosController.prototype.create = function(jsonDataTipoUsuario, jsonPermisos, callback) {
   self.abstractModel.insert(self.table, jsonDataTipoUsuario, function(err, data) {
     if(!err) {
-      self.createPermisosPorModulo(data.insertId, jsonPermisosPorModulo);
+      self.createPermisosPorModulo(data.insertId, jsonPermisos);
       // Esto tiene que arrojar el estado completo de la inserción... El error, etc...
       callback({success : true});
     }
   });
 };
 
-TiposUsuariosController.prototype.update = function(jsonDataTipoUsuario, jsonPermisosPorModulo, callback) {
+TiposUsuariosController.prototype.update = function(jsonDataTipoUsuario, jsonPermisos, callback) {
     // UPDATE datos del tipo de usuario
     self.abstractModel.update(self.table, jsonDataTipoUsuario, { id_tipo_usuario : jsonDataTipoUsuario.id_tipo_usuario }, callback);
     // UPDATE permisos del tipo de usuario
-    for(var i = 0; i < jsonPermisosPorModulo.length; i++) {
-      self.abstractModel.update("permiso_modulo_usuario", {
-        moa_area_controla_mod : jsonPermisosPorModulo[i].moa_area_controla_mod
+    for(var i = 0; i < jsonPermisos.length; i++) {
+      self.abstractModel.update("permiso_usuario", {
+        moa_area_controla_mod : jsonPermisos[i].moa_area_controla_mod
       }, {
-        moa_id_modulo : jsonPermisosPorModulo[i].moa_id_modulo,
+        moa_id_permiso : jsonPermisos[i].moa_id_permiso,
         moa_id_tipo_usuario : jsonDataTipoUsuario.id_tipo_usuario
       }, function(err, data){ });
     }
 };
 
 TiposUsuariosController.prototype.delete = function(id_tipo_usuario, callback) {
-  self.abstractModel.delete("permiso_modulo_usuario", {moa_id_tipo_usuario : id_tipo_usuario}, function(err, data) {
+  self.abstractModel.delete("permiso_usuario", {moa_id_tipo_usuario : id_tipo_usuario}, function(err, data) {
     if(!err) {
       self.abstractModel.delete(self.table, { id_tipo_usuario : id_tipo_usuario }, callback);
     }
@@ -52,8 +52,8 @@ TiposUsuariosController.prototype.delete = function(id_tipo_usuario, callback) {
 
 TiposUsuariosController.prototype.createPermisosPorModulo = function(idTipoUsuario, jsonPermisos) {
   for(var i = 0; i < jsonPermisos.length; i++) {
-    self.abstractModel.insert("permiso_modulo_usuario", {
-      moa_id_modulo : jsonPermisos[i].moa_id_modulo,
+    self.abstractModel.insert("permiso_usuario", {
+      moa_id_permiso : jsonPermisos[i].moa_id_permiso,
       moa_id_tipo_usuario : idTipoUsuario,
       moa_area_controla_mod : jsonPermisos[i].moa_area_controla_mod
     }, function(err, data) { });

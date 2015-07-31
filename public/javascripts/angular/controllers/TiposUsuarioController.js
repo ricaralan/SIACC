@@ -1,7 +1,7 @@
 SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scope, $http) {
 
   $scope.tiposUsuario = [];
-  $scope.todosLosModulos = [];
+  $scope.todosLosPermisos = [];
   $scope.formTipoUsuario = {};
   $scope.crearTipoUsuario = true;
   $scope.socket = io();
@@ -19,9 +19,9 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
     $("#modalOpcionesTipoUsuario").openModal();
   };
 
-  $scope.setTodosLosModulos = function() {
-    $http.get("/modules/getModules").success(function(modulos) {
-      $scope.todosLosModulos = modulos;
+  $scope.setTodosLosPermisos = function() {
+    $http.get("/permisos/getPermisos").success(function(permisos) {
+      $scope.todosLosPermisos = permisos;
     });
   };
 
@@ -33,9 +33,9 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
       tipo_asignar_carrera : document.getElementById("check_asignar_carrera").checked,
       tipo_asignar_area : document.getElementById("check_asignar_area").checked
     }));
-    jsonPermisosPorModulo = encodeURIComponent(JSON.stringify($scope.getPermisosPorModulo()));
+    jsonPermisos = encodeURIComponent(JSON.stringify($scope.getPermisosSeleccionados()));
     if($scope.crearTipoUsuario) {
-      $http.post("/tipo_usuario/create/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
+      $http.post("/tipo_usuario/create/"+json+"/"+jsonPermisos).success(function(data) {
         if(data.success) {
           $("#modalOpcionesTipoUsuario").closeModal();
           $scope.socket.emit("changeOnTiposUsuarios", {});
@@ -43,7 +43,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
         }
       });
     } else {
-      $http.put("/tipo_usuario/update/"+json+"/"+jsonPermisosPorModulo).success(function(data) {
+      $http.put("/tipo_usuario/update/"+json+"/"+jsonPermisos).success(function(data) {
         $("#modalOpcionesTipoUsuario").closeModal();
         $scope.socket.emit("changeOnTiposUsuarios", {});
         Materialize.toast("El tipo de usuario se editó correctamente!", 4000);
@@ -51,12 +51,12 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
     }
   };
 
-  $scope.getPermisosPorModulo = function() {
+  $scope.getPermisosSeleccionados = function() {
     checks = document.getElementsByClassName("checksOpcUsuario");
     var json = [];
     for(var i = 0; i < checks.length; i++) {
       json.push({
-        moa_id_modulo : checks[i].getAttribute("modulo"),
+        moa_id_permiso : checks[i].getAttribute("permiso"),
         moa_area_controla_mod : checks[i].checked
       });
     }
@@ -82,7 +82,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
     $scope.formTipoUsuario = tipoUsuario;
     document.getElementById("check_asignar_carrera").checked = $scope.formTipoUsuario.tipo_asignar_carrera;
     document.getElementById("check_asignar_area").checked = $scope.formTipoUsuario.tipo_asignar_area;
-    $http.get("/tipo_usuario/getPermisosPorModuloTipoUsuario/"+tipoUsuario.id_tipo_usuario)
+    $http.get("/tipo_usuario/getPermisosTipoUsuario/"+tipoUsuario.id_tipo_usuario)
     .success(function(data) {
       $scope.setSelectedPermisosTiposUsuario(data);
     });
@@ -91,7 +91,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
 
   $scope.setSelectedPermisosTiposUsuario = function(permisos) {
     for(var i = 0; i < permisos.length; i++) {
-      check = document.getElementById("check"+permisos[i].moa_id_modulo);
+      check = document.getElementById("check"+permisos[i].moa_id_permiso);
       check.checked = permisos[i].moa_area_controla_mod;
     }
   };
@@ -109,7 +109,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
     }
   };
 
-  $scope.setTodosLosModulos();
+  $scope.setTodosLosPermisos();
   $scope.getTiposUsuario();
 
   /**

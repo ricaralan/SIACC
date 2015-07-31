@@ -13,16 +13,16 @@
   * - Control de accesos
   * - Mesa de ayuda
   */
-  CREATE TABLE modulo(
-  id_modulo VARCHAR(25) NOT NULL PRIMARY KEY,
-  mod_nombre VARCHAR(80),
+  CREATE TABLE permiso(
+  id_permiso VARCHAR(25) NOT NULL PRIMARY KEY,
+  per_nombre VARCHAR(80),
   /**
   * TIPO (1,2,...)
   * la funcionalidad cambiara dependiendo el tipo dicha lógica se encontrará
   * implementada en el código...
   */
-  mod_tipo int(1),
-  mod_descripcion VARCHAR(200)
+  per_tipo int(1),
+  per_descripcion VARCHAR(200)
   );
 
   /**
@@ -58,12 +58,12 @@
   /**
   * Esta tabla guardará los modulos que puede ver un tipo de usuario
   */
-  CREATE TABLE permiso_modulo_usuario(
-  moa_id_modulo VARCHAR(25) NOT NULL,
+  CREATE TABLE permiso_usuario(
+  moa_id_permiso VARCHAR(25) NOT NULL,
   moa_id_tipo_usuario INT NOT NULL,
   moa_area_controla_mod BOOLEAN NOT NULL,
-  PRIMARY KEY(moa_id_modulo, moa_id_tipo_usuario),
-  FOREIGN KEY(moa_id_modulo) REFERENCES modulo(id_modulo),
+  PRIMARY KEY(moa_id_permiso, moa_id_tipo_usuario),
+  FOREIGN KEY(moa_id_permiso) REFERENCES permiso(id_permiso),
   FOREIGN KEY(moa_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario)
   );
 
@@ -182,6 +182,16 @@
   FOREIGN KEY (aa_id_usuario) REFERENCES usuario (id_usuario)
   );
 
+
+  /**
+  * INSERTS CARRERAS
+  **/
+  INSERT INTO carrera(car_nombre) VALUES("Sistemas computacionales administrativos");
+  INSERT INTO carrera(car_nombre) VALUES("Contaduría");
+  INSERT INTO carrera(car_nombre) VALUES("Administración");
+  INSERT INTO carrera(car_nombre) VALUES("Gestión");
+  INSERT INTO carrera(car_nombre) VALUES("Otro");
+
   /**
   * INSERTS TIPOS DE USUARIO(CATALOGO)
   */
@@ -194,27 +204,107 @@
   INSERT INTO tipo_usuario(tipo_nombre, tipo_asignar_carrera) VALUES("Alumno", true);
 
   /**
-  * INSERTS CARRERAS
-  **/
-  INSERT INTO carrera(car_nombre) VALUES("Sistemas computacionales administrativos");
-  INSERT INTO carrera(car_nombre) VALUES("Contaduría");
-  INSERT INTO carrera(car_nombre) VALUES("Administración");
-  INSERT INTO carrera(car_nombre) VALUES("Gestión");
-  INSERT INTO carrera(car_nombre) VALUES("Otro");
+  * INSERTS permisos
+  */
+  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("ver", "Vizualizar", "Este permiso permite vizualizar en los modulos");
+  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("crear", "Creación", "Este permiso permite crear en los modulos");
+  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("editar", "Editar", "Este permiso permite al usuario poder editar contenido en los modulos");
+  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("eliminar", "Eliminaciones", "Este permiso le permite al usuario poder eliminar en los modulos");
+
+  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("usuarios", "Control de usuarios", "Este módulo da acceso al control de usuarios, pero los tipos de usuarios permitidos se dan en otra tabla...");
+  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("inventarios", "Control de inventarios", "Este módulo controla los inventarios de el área");
+  /* Control de acceso de tipo 1: controla solo el acceso a un área */
+  INSERT INTO permiso(id_permiso, per_nombre, per_tipo, per_descripcion) VALUES("acceso_simple", "Control de acceso de usuarios", 1, "Control de acceso de tipo 1: controla solo el acceso a un área");
+  /* Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo  */
+  INSERT INTO permiso(id_permiso, per_nombre, per_tipo, per_descripcion) VALUES("acceso_equipo_computo", "Control de acceso de usuarios y uso de equipo de computo", 2, "Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo");
+  /* Modulo de mesa de ayuda de tipo 1: Es control en modo administrador */
+  INSERT INTO permiso(id_permiso, per_nombre, per_tipo, per_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda en modo administrador", 1, "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
+  /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
+  INSERT INTO permiso(id_permiso, per_nombre, per_tipo, per_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda en modo solicitante", 2, "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
+  /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
+  INSERT INTO permiso(id_permiso, per_nombre, per_tipo, per_descripcion) VALUES("system_config", "Configuraciones que mueven el sistema", 2, "Configuraciones de todo el sistema");
 
   /**
-  * INSERT modulos de las áreas
+  * INSERTS PERMISOS POR TIPO DE USUARIO
   */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_descripcion) VALUES("usuarios", "Control de usuarios", "Este módulo da acceso al control de usuarios, pero los tipos de usuarios permitidos se dan en otra tabla...");
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_descripcion) VALUES("inventarios", "Control de inventarios", "Este módulo controla los inventarios de el área");
-  /* Control de acceso de tipo 1: controla solo el acceso a un área */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("acceso_simple", "Control de acceso de usuarios", 1, "Control de acceso de tipo 1: controla solo el acceso a un área");
-  /* Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo  */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("acceso_equipo_computo", "Control de acceso de usuarios y uso de equipo de computo", 2, "Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo");
-  /* Modulo de mesa de ayuda de tipo 1: Es control en modo administrador */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda en modo administrador", 1, "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
-  /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
-  INSERT INTO modulo(id_modulo, mod_nombre, mod_tipo, mod_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda en modo solicitante", 2, "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
+  /* Permisos del coordinador */
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("ver", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 1, true);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_equipo_computo", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_administrador", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_solicitante", 1, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("system_config", 1, true);
+  /* Permisos del encargado de área */
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("ver", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 2, true);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_equipo_computo", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_administrador", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_solicitante", 2, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("system_config", 2, false);
+  /* Permisos del maestro */
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("ver", 3, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 3, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 3, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 3, true);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 3, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 3, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 3, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_equipo_computo", 3, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_administrador", 3, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_solicitante", 3, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("system_config", 3, false);
+  /* Permisos por directivo */
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("ver", 4, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 4, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 4, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 4, false);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 4, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 4, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 4, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_equipo_computo", 4, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_administrador", 4, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_solicitante", 4, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("system_config", 4, false);
+  /* Permisos por servicio social */
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("ver", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 5, false);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_equipo_computo", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_administrador", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_solicitante", 5, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("system_config", 5, false);
+  /* Permisos por Alumno */
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("ver", 6, true);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 6, false);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_equipo_computo", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_administrador", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("mesa_ayuda_solicitante", 6, false);
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("system_config", 6, false);
 
 
 
