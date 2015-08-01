@@ -31,6 +31,7 @@ block content
                     div(class="circle-clipper left")
                       div(class="circle")
               div(style="height:300px;overflow-y:auto;")
+                h5(ng-show="usuarios.length == 0") No hay usuarios por mostrar
                 card-line-user(ng-repeat="usuario in usuarios", user="{{usuario}}", ng-click="setIdUsuarioDetalle(usuario.id_usuario);getDetalleUsuario();")
               ul(class="pagination")
                 li(class="waves-effect {{pagination.selected?'active':''}}", ng-repeat="pagination in arrayPagination", ng-click="pagination.funcion()")
@@ -146,12 +147,66 @@ block content
                         i {{horarioUsuario.length}} hrs.
             div(ng-show="!asignarHorario")
               horario-semana(id="horarioArea", callback="calendar", area="0")
+      div(ng-controller="MateriasController")
+        div(class="modal", id="modalMateriasUsuario")
+          div(class="modal-content")
+            h4 Materias
+            p(class="divider")
+            div(ng-show="!crearMateria")
+              div(class="input-field")
+                i(class="material-icons prefix") search
+                input(type="text", id="inputSearchMateriaUser", ng-model="wordSearchMatUser", ng-change="getMateriasUsuarioByText(wordSearchMatUser)")
+                label(for="inputSearchMateriaUser") Buscar usuario
+              table(class="bordered")
+                tr
+                  th NRC
+                  th Materia
+                  th Descripción
+                  th
+                tr(ng-show="materiasUsuario.length == 0 && (wordSearchMatUser.length == 0 || !wordSearchMatUser)")
+                  td(colspan="4") No hay materias que mostrar
+                tr(ng-show="materiasUsuario.length == 0 && wordSearchMatUser.length > 0")
+                  td(colspan="4") No hay materias que coincidan...
+                    a(href="#!", class="btn waves-effect white-text", ng-click="crearMateria=true;formMateria.id_materia=wordSearchMatUser;formMateria.mat_nombre=wordSearchMatUser;") Crear {{wordSearchMatUser}}
+                tr(ng-repeat="materia in materiasUsuario")
+                  td {{materia.id_materia}}
+                  td {{materia.mat_nombre}}
+                  td {{materia.mat_descripcion}}
+                  td
+
+                    a(href="#!", class="waves-effect", ng-click="asignarMateriaUsuario(materia)", title="Asignar", ng-show="materia.id_usuario == null")
+                        i(class="material-icons") add
+                    a(href="#!", class="waves-effect", ng-click="deleteMateriaUsuario(materia)", title="Eliminar asignación", ng-show="materia.id_usuario != null")
+                        i(class="material-icons") delete
+              ul(class="pagination")
+                li(class="{{pag.selected?'active':'waves-effect'}}", ng-repeat="pag in pagination", ng-click="pag.paginate()")
+                  a(href="#!") {{pag.number}}
+            div(ng-show="crearMateria")
+              table
+                tr
+                  td
+                    div(class="input-field col s6")
+                      input(id="mat_id", type="text", class="validate", ng-model="formMateria.id_materia")
+                      label(for="mat_id") NRC de la materia
+                tr
+                  td
+                    div(class="input-field col s6")
+                      input(id="mat_name", type="text", class="validate", ng-model="formMateria.mat_nombre")
+                      label(for="mat_name") Nombre de la materia
+                tr
+                  td
+                    div(class="input-field col s6")
+                      textarea(id="mat_descripcion", class="materialize-textarea", class="validate", ng-model="formMateria.mat_descripcion")
+                      label(for="mat_descripcion") Descripción del materia
+              a(href="#!" class="waves-effect btn-flat right", ng-click="crearMateria=false") Cancelar
+              button(class=" waves-effect waves-green btn-flat right", ng-click="opcionAccionMateria()", id="btnOpcionAreas") Crear
+              br
+
 
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
   script(src="/javascripts/angular/directives/fileModel.js")
-  script(src="/javascripts/angular/factories/scopes.js")
   script(src="/javascripts/angular/directives/horarioSemana.js")
   script(src="/javascripts/angular/directives/cardLineUser.js")
   script(src="/javascripts/angular/directives/cardDetailUser.js")
@@ -159,3 +214,4 @@ block content
   script(src="/javascripts/angular/services/multipartForm.js")
   script(src="/javascripts/angular/controllers/UsuariosController.js")
   script(src="/javascripts/angular/controllers/HorariosController.js")
+  script(src="/javascripts/angular/controllers/MateriasController.js")

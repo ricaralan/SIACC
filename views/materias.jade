@@ -5,7 +5,7 @@ block content
       div(class="indeterminate")
   div(ng-app="SIACCApp")
     app-for-users
-      div(id="contentApp", hidden, ng-controller="MateriasController")
+      div(id="contentApp", hidden, ng-controller="MateriasController", ng-init="getMaterias()")
         a(class="waves-effect waves-light btn right" ng-click="setDatosCrearMateria()") Crear nueva
         h3 Materias
         // MODAL OPCION MATERIAS
@@ -43,6 +43,8 @@ block content
             th Nombre
             th Descripción
             th
+          tr(ng-show="materiasUsuario.length == 0")
+            td(colspan="4") No hay materias asignadas
           tr(ng-repeat="materia in materias")
             td {{materia.id_materia}}
             td {{materia.mat_nombre}}
@@ -55,8 +57,6 @@ block content
             a(href="#!") {{pag.number}}
 
   script(src="/socket.io/socket.io.js")
-  //script(src="/javascripts/angular/angular_modules/AppModule.js")
-  //script(src="/javascripts/angular/angular_modules/AreasModule.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
   script(src="/javascripts/angular/services/util.js")
   script(src="/javascripts/angular/controllers/MateriasController.js")

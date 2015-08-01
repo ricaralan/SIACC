@@ -18,6 +18,27 @@ router.get("/getMaterias/:inicio/:numRows", function(req, res) {
   });
 });
 
+router.get("/getMateriasUsuario/:idUsuario/:inicio/:numRows", function(req, res) {
+  idUsuario = req.params.idUsuario;
+  inicio = req.params.inicio;
+  numRows = req.params.numRows;
+  controller.getMateriasUsuarioLimit(idUsuario, inicio, numRows, function(err, data) {
+    res.send(data);
+  });
+});
+
+router.get("/getMateriasUsuarioByText/:text/:idUsuario/:inicio/:numRows", function(req, res) {
+  text = req.params.text;
+  idUsuario = req.params.idUsuario;
+  inicio = req.params.inicio;
+  numRows = req.params.numRows;
+  controller.getMateriasUsuarioLimitByText(text, idUsuario, inicio, numRows, function(err, data) {
+    res.send(data);
+  });
+});
+
+
+
 router.get("/getMateriasByText/:text/:inicio/:numRows", function(req, res) {
   inicio = req.params.inicio;
   numRows = req.params.numRows;
@@ -33,6 +54,14 @@ router.post("/create", function(req, res) {
   });
 });
 
+router.post("/asignarMateriaUsuario/:idUsuario/:idMateria", function(req, res) {
+  idUsuario = req.params.idUsuario;
+  idMateria = req.params.idMateria;
+  controller.asignarMateriaUsuario(idUsuario, idMateria, function(err, data) {
+    res.send({success : !err && data.affectedRows == 1});
+  });
+});
+
 router.put("/update", function(req, res) {
   controller.update(req.body.jsonData, req.body.id, function(err, data) {
     res.send({success : !err && data.affectedRows == 1});
@@ -42,6 +71,14 @@ router.put("/update", function(req, res) {
 router.delete("/delete/:id_materia", function(req, res) {
   controller.delete(req.params.id_materia, function(err, data) {
     res.send({success : !err && data.affectedRows == 1});
+  });
+});
+
+router.delete("/deleteAsignacionUsuario/:idUsuario/:idMateria", function(req, res) {
+  idUsuario = req.params.idUsuario;
+  idMateria = req.params.idMateria;
+  controller.deleteAsignacionUsuario(idUsuario, idMateria, function(err, data) {
+    res.send( { success : !err && data.affectedRows == 1 } )
   });
 });
 

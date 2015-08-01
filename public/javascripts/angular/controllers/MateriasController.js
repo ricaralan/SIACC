@@ -4,21 +4,36 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
   scopes.set("MateriasController", $scope);
 
   $scope.opcionMateria;
-  $scope.crearMateria;
+  $scope.crearMateria = false;
   $scope.formMateria = {};
   $scope.materias;
   $scope.socket = io();
   $scope.inicioMaterias = 0;
+  $scope.inicioMateriasUsuario = 0;
   $scope.numRowsMaterias = 10;
   $scope.pagination = [];
   $scope.opcAccion;
   $scope.idMateriaEditar;
+  $scope.materias = [];
+  $scope.materiasUsuario = [];
+  $scope.idUsuario;
 
   $scope.getMaterias = function() {
     $http.get("/materias/getMaterias/"+$scope.inicioMaterias+"/"+$scope.numRowsMaterias)
       .success(function(dataMaterias) {
       $scope.materias = dataMaterias.materias;
-      $scope.initPaginationMaterias(dataMaterias.countMaterias);
+      $scope.initPaginationMaterias(dataMaterias.countMaterias, $scope.getMaterias);
+    });
+  };
+
+  $scope.getMateriasUsuario = function(idUsuario) {
+    if(idUsuario){
+      $scope.idUsuario = idUsuario;
+    }
+    $http.get("/materias/getMateriasUsuario/" + $scope.idUsuario + "/" + $scope.inicioMateriasUsuario
+      +"/"+$scope.numRowsMaterias).success(function(dataMaterias) {
+        $scope.materiasUsuario = dataMaterias.materias;
+        $scope.initPaginationMaterias(dataMaterias.countMaterias, $scope.getMateriasUsuario);
     });
   };
 
@@ -36,7 +51,21 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
     }
   };
 
-  $scope.initPaginationMaterias = function(countMaterias) {
+  $scope.getMateriasUsuarioByText = function(text) {
+    if(!util.empty(text)){
+      $http.get("/materias/getMateriasUsuarioByText/"+text+"/"+$scope.idUsuario+"/0/10")
+        .success(function(materias) {
+        $scope.materiasUsuario = materias;
+        $timeout(function() {
+          $scope.pagination = [];
+        }, 0);
+      });
+    } else {
+      $scope.getMateriasUsuario();
+    }
+  };
+
+  $scope.initPaginationMaterias = function(countMaterias, callbackPaginate) {
     pagination = [];
     for(var i = 0; i <= parseInt(countMaterias/$scope.numRowsMaterias); i++) {
       pagination[i] = {
@@ -44,7 +73,7 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
         selected : (i * $scope.numRowsMaterias) == $scope.inicioMaterias,
         paginate : function() {
           $scope.inicioMaterias = (this.number - 1) * $scope.numRowsMaterias;
-          $scope.getMaterias();
+          callbackPaginate();
         }
       };
     }
@@ -80,6 +109,7 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
               if(data.success) {
                 $scope.formMateria = {};
                 Materialize.toast("Materia creada correctamente!", 3000);
+                $scope.crearMateria = false;
                 $scope.socket.emit("changeOnMaterias", {});
                 $("#modalOpcionesMaterias").closeModal();
               } else {
@@ -124,18 +154,45 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
     }
   };
 
+  $scope.deleteMateriaUsuario = function(materia) {
+    if(confirm("¿Esta seguro de eliminar la asignación de materia?")) {
+      $http.delete("/materias/deleteAsignacionUsuario/"+materia.id_usuario+"/"+materia.id_materia)
+        .success(function(data) {
+          if(data.success) {
+            Materialize.toast("Operación realizada correctamente!", 3000);
+            $scope.socket.emit("changeOnMaterias", {});
+          } else {
+            Materialize.toast("Ocurrio un error", 3000);
+          }
+      });
+    }
+  };
+
+  $scope.asignarMateriaUsuario = function(materia) {
+    $http.post("/materias/asignarMateriaUsuario/"+$scope.idUsuario+"/"+materia.id_materia)
+    .success(function(data) {
+      if(data.success) {
+        $scope.socket.emit("changeOnMaterias", {});
+        Materialize.toast("La materia se asignó con exito!", 2000);
+      }
+    });
+  };
+
   $scope.validarCampos = function() {
     return !util.empty($scope.formMateria.mat_nombre) &&
            !util.empty($scope.formMateria.id_materia);
   };
-
-  $scope.getMaterias();
 
   /**
   * LISTEN SOCKETS
   */
   $scope.socket.on("changeOnMaterias", function(data) {
     $scope.getMaterias();
+    if(util.empty($scope.wordSearchMatUser)) {
+      $scope.getMateriasUsuario();
+    } else {
+      $scope.getMateriasUsuarioByText($scope.wordSearchMatUser);
+    }
   });
 
 }]);

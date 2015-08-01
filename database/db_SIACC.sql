@@ -91,6 +91,13 @@
     FOREIGN KEY(usu_id_carrera) REFERENCES carrera(id_carrera)
   );
 
+  CREATE TABLE materia(
+    /* id_materia == NRC */
+    id_materia VARCHAR(10) NOT NULL PRIMARY KEY,
+    mat_nombre VARCHAR(40) NOT NULL,
+    mat_descripcion VARCHAR(200)
+  );
+
   /**
   * Esta tabla almacenará las relaciones entre los usuarios y las áreas, lo que
   * permite saber a que área pertenece un usuario
@@ -103,11 +110,18 @@
     FOREIGN KEY(usa_id_usuario) REFERENCES usuario(id_usuario)
   );
 
-  CREATE TABLE materia(
-    /* id_materia == NRC */
-    id_materia VARCHAR(10) NOT NULL PRIMARY KEY,
-    mat_nombre VARCHAR(40) NOT NULL,
-    mat_descripcion VARCHAR(200)
+  /**
+  * Esta tabla ayuda a saber las materias que imparte un usuario
+  */
+  CREATE TABLE usuario_materia(
+    uma_id_usuario VARCHAR(10) NOT NULL,
+    uma_id_materia VARCHAR(10) NOT NULL,
+    uma_status TINYINT DEFAULT 1,
+    uma_fecha_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    uma_fecha_fin TIMESTAMP,
+    PRIMARY KEY(uma_id_usuario, uma_id_materia),
+    FOREIGN KEY(uma_id_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY(uma_id_materia) REFERENCES materia(id_materia)
   );
 
   /**
