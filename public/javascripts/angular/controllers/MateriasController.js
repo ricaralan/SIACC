@@ -1,4 +1,7 @@
-SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util", function($scope, $http, $timeout, util) {
+SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util",
+  "scopes", function($scope, $http, $timeout, util, scopes) {
+
+  scopes.set("MateriasController", $scope);
 
   $scope.opcionMateria;
   $scope.crearMateria;

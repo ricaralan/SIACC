@@ -1,4 +1,7 @@
-SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "util", function($scope, $http, multipartForm, util) {
+SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
+  "util", "scopes", function($scope, $http, multipartForm, util, scopes) {
+
+  scopes.set("UsuariosController", $scope);
 
   $scope.tiposUsuario = [];
   $scope.tiposAreas = [];

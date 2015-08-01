@@ -1,4 +1,6 @@
-SIACCApp.controller("CarrerasController", ["$scope", "$http", function($scope, $http) {
+SIACCApp.controller("CarrerasController", ["$scope", "$http", "scopes", function($scope, $http, scopes) {
+
+  scopes.set("CarrerasController", $scope);
 
   $scope.formCarrera = {};
   $scope.crearCarrera = true;

@@ -1,4 +1,6 @@
-SIACCApp.controller("AreasController", function($scope, $http) {
+SIACCApp.controller("AreasController", ["$scope", "$http", "scopes" function($scope, $http, scopes) {
+
+  scopes.set("AreasController", $scope);
 
   $scope.areas = [];
   $scope.tiposAreas;
@@ -114,4 +116,4 @@ SIACCApp.controller("AreasController", function($scope, $http) {
     $scope.initAreas();
   });
 
-});
+}]);
