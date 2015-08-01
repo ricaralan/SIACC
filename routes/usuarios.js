@@ -19,6 +19,12 @@ router.get("/getDataUsuario/:idUsuario", function(req, res) {
   });
 });
 
+router.get("/getPermisosUsuario/:idUsuario", function(req, res) {
+  controller.getPermisosUsuario(req.params.idUsuario, function(err, permisos) {
+    res.send(permisos);
+  });
+});
+
 router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:rows", function(req, res) {
   var idTipoUsuario = req.params.idTipoUsuario;
   var inicio = req.params.inicio;

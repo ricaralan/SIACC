@@ -211,6 +211,8 @@
   INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("editar", "Editar", "Este permiso permite al usuario poder editar contenido en los modulos");
   INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("eliminar", "Eliminaciones", "Este permiso le permite al usuario poder eliminar en los modulos");
 
+  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("asignacion_materias", "Asignación de materias", "Esto permite saber las materias que imparte un usuario");
+
   INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("usuarios", "Control de usuarios", "Este módulo da acceso al control de usuarios, pero los tipos de usuarios permitidos se dan en otra tabla...");
   INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("inventarios", "Control de inventarios", "Este módulo controla los inventarios de el área");
   /* Control de acceso de tipo 1: controla solo el acceso a un área */
@@ -233,6 +235,8 @@
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 1, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 1, true);
 
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("asignacion_materias", 1, true);
+
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 1, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 1, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 1, true);
@@ -245,6 +249,8 @@
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 2, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 2, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 2, true);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("asignacion_materias", 2, true);
 
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 2, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 2, true);
@@ -259,6 +265,8 @@
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 3, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 3, true);
 
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("asignacion_materias", 3, true);
+
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 3, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 3, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 3, false);
@@ -271,6 +279,8 @@
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 4, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 4, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 4, false);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("asignacion_materias", 4, true);
 
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 4, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 4, true);
@@ -285,6 +295,8 @@
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 5, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 5, false);
 
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("asignacion_materias", 5, false);
+
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 5, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 5, true);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("acceso_simple", 5, true);
@@ -297,6 +309,8 @@
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("crear", 6, false);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("editar", 6, false);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("eliminar", 6, false);
+
+  INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("asignacion_materias", 6, false);
 
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("usuarios", 6, false);
   INSERT INTO permiso_usuario(moa_id_permiso, moa_id_tipo_usuario, moa_area_controla_mod) VALUES("inventarios", 6, false);
@@ -330,5 +344,5 @@
   /*****************************************************************************
   * INSERT USUARIO DE PRUEBA
   *****************************************************************************/
-  INSERT INTO usuario(id_usuario, usu_id_tipo_usuario, usu_usuario, usu_contrasena)
-  VALUES ("S11014636", 1, "usuario", "secreto");
+  INSERT INTO usuario(id_usuario, usu_id_tipo_usuario, usu_usuario, usu_contrasena, usu_foto)
+  VALUES ("S11014636", 1, "usuario", "secreto", "/images/system/icon-user.png");

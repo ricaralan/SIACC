@@ -7,10 +7,19 @@ var UsuariosController = function(){
 };
 
 UsuariosController.prototype.getDataUsuario = function(idUsuario, callback) {
-  var query = "select id_usuario,usu_id_tipo_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido,usu_foto,"
+  var query = "SELECT id_usuario,usu_id_tipo_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido,usu_foto,"
               +"usu_id_carrera,usu_id_area,car_nombre,are_nombre,usu_email,usu_sexo from "
               +"(usuario LEFT JOIN carrera ON id_carrera=usu_id_carrera)"
               +"LEFT JOIN area on id_area=usu_id_area  where id_usuario='"+idUsuario+"'";
+  self.connection.query(query, callback);
+};
+
+/**
+* Por el momento los permisos del usuario son los que se asignan a los tipos de usuario...
+*/
+UsuariosController.prototype.getPermisosUsuario = function(idUsuario, callback) {
+  query = "SELECT id_permiso permiso, moa_area_controla_mod permitido FROM permiso LEFT JOIN "
+          + "permiso_usuario ON id_permiso=moa_id_permiso AND moa_id_tipo_usuario=" + idUsuario;
   self.connection.query(query, callback);
 };
 

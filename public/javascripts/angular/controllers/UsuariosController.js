@@ -160,7 +160,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "u
                usu_id_carrera : $scope.formUsuarioExtra.usu_id_carrera
              }));
              $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
-               console.log(data);
+               //console.log(data);
              });
            }
            if($scope.showAreas) {
@@ -168,7 +168,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "u
                usu_id_area : $scope.formUsuarioExtra.usu_id_area
              }));
              $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
-               console.log(data);
+               //console.log(data);
              });
            }
            Materialize.toast("El usuario se creó correctamente!", 4000);
@@ -185,7 +185,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "u
                usu_id_carrera : $scope.formUsuarioExtra.usu_id_carrera
              }));
              $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
-               console.log(data);
+               //console.log(data);
              });
            }
            if($scope.showAreas) {
@@ -193,7 +193,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "u
                usu_id_area : $scope.formUsuarioExtra.usu_id_area
              }));
              $http.put("/usuarios/update/"+json+"/"+$scope.formUsuario.id_usuario).success(function(data) {
-               console.log(data);
+               //console.log(data);
              });
            }
            Materialize.toast("El usuario se editó correctamente!", 4000);
@@ -201,7 +201,6 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm", "u
          }
       });
     }
-             console.log($scope.formUsuarioExtra.usu_id_area);
     $scope.socket.emit("changeOnUsuarios", {});
   };
 

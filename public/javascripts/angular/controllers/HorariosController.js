@@ -1,4 +1,6 @@
-SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", function($scope, $http, $timeout) {
+SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scopes", function($scope, $http, $timeout, scopes) {
+
+  scopes.set("HorariosController", $scope);
 
   $scope.horarioAsignar = {};
   $scope.horarios = [];
@@ -161,7 +163,5 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", functi
     $scope.fechaInicio = document.getElementById("fecha_inicio").value
     $scope.fechaFin = document.getElementById("fecha_fin").value;
   };
-
-  scope = $scope;
 
 }]);
