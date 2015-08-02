@@ -58,6 +58,15 @@ HorariosController.prototype.createHorarioByJson = function(json, callback) {
   }
 };
 
+HorariosController.prototype.getDetalle = function(idHorario, callback) {
+  query = "SELECT hua_id,id_area,id_usuario,are_nombre,usu_nombre,usu_primer_apellido,"
+          + "usu_segundo_apellido,id_materia,mat_nombre,hua_dia,hua_hora,hua_fecha_inicio,"
+          + "hua_fecha_fin FROM ((horario_area INNER JOIN usuario ON id_usuario=hua_id_usuario "
+          + "AND hua_id=" + idHorario + ") INNER JOIN area ON id_area=hua_id_area) LEFT JOIN materia "
+          + "ON id_materia=hua_id_materia";
+  self.connection.query(query, callback);
+};
+
 HorariosController.prototype.create = function(jsonHorario, callback) {
   self.abstractModel.insert(self.table, jsonHorario, callback);
 };

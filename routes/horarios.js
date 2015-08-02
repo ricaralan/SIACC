@@ -35,6 +35,12 @@ router.get("/getUsuariosPermisoMaterias", function(req, res) {
   });
 });
 
+router.get("/getDetalle/:idHorario", function(req, res) {
+  controller.getDetalle(req.params.idHorario, function(err, detalle) {
+    res.send(detalle[0]);
+  });
+});
+
 router.post("/createHorario", function(req, res) {
   controller.createHorarioByJson(req.body.jsonHorario, function(data) {
     res.send(data);

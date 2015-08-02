@@ -19,6 +19,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   */
   $scope.tipoHorario;
   $scope.registrarHorarioClases = false;
+  $scope.horarioDetalle = {};
 
   $scope.getUsuariosPermisoMaterias = function() {
     /* Usuarios que pueden impartir materias */
@@ -91,14 +92,25 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
     for(var i = 0; i < $scope.horarioUsuario.length; i++) {
       id = "d"+$scope.horarioUsuario[i].hua_dia+"-h"+$scope.horarioUsuario[i].hua_hora;
       horaSemana = document.getElementById(id);
+      divContent = document.createElement("div");
       div = document.createElement("div");
+      div.setAttribute("i", i);
+      div.addEventListener("click", function(e) {
+        $http.get("/horarios/getDetalle/"+$scope.horarioUsuario[this.getAttribute("i")].hua_id)
+        .success(function(detalle) {
+          $scope.horarioDetalle = detalle;
+          detalle = document.getElementById("cajaDetalle");
+          detalle.removeAttribute("hidden");
+          detalle.style.left = (e.clientX-150) + "px";
+          detalle.style.top = (e.clientY + 10) + "px";
+        });
+      });
       div.innerHTML = $scope.horarioUsuario[i].usu_nombre + " " + $scope.horarioUsuario[i].usu_primer_apellido.substring(0, 1)+".";
-      div.style.backgroundColor = "#e3e3e3";
-      div.style.position = "relative";
-      div.style.width = "100%";
-      div.style.marginBottom = "3px";
+      divContent.style.backgroundColor = "#e3e3e3";
+      divContent.style.position = "relative";
+      divContent.style.marginBottom = "3px";
       div.style.paddingRight = "30px";
-      div.style.overflow = "hidden";
+      divContent.style.overflow = "hidden";
       div.style.display="block";
       equis = document.createElement("button");
       equis.innerHTML = "x";
@@ -118,8 +130,9 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
           });
         }
       });
-      div.appendChild(equis);
-      horaSemana.appendChild(div);
+      divContent.appendChild(equis);
+      divContent.appendChild(div);
+      horaSemana.appendChild(divContent);
     }
   };
 
