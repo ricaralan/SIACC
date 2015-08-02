@@ -1,4 +1,4 @@
-SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scopes", function($scope, $http, $timeout, scopes) {
+SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scopes", "util", function($scope, $http, $timeout, scopes, util) {
 
   scopes.set("HorariosController", $scope);
 
@@ -6,15 +6,74 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   $scope.horarios = [];
   $scope.asignarHorario = false;
   $scope.idArea = null;
-  $scope.idUsuario = null;
+  $scope.idUsuario = 0;
+  $scope.idMateriaSelect = 0;
   $scope.horarioUsuario = [];
   $scope.fechaInicio;
   $scope.fechaFin;
+  $scope.usuarios = [];
+  /**
+  * TIPO 1 = horario de usuario(horario de atención)
+  * TIPO 2 = horario en área(asignación de horario de clases)
+  */
+  $scope.tipoHorario;
+  $scope.registrarHorarioClases = false;
+
+  $scope.getUsuariosPermisoMaterias = function() {
+    /* Usuarios que pueden impartir materias */
+    $http.get("/materias/getUsuariosPermisoMaterias").success(function(usuarios) {
+      $scope.usuarios = usuarios;
+    });
+  };
+
+  $scope.getMateriasUsuarioByText = function(text) {
+    if(!util.empty(text)) {
+      $http.get("/materias/getMateriasUsuarioByText/"+text+"/"+$scope.idUsuario+"/0/5")
+      .success(function(materiasSeach) {
+        $scope.materiasSeach = materiasSeach;
+      });
+    } else {
+      $scope.materiasSeach = [];
+    }
+  };
+
+  $scope.asignarHorarioClases = function() {
+    if(!$scope.validarCampos()) {
+      Materialize.toast("Debes elegir las fechas", 3000);
+    } else {
+      $http.post("/horarios/createHorario", {jsonHorario : $scope.getJsonHorario()})
+      .success(function(data) {
+        $scope.getHorario();
+      });
+    }
+  };
+
+  $scope.getHorario = function() {
+    if($scope.tipoHorario == 1) {
+      $scope.getHorarioUsuario();
+    } else if($scope.tipoHorario == 2) {
+      $scope.getHorarioArea();
+    } else {
+      Materialize.toast("Error tipo horario");
+    }
+  };
 
   $scope.getHorarioUsuario = function() {
     if($scope.validarCampos()) {
-      $scope.idUsuario = document.getElementById("horarioArea").getAttribute("usuario");
-      $http.get("/horarios/getHorario/"+$scope.idUsuario+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
+      $http.get("/horarios/getHorarioArea/"+$scope.idArea+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
+      .success(function(horarios) {
+        $timeout(function(){
+          $scope.horarioUsuario = horarios;
+          $scope.horarios = [];
+          $scope.setHorarioSemanaUsuario();
+        }, 0);
+      });
+    }
+  };
+
+  $scope.getHorarioArea = function() {
+    if($scope.validarCampos()) {
+      $http.get("/horarios/getHorarioClasesArea/"+$scope.idArea+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
       .success(function(horarios) {
         $timeout(function(){
           $scope.horarioUsuario = horarios;
@@ -31,12 +90,14 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
       id = "d"+$scope.horarioUsuario[i].hua_dia+"-h"+$scope.horarioUsuario[i].hua_hora;
       horaSemana = document.getElementById(id);
       div = document.createElement("div");
-      div.innerHTML = $scope.horarioUsuario[i].usu_nombre;
+      div.innerHTML = $scope.horarioUsuario[i].usu_nombre + " " + $scope.horarioUsuario[i].usu_primer_apellido.substring(0, 1)+".";
       div.style.backgroundColor = "#e3e3e3";
-      div.style.position = "absolute";
+      div.style.position = "relative";
+      div.style.width = "100%";
+      div.style.marginBottom = "3px";
       div.style.paddingRight = "30px";
-      div.style.top = 0;
       div.style.overflow = "hidden";
+      div.style.display="block";
       equis = document.createElement("button");
       equis.innerHTML = "x";
       equis.style.position = "absolute";
@@ -56,8 +117,6 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
         }
       });
       div.appendChild(equis);
-      div.appendChild(equis);
-      horaSemana.innerHTML = "";
       horaSemana.appendChild(div);
     }
   };
@@ -119,13 +178,17 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   };
 
   $scope.createHorario = function() {
-    if(!$scope.validarCampos()) {
-      Materialize.toast("Debes elegir las fechas", 3000);
+    if($scope.tipoHorario == 1) {
+      if(!$scope.validarCampos()) {
+        Materialize.toast("Debes elegir las fechas", 3000);
+      } else {
+        $http.post("/horarios/createHorario", {jsonHorario : $scope.getJsonHorario()})
+        .success(function(data) {
+          $scope.getHorarioUsuario();
+        });
+      }
     } else {
-      $http.post("/horarios/createHorario", {jsonHorario : $scope.getJsonHorario()})
-      .success(function(data) {
-        $scope.getHorarioUsuario();
-      });
+      $scope.registrarHorarioClases = true;
     }
   };
 
@@ -153,6 +216,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
     return {
       hua_id_usuario : $scope.idUsuario,
       hua_id_area    : $scope.idArea,
+      hua_id_materia : ($scope.tipoHorario==1)?null:$scope.idMateriaSelect,
       hua_fecha_inicio : $scope.fechaInicio,
       hua_fecha_fin : $scope.fechaFin,
       diasHoras : diasHoras

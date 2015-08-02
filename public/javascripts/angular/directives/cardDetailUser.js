@@ -11,13 +11,24 @@ SIACCApp.directive("cardDetailUser", ["$http", "scopes", function($http, scopes)
         });
       });
 
-      scope.showHorarioUsuarioArea = function(idObj) {
+      scope.showHorarioUsuarioArea = function(idArea, idUsuario) {
         horariosScope = scopes.get("HorariosController");
-        obj = document.getElementById(idObj);
         horariosScope.clearCeldasHorarios();
         $('#modalHorarioAula').openModal({complete:function(){horariosScope.cleanSelecteds();}});
-        document.getElementById('horarioArea').setAttribute('area', obj.getAttribute('area'));
-        document.getElementById('horarioArea').setAttribute('usuario', obj.getAttribute('usuario'));
+        horariosScope.idUsuario = idUsuario;
+        horariosScope.idArea = idArea;
+        horariosScope.tipoHorario = 1;
+        document.getElementById('horarioArea').setAttribute('area', idArea);
+        document.getElementById('horarioArea').setAttribute('usuario', idUsuario);
+      };
+
+      scope.showHorarioArea = function(idArea, idUsuario) {
+        horariosScope = scopes.get("HorariosController");
+        horariosScope.idUsuario = idUsuario;
+        horariosScope.idArea = idArea;
+        horariosScope.clearCeldasHorarios();
+        horariosScope.tipoHorario = 2;
+        $('#modalHorarioAula').openModal({complete:function(){horariosScope.cleanSelecteds();}});
       };
 
       scope.mostrarMateriasUsuario = function(usuario) {

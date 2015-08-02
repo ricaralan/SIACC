@@ -134,18 +134,41 @@ block content
                 tr
                   td Inicio
                   td
-                    input(type="date", ng-model="fecha_inicio", class="datepicker", id="fecha_inicio", ng-change="getHorarioUsuario()")
+                    input(type="date", ng-model="fecha_inicio", class="datepicker", id="fecha_inicio", ng-change="getHorario()")
                   td Fin
                   td
-                    input(type="date", ng-model="fecha_fin", class="datepicker", id="fecha_fin", ng-change="getHorarioUsuario()")
+                    input(type="date", ng-model="fecha_fin", class="datepicker", id="fecha_fin", ng-change="getHorario()")
                   td(ng-show="!isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
-                    button(class="btn waves-effect white-text", ng-click="getHorarioUsuario()") Recargar
+                    button(class="btn waves-effect white-text", ng-click="getHorario()") Recargar
+                tr(ng-show="tipoHorario==2 && registrarHorarioClases")
+                  td(colspan="1")
+                    p Selecciona el usuario
+                  td(colspan="4")
+                    div(class="input-field col s12")
+                      select(class="browser-default", ng-model="idUsuario",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
+                        option(value="0" disabled selected) Selecciona el usuario
+                        option(ng-repeat="usuario in usuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+                tr(ng-show="idUsuario!=0 && tipoHorario==2 && registrarHorarioClases")
+                  td(colspan="1")
+                    div(class="input-field col s6")
+                      input(type="text",id="textSearchMateria", ng-model="textSearchMateria", ng-change="getMateriasUsuarioByText(textSearchMateria)")
+                      label(for="textSearchMateria") Busca la materia
+                  td(colspan="2")
+                    div(class="input-field col s12", ng-show="materiasSeach.length > 0")
+                      select(class="browser-default", ng-model="idMateriaSelect",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
+                        option(value="0" disabled selected) Selecciona una materia
+                        option(ng-repeat="materia in materiasSeach", value="{{materia.id_materia}}") {{materia.id_materia}} {{materia.mat_nombre}}
+                  td(colspan="2")
+                tr(ng-show="registrarHorarioClases")
+                  td(colspan="5")
+                    button(class="btn waves-effect red white-text right",ng-click="registrarHorarioClases=false;") Cancelar
+                    button(class="btn waves-effect blue white-text right", ng-click="asignarHorarioClases()") Asignar horas
                 tr(ng-show="!isEmpty(fechaInicio) && !isEmpty(fechaFin)")
                   td(colspan="5")
                     p Total horas entre {{fechaInicio}} y {{fechaFin}}:
                       label(style="font-size:20px")
                         i {{horarioUsuario.length}} hrs.
-            div(ng-show="!asignarHorario")
+            div(ng-show="!registrarHorarioClases && !isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
               horario-semana(id="horarioArea", callback="calendar", area="0")
       div(ng-controller="MateriasController")
         div(class="modal", id="modalMateriasUsuario")

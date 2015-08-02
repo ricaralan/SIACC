@@ -6,13 +6,30 @@ var HorariosController = function(){
   self.connection = require("../connection/mysql_connection");
 };
 
-HorariosController.prototype.getHorarioUsuario = function(idUsuario, fechaInicio, fechaFin, callback) {
+HorariosController.prototype.getHorario = function(opc, id, fechaInicio, fechaFin, callback) {
+  extra = opc == 1 ? "hua_id_area" : "hua_id_usuario";
   query = "SELECT hua_id,id_area,id_usuario,are_nombre,usu_nombre,usu_primer_apellido,"
           + "usu_segundo_apellido,hua_id_materia,hua_dia,hua_hora,hua_fecha_inicio,"
           + "hua_fecha_fin FROM (usuario INNER JOIN horario_area ON "
-          + "id_usuario=hua_id_usuario) INNER JOIN area ON usu_id_area=id_area "
-          + "WHERE hua_fecha_inicio>='" + fechaInicio + "' AND "
-          + "hua_fecha_fin<='" + fechaFin + "' AND hua_id_usuario='" + idUsuario + "';";
+          + "id_usuario=hua_id_usuario) INNER JOIN area ON usu_id_area=id_area AND " + extra + "='" + id + "' AND hua_id_materia is null "
+          + "WHERE (hua_fecha_inicio BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "' "
+          + "OR hua_fecha_fin BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "') "
+          + "OR (('" + fechaInicio + "'>=hua_fecha_inicio AND "
+          + "'" + fechaInicio + "'<=hua_fecha_fin) OR ('" + fechaFin + "'>=hua_fecha_inicio AND "
+          + "'" + fechaFin + "'<=hua_fecha_fin))";
+  self.connection.query(query, callback);
+};
+
+HorariosController.prototype.getHorarioClasesArea = function(idArea, fechaInicio, fechaFin, callback) {
+  query = "SELECT hua_id,id_area,id_usuario,are_nombre,usu_nombre,usu_primer_apellido,"
+          + "usu_segundo_apellido,hua_id_materia,hua_dia,hua_hora,hua_fecha_inicio,"
+          + "hua_fecha_fin FROM (usuario INNER JOIN horario_area ON "
+          + "id_usuario=hua_id_usuario) INNER JOIN area ON usu_id_area=id_area AND hua_id_area='" + idArea + "' AND hua_id_materia is not null "
+          + "WHERE (hua_fecha_inicio BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "' "
+          + "OR hua_fecha_fin BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "') "
+          + "OR (('" + fechaInicio + "'>=hua_fecha_inicio AND "
+          + "'" + fechaInicio + "'<=hua_fecha_fin) OR ('" + fechaFin + "'>=hua_fecha_inicio AND "
+          + "'" + fechaFin + "'<=hua_fecha_fin))";
   self.connection.query(query, callback);
 };
 
@@ -28,6 +45,7 @@ HorariosController.prototype.createHorarioByJson = function(json, callback) {
     jsonData = {
       hua_id_usuario : json.hua_id_usuario,
       hua_id_area : json.hua_id_area,
+      hua_id_materia : json.hua_id_materia,
       hua_fecha_inicio : json.hua_fecha_inicio,
       hua_fecha_fin : json.hua_fecha_fin,
       hua_dia : json.diasHoras[i].hua_dia,

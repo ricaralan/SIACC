@@ -2,12 +2,36 @@ var express = require("express");
 var router = express.Router();
 var controller = require("../database/controllers/HorariosController");
 
-router.get("/getHorario/:idUsuario/:fechaInicio/:fechaFin", function(req, res) {
+router.get("/getHorarioUsuario/:idUsuario/:fechaInicio/:fechaFin", function(req, res) {
   idUsuario = req.params.idUsuario;
   fechaInicio = req.params.fechaInicio;
   fechaFin = req.params.fechaFin;
-  controller.getHorarioUsuario(idUsuario, fechaInicio, fechaFin, function(err, data) {
+  controller.getHorario(2, idUsuario, fechaInicio, fechaFin, function(err, data) {
     res.send(data);
+  });
+});
+
+router.get("/getHorarioArea/:idArea/:fechaInicio/:fechaFin", function(req, res) {
+  idArea = req.params.idArea;
+  fechaInicio = req.params.fechaInicio;
+  fechaFin = req.params.fechaFin;
+  controller.getHorario(1, idArea, fechaInicio, fechaFin, function(err, data) {
+    res.send(data);
+  });
+});
+
+router.get("/getHorarioClasesArea/:idArea/:fechaInicio/:fechaFin", function(req, res) {
+  idArea = req.params.idArea;
+  fechaInicio = req.params.fechaInicio;
+  fechaFin = req.params.fechaFin;
+  controller.getHorarioClasesArea(idArea, fechaInicio, fechaFin, function(err, horarios) {
+    res.send(horarios);
+  });
+});
+
+router.get("/getUsuariosPermisoMaterias", function(req, res) {
+  controller.getUsuariosPermisoMaterias(function(err, dataUsuarios) {
+    res.send(dataUsuarios);
   });
 });
 

@@ -67,6 +67,16 @@ MateriasController.prototype.getMateriasUsuarioLimitByText = function(text,idUsu
   self.connection.query(query, callback);
 };
 
+/**
+* Este método regresa los usuarios que pueden tener materias
+**/
+MateriasController.prototype.getUsuariosPermisoMaterias = function(callback) {
+  query = "SELECT id_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido FROM "
+        + "usuario INNER JOIN permiso_usuario ON moa_id_permiso='asignacion_materias' "
+        + "AND moa_area_controla_mod AND usu_id_tipo_usuario=moa_id_tipo_usuario";
+  self.connection.query(query, callback);
+};
+
 MateriasController.prototype.asignarMateriaUsuario = function(idUsuario, idMateria, callback) {
   self.abstractModel.insert("usuario_materia",{uma_id_usuario:idUsuario,uma_id_materia:idMateria}, callback);
 };

@@ -37,14 +37,18 @@ router.get("/getMateriasUsuarioByText/:text/:idUsuario/:inicio/:numRows", functi
   });
 });
 
-
-
 router.get("/getMateriasByText/:text/:inicio/:numRows", function(req, res) {
   inicio = req.params.inicio;
   numRows = req.params.numRows;
   text = req.params.text;
   controller.getMateriasLimitByText(text, inicio, numRows, function(err, dataMaterias) {
     res.send(dataMaterias);
+  });
+});
+
+router.get("/getUsuariosPermisoMaterias", function(req, res) {
+  controller.getUsuariosPermisoMaterias(function(err, dataUsuarios) {
+    res.send(dataUsuarios);
   });
 });
 
