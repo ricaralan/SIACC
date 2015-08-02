@@ -29,6 +29,8 @@ SIACCApp.directive("cardDetailUser", ["$http", "scopes", function($http, scopes)
         horariosScope.clearCeldasHorarios();
         horariosScope.tipoHorario = 2;
         $('#modalHorarioAula').openModal({complete:function(){horariosScope.cleanSelecteds();}});
+        document.getElementById('horarioArea').setAttribute('area', idArea);
+        document.getElementById('horarioArea').setAttribute('usuario', idUsuario);
       };
 
       scope.mostrarMateriasUsuario = function(usuario) {

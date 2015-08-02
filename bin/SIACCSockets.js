@@ -49,6 +49,13 @@ module.exports = function(server){
       io.emit("changeOnUsuarios", mensaje);
     });
 
+    /**
+    * CHANGE ON HORARIOS SOCKETS
+    **/
+    socket.on("changeOnHorarios", function(mensaje) {
+      io.emit("changeOnHorarios", mensaje);
+    });
+
   });
 
 };

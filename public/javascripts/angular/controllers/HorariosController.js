@@ -12,6 +12,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   $scope.fechaInicio;
   $scope.fechaFin;
   $scope.usuarios = [];
+  $scope.socket = io();
   /**
   * TIPO 1 = horario de usuario(horario de atención)
   * TIPO 2 = horario en área(asignación de horario de clases)
@@ -43,7 +44,8 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
     } else {
       $http.post("/horarios/createHorario", {jsonHorario : $scope.getJsonHorario()})
       .success(function(data) {
-        $scope.getHorario();
+        $scope.socket.emit("changeOnHorarios", {});
+        $scope.registrarHorarioClases = false;
       });
     }
   };
@@ -111,7 +113,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
           id = $scope.horarioUsuario[this.getAttribute("i")].hua_id;
           $http.delete("/horarios/delete/"+id).success(function(data) {
             if(data.success == 1) {
-              $scope.getHorarioUsuario();
+              $scope.socket.emit("changeOnHorarios", {});
             }
           });
         }
@@ -184,7 +186,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
       } else {
         $http.post("/horarios/createHorario", {jsonHorario : $scope.getJsonHorario()})
         .success(function(data) {
-          $scope.getHorarioUsuario();
+          $scope.socket.emit("changeOnHorarios", {});
         });
       }
     } else {
@@ -227,5 +229,9 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
     $scope.fechaInicio = document.getElementById("fecha_inicio").value
     $scope.fechaFin = document.getElementById("fecha_fin").value;
   };
+
+  $scope.socket.on("changeOnHorarios", function(data) {
+    $scope.getHorario();
+  });
 
 }]);

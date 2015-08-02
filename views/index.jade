@@ -140,14 +140,14 @@ block content
                     input(type="date", ng-model="fecha_fin", class="datepicker", id="fecha_fin", ng-change="getHorario()")
                   td(ng-show="!isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
                     button(class="btn waves-effect white-text", ng-click="getHorario()") Recargar
-                tr(ng-show="tipoHorario==2 && registrarHorarioClases")
-                  td(colspan="1")
-                    p Selecciona el usuario
-                  td(colspan="4")
-                    div(class="input-field col s12")
-                      select(class="browser-default", ng-model="idUsuario",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
-                        option(value="0" disabled selected) Selecciona el usuario
-                        option(ng-repeat="usuario in usuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+                //tr(ng-show="tipoHorario==2 && registrarHorarioClases")
+                  //td(colspan="1")
+                    //p Selecciona el usuario
+                  //td(colspan="4")
+                    //div(class="input-field col s12")
+                      //select(class="browser-default", ng-model="idUsuario",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
+                        //option(value="0" disabled selected) Selecciona el usuario
+                        //option(ng-repeat="usuario in usuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
                 tr(ng-show="idUsuario!=0 && tipoHorario==2 && registrarHorarioClases")
                   td(colspan="1")
                     div(class="input-field col s6")
