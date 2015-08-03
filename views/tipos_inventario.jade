@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp")
+    app-for-users
+      div(id="contentApp", hidden, ng-controller="TiposInventariosController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoInventario()") Crear nuevo
+        h3 Tipos de inventario
+        // MODAL OPCION TIPOS DE INVENTARIO
+        div(id="modalOpcionesTipoInventario" class="modal")
+          div(class="modal-content")
+            h4 {{opcAccion}} tipo de inventario
+            table
+              tr
+                td(colspan="2")
+                  div(class="input-field col s6")
+                    input(id="tipo_inventario_name", type="text", class="validate", ng-model="formTipoInventario.tin_nombre")
+                    label(for="tipo_inventario_name") Nombre del tipo de inventario
+              tr
+                td(colspan="2")
+                  div(class="input-field col s6")
+                    textarea(id="tipo_inventario_desc", class="materialize-textarea", class="validate", ng-model="formTipoInventario.tin_descripcion")
+                    label(for="tipo_inventario_desc") Descripción del tipo de inventario
+              tr
+                td
+                  input(type="checkbox", id="tin_es_computadora", ng-model="formTipoInventario.tin_es_computadora")
+                  label(for="tin_es_computadora") Computadora
+                td
+                  p Selecciona una foto
+                    form(id="formFoto")
+                      input(type="file", id="tipo_foto", file-model="formTipoInventario.tin_foto", accept="image/*")
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoInventario()", id="btnOpcionAreas") {{opcAccion}}
+
+        // SHOW TIPOS DE INVENTARIOS
+        div(class="row", ng-init="getTiposInventarios()")
+          div(class="card small col s12 m6 l4", ng-repeat="tipo in tiposInventarios")
+            div(class="card-image waves-effect waves-block waves-light")
+              img(class="activator" src="{{tipo.tin_foto}}")
+            div(class="card-content")
+              span(class="card-title activator grey-text text-darken-4") {{tipo.tin_nombre}}
+                i(class="material-icons right") more_vert
+              p {{tipo.tin_descripcion}}
+            div(class="card-reveal")
+              span(class="card-title grey-text text-darken-4") {{tipo.tin_nombre}}
+                i(class="material-icons right") close
+
+              p(class="red-text") ACCIONES
+                br
+                br
+                button(class="btn white-text waves-effect blue", ng-click="setDatosEditarTipoInventario(tipo)") EDITAR
+                button(class="btn white-text red waves-effect", ng-click="eliminarTipoInvetario(tipo.id_tipo_inventario)") ELIMINAR
+
+
+
+  script(src="/socket.io/socket.io.js")
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/directives/fileModel.js")
+  script(src="/javascripts/angular/services/multipartForm.js")
+  script(src="/javascripts/angular/services/util.js")
+  script(src="/javascripts/angular/controllers/TiposInventarios.js")

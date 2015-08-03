@@ -12,6 +12,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   $scope.fechaInicio;
   $scope.fechaFin;
   $scope.usuarios = [];
+  $scope.titleOpcHorario;
   $scope.socket = io();
   /**
   * TIPO 1 = horario de usuario(horario de atención)

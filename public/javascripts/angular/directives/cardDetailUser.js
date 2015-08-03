@@ -18,6 +18,7 @@ SIACCApp.directive("cardDetailUser", ["$http", "scopes", function($http, scopes)
         horariosScope.idUsuario = idUsuario;
         horariosScope.idArea = idArea;
         horariosScope.tipoHorario = 1;
+        horariosScope.titleOpcHorario = "Horario de atención en área";
         document.getElementById('horarioArea').setAttribute('area', idArea);
         document.getElementById('horarioArea').setAttribute('usuario', idUsuario);
       };
@@ -28,6 +29,7 @@ SIACCApp.directive("cardDetailUser", ["$http", "scopes", function($http, scopes)
         horariosScope.idArea = idArea;
         horariosScope.clearCeldasHorarios();
         horariosScope.tipoHorario = 2;
+        horariosScope.titleOpcHorario = "Apartar horario de clases en área";
         $('#modalHorarioAula').openModal({complete:function(){horariosScope.cleanSelecteds();}});
         document.getElementById('horarioArea').setAttribute('area', idArea);
         document.getElementById('horarioArea').setAttribute('usuario', idUsuario);
