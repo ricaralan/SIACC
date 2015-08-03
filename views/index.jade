@@ -90,7 +90,7 @@ block content
           h4 {{opcAccion}} inventario
           table
             tr
-              td(colspan="2")
+              td(colspan="4")
                 select(class="browser-default", ng-model="formInventario.inv_tipo")
                   option(value="" disabled selected) Selecciona el tipo de inventario
                   option(ng-repeat="tipo in tiposInventarios", value="{{tipo.id_tipo_inventario}}") {{tipo.tin_nombre}}

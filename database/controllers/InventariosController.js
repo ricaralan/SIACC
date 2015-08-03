@@ -20,7 +20,21 @@ InventariosController.prototype.create = function(jsonData, callback) {
 };
 
 InventariosController.prototype.update = function(jsonData, numInventario, callback) {
-  self.abstractModel.update(self.table, jsonData, { num_inventario : numInventario }, callback);
+  self.abstractModel.update(self.table, {
+    num_inventario : jsonData.num_inventario,
+    inv_id_area : jsonData.inv_id_area,
+    inv_tipo : jsonData.inv_tipo,
+    inv_num_maq : jsonData.inv_num_maq,
+    inv_ram : jsonData.inv_ram,
+    inv_procesador : jsonData.inv_procesador,
+    inv_vel_procesador : jsonData.inv_vel_procesador,
+    inv_capacidad : jsonData.inv_capacidad,
+    inv_no_serie : jsonData.inv_no_serie,
+    inv_marca : jsonData.inv_marca,
+    inv_status : jsonData.inv_status,
+    inv_disponibilidad : jsonData.inv_disponibilidad,
+    inv_descripcion : jsonData.inv_descripcion
+  }, { num_inventario : numInventario }, callback);
 };
 
 InventariosController.prototype.delete = function(numInventario, callback) {
