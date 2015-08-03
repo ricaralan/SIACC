@@ -18,6 +18,7 @@ var carreras = require('./routes/carreras');
 var horarios = require('./routes/horarios');
 var materias = require('./routes/materias');
 var tipo_inventario = require('./routes/tipo_inventario');
+var inventarios = require('./routes/inventarios');
 
 var app = express();
 
@@ -49,6 +50,7 @@ app.use('/carreras', carreras);
 app.use('/horarios', horarios);
 app.use('/materias', materias);
 app.use('/tipo_inventario', tipo_inventario);
+app.use('/inventarios', inventarios);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

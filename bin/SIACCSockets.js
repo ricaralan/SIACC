@@ -63,6 +63,13 @@ module.exports = function(server){
       io.emit("changeOnTiposInventarios", mensaje);
     });
 
+    /**
+    * CHANGE ON INVENTARIOS SOCKETS
+    **/
+    socket.on("changeOnInventarios", function(mensaje) {
+      io.emit("changeOnInventarios", mensaje);
+    });
+
   });
 
 };

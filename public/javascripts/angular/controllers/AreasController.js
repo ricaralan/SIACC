@@ -106,6 +106,13 @@ SIACCApp.controller("AreasController", ["$scope", "$http", "scopes", function($s
     return null;
   };
 
+  $scope.setInventario = function(idArea) {
+    $scope.scopeInventarios = scopes.get("InventariosController");
+    $scope.scopeInventarios.setArea(idArea);
+    document.getElementById('xy').removeAttribute('hidden');
+    document.getElementsByTagName('body')[0].style.overflow='hidden';
+  };
+
   $scope.initAreas();
   $scope.initTiposAreas();
 

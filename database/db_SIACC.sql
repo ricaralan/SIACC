@@ -160,15 +160,15 @@
   num_inventario VARCHAR(20) PRIMARY KEY,
   inv_id_area INT,
   inv_tipo INT(2) NOT NULL,
-  inv_tipo_computadora INT(1),
   inv_num_maq INT(3),
   inv_ram double,
+  inv_procesador VARCHAR(20),
   inv_vel_procesador double,
   inv_capacidad double,
-  inv_estado INT NOT NULL,
+  inv_estado INT NOT NULL DEFAULT 1,
   inv_no_serie VARCHAR(20),
   inv_marca VARCHAR(30),
-  inv_status TINYINT DEFAULT 1,
+  inv_status TINYINT NOT NULL DEFAULT 1,
   inv_disponibilidad BOOLEAN,
   inv_descripcion VARCHAR(200),
   FOREIGN KEY(inv_id_area) REFERENCES area(id_area),
@@ -191,13 +191,13 @@
   /**
   * Prestamos de equipo a un usuario
   */
-  CREATE TABLE reguardo_inventario(
+  CREATE TABLE resguardo_inventario(
   id_resguardo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  rin_id_inventario VARCHAR(20) NOT NULL,
+  rin_num_inventario VARCHAR(20) NOT NULL,
   rin_id_usuario VARCHAR(10) NOT NULL,
   rin_fecha_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   rin_fecha_fin TIMESTAMP,
-  FOREIGN KEY(rin_id_inventario) REFERENCES inventario(num_inventario),
+  FOREIGN KEY(rin_num_inventario) REFERENCES inventario(num_inventario),
   FOREIGN KEY(rin_id_usuario) REFERENCES usuario(id_usuario)
   );
 

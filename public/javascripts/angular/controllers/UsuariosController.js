@@ -22,7 +22,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
     setTimeout(function() {
       $('ul.tabs').tabs();
       document.getElementById("contentTabs").removeAttribute("hidden");
-    }, 2000);
+    }, 100);
   };
 
   $scope.selectionTipoUsuario = function(tipo) {
@@ -115,6 +115,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
   $scope.getTiposUsuario = function() {
     $http.get("/tipo_usuario/getTiposUsuario/").success(function(tiposUsuario) {
       $scope.tiposUsuario = tiposUsuario;
+      $scope.initTabs();
     });
   };
 

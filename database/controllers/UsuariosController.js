@@ -30,6 +30,14 @@ UsuariosController.prototype.getUsuariosTipoLimit = function(idTipoUsuario, inic
   self.connection.query(query, callback);
 };
 
+UsuariosController.prototype.getUsuariosByTextLimit = function(text, inicio, rows, callback) {
+  var query = "select id_usuario, usu_nombre, usu_primer_apellido, usu_segundo_apellido, usu_id_tipo_usuario, usu_foto from usuario "
+            + "WHERE id_usuario like '%"+text+"%' OR CONCAT_WS(' ',usu_nombre,"
+            + "usu_primer_apellido,usu_segundo_apellido) like '%"+text+"%' "
+            +" limit "+inicio+","+rows+";";
+  self.connection.query(query, callback);
+};
+
 UsuariosController.prototype.findUsuariosTipoLimit = function(word, idTipoUsuario, callback) {
   // TODO DIVIDIR POR TIPOS DE USUARIO O VER COMO PAGINAR Ó AUTOMATIZAR...
   var query = "select id_usuario, usu_nombre, usu_primer_apellido, usu_segundo_apellido,"

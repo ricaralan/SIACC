@@ -99,9 +99,9 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
       div.addEventListener("click", function(e) {
         $http.get("/horarios/getDetalle/"+$scope.horarioUsuario[this.getAttribute("i")].hua_id)
         .success(function(detalle) {
+          content = document.getElementById("contentCajaDetalle").removeAttribute("hidden");
           $scope.horarioDetalle = detalle;
           detalle = document.getElementById("cajaDetalle");
-          detalle.removeAttribute("hidden");
           detalle.style.left = (e.clientX-150) + "px";
           detalle.style.top = (e.clientY + 10) + "px";
         });

@@ -8,6 +8,12 @@ router.get("/getAreas", function(req, res) {
   });
 });
 
+router.get("/getArea/:idArea", function(req, res) {
+  areasController.getArea(req.params.idArea, function(err, data) {
+    res.send(data[0]);
+  });
+});
+
 router.post("/create/:jsonArea", function(req, res) {
   areasController.create(JSON.parse(req.params.jsonArea), function(err, data) {
     res.send({success : (!err && data.affectedRows == 1)});

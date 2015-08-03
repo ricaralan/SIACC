@@ -38,6 +38,19 @@ router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:rows", function(req, r
   });
 });
 
+router.get("/getUsuariosByTextLimit/:text/:inicio/:rows", function(req, res) {
+  var text = req.params.text;
+  var inicio = req.params.inicio;
+  var rows = req.params.rows;
+  controller.getUsuariosByTextLimit(text, inicio, rows, function(err, usuarios) {
+    if(!err) {
+      res.send(usuarios);
+    } else {
+      res.send(null);
+    }
+  });
+});
+
 router.get("/findUsuariosTipoLimit/:word/:idTipoUsuario/", function(req, res) {
   var word = req.params.word;
   var idTipoUsuario = req.params.idTipoUsuario;
