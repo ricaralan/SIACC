@@ -148,10 +148,18 @@
     FOREIGN KEY(hua_id_materia) REFERENCES materia(id_materia)
   );
 
+  CREATE TABLE tipo_inventario(
+    id_tipo_inventario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tin_nombre VARCHAR(40) NOT NULL,
+    tin_descripcion VARCHAR(250),
+    tin_foto VARCHAR(200),
+    tin_es_computadora BOOLEAN NOT NULL
+  );
+
   CREATE TABLE inventario(
   num_inventario VARCHAR(20) PRIMARY KEY,
-  inv_id_area INT NOT NULL,
-  inv_tipo INT(1) NOT NULL,
+  inv_id_area INT,
+  inv_tipo INT(2) NOT NULL,
   inv_tipo_computadora INT(1),
   inv_num_maq INT(3),
   inv_ram double,
@@ -160,21 +168,44 @@
   inv_estado INT NOT NULL,
   inv_no_serie VARCHAR(20),
   inv_marca VARCHAR(30),
+  inv_status TINYINT DEFAULT 1,
   inv_disponibilidad BOOLEAN,
   inv_descripcion VARCHAR(200),
-  FOREIGN KEY(inv_id_area) REFERENCES area(id_area)
+  FOREIGN KEY(inv_id_area) REFERENCES area(id_area),
+  FOREIGN KEY(inv_tipo) REFERENCES tipo_inventario(id_tipo_inventario)
   );
 
-  CREATE TABLE tipo_acceso(
-  id_tipo_acceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  /**
+  * Este historial permitirá saber por que áreas a pasado un elemento de inventario
+  */
+  CREATE TABLE historial_inventario_area(
+  id_historial INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  hia_id_inventario VARCHAR(20) NOT NULL,
+  hia_id_area INT NOT NULL,
+  hia_fecha_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  hia_fecha_fin TIMESTAMP,
+  FOREIGN KEY(hia_id_inventario) REFERENCES inventario(num_inventario),
+  FOREIGN KEY(hia_id_area) REFERENCES area(id_area)
+  );
 
+  /**
+  * Prestamos de equipo a un usuario
+  */
+  CREATE TABLE reguardo_inventario(
+  id_resguardo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  rin_id_inventario VARCHAR(20) NOT NULL,
+  rin_id_usuario VARCHAR(10) NOT NULL,
+  rin_fecha_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  rin_fecha_fin TIMESTAMP,
+  FOREIGN KEY(rin_id_inventario) REFERENCES inventario(num_inventario),
+  FOREIGN KEY(rin_id_usuario) REFERENCES usuario(id_usuario)
   );
 
   # Esta tabla llevará el registro de ingreso de usuarios a los centros de computo.
   CREATE TABLE acceso_a_centro_de_computo(
   id_entrada INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   acc_id_usuario VARCHAR(9) NOT NULL,
-  acc_id_inventario VARCHAR(20) NOT NULL,
+  acc_id_inventario VARCHAR(20),
   acc_fecha_registro date NOT NULL,
   acc_hora_inicio time NOT NULL,
   acc_hora_fin time NOT NULL,
@@ -354,6 +385,15 @@
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_administrador", 1);
   INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_solicitante", 1);
   *****************************************************************************/
+
+  /***
+  * INSERTS TIPOS DE INVENTARIO
+  *********************/
+  INSERT INTO tipo_inventario(tin_nombre, tin_descripcion,tin_foto,tin_es_computadora) VALUES("Computadora","","/images/tipos_inventarios/computadora.png", true);
+  INSERT INTO tipo_inventario(tin_nombre, tin_descripcion,tin_foto,tin_es_computadora) VALUES("Multifuncional","","/images/tipos_inventarios/multifuncional.png", false);
+  INSERT INTO tipo_inventario(tin_nombre, tin_descripcion,tin_foto,tin_es_computadora) VALUES("Impresora","","/images/tipos_inventarios/impresora.jpg", false);
+  INSERT INTO tipo_inventario(tin_nombre, tin_descripcion,tin_foto,tin_es_computadora) VALUES("Proyector","","/images/tipos_inventarios/proyector.jpg", false);
+  INSERT INTO tipo_inventario(tin_nombre, tin_descripcion,tin_foto,tin_es_computadora) VALUES("Otro","","/images/system/inventarios.jpg", false);
 
   /*****************************************************************************
   * INSERT USUARIO DE PRUEBA

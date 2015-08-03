@@ -17,11 +17,12 @@ var areas = require('./routes/areas');
 var carreras = require('./routes/carreras');
 var horarios = require('./routes/horarios');
 var materias = require('./routes/materias');
+var tipo_inventario = require('./routes/tipo_inventario');
 
 var app = express();
 
 // view engine setup
-app.set('images', __dirname + 'public/images/temp');
+app.set('images', __dirname + 'public/images/');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -30,8 +31,8 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser({ uploadDir: __dirname + "public/images" }));
-app.use(multer({dest:"public/images"}));
+app.use(bodyParser({ uploadDir: __dirname + "public/images/temp" }));
+app.use(multer({dest:"public/images/temp"}));
 
 app.use(cookieParser());
 app.use(expressSession({secret:'@1[[de+WEDLN23EOIEFSIACC_*-*[*]]]'}));
@@ -47,6 +48,7 @@ app.use('/areas', areas);
 app.use('/carreras', carreras);
 app.use('/horarios', horarios);
 app.use('/materias', materias);
+app.use('/tipo_inventario', tipo_inventario);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

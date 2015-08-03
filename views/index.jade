@@ -1,246 +1,64 @@
 extends layout
 
 block content
-  div(class="progress", id="loadPage", style="margin:0;")
+  div(class="progress", id="loadPage")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
     app-for-users
-      div(id="contentApp", hidden, ng-controller="UsuariosController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearUsuario()") Crear nuevo
-        h3 Usuarios
-
-        div(class="row", id="contentTabs", hidden)
-          div(class="col s12")
-            ul(class="tabs card", ng-init="initTabs()")
-              li(class="tab col s2", ng-repeat="tipo in tiposUsuario")
-                a(href="!#", ng-click="selectionTipoUsuario(tipo)") {{tipo.tipo_nombre}}
-        div(class="row card")
-          div(class="col s4", style="border:solid 1px rgba(0, 0, 0, .1);")
-            div(class="")
-              h5(class="center-align") Usuarios
-              p(class="divider")
-              div(class="input-field")
-                i(class="material-icons prefix") search
-                input(type="text", id="inputSearchUser", ng-model="wordSearch", ng-change="findUsuariosTipoLimit(wordSearch)")
-                label(for="inputSearchUser") Buscar usuario
-              div(style="position:relative;")
-                div(id="caja1", style="postion:absolute;")
-                  h5(style="background-color:rgba(0, 0, 0, .7);padding:5px;" class="white-text") Selecciona un tipo de usuario
-                div(class="preloader-wrapper big active", style="margin-left:35%;position:absolute")
-                  div(class="spinner-layer spinner-blue-only", id="caja2", hidden)
-                    div(class="circle-clipper left")
-                      div(class="circle")
-              div(style="height:300px;overflow-y:auto;")
-                h5(ng-show="usuarios.length == 0") No hay usuarios por mostrar
-                card-line-user(ng-repeat="usuario in usuarios", user="{{usuario}}", ng-click="setIdUsuarioDetalle(usuario.id_usuario);getDetalleUsuario();")
-              ul(class="pagination")
-                li(class="waves-effect {{pagination.selected?'active':''}}", ng-repeat="pagination in arrayPagination", ng-click="pagination.funcion()")
-                  a(href="#!") {{pagination.number}}
-
-          div(class="col s8", style="border:solid 1px rgba(0, 0, 0, .1);")
-            div(class="", style="height:500px;overflow-y:auto;")
-              h5(class="center-align") Detalle
-              p(class="divider")
-              div(ng-show="usuarioDetalle.id_usuario == undefined")
-                h4 Aún no se ha seleccionado un usuario
-              div(ng-show="usuarioDetalle.id_usuario != undefined")
-                card-detail-user(user="{{usuarioDetalle}}")
-
-
-        // MODAL OPCION USUARIO
-        div(id="modalOpcionesUsuario" class="modal")
+      div(id="contentApp", hidden, ng-controller="TiposInventariosController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoInventario()") Crear nueva
+        h3 Tiposs de inventario
+        // MODAL OPCION TIPOS DE INVENTARIO
+        div(id="modalOpcionesTipoInventario" class="modal")
           div(class="modal-content")
-            h4 {{accionUsuario}} usuario
+            h4 {{opcAccion}} tipo de inventario
             table
               tr
-                td
-                  div(class="input-field col s12")
-                    select(class="browser-default", ng-model="formUsuario.usu_id_tipo_usuario", ng-change="cambioTipoUsuario()")
-                      option(value="" disabled selected) Selecciona el tipo de usuario
-                      option(ng-repeat="tipo in tiposUsuario", value="{{tipo.id_tipo_usuario}}") {{tipo.tipo_nombre}}
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_id", type="text", class="validate", ng-model="formUsuario.id_usuario", length="10")
-                    label(for="usuario_id") Identificador (No. Personal ó Matricula)
-              tr(ng-show="showAreas")
                 td(colspan="2")
-                  div(class="input-field col s12")
-                    select(class="browser-default", ng-model="formUsuarioExtra.usu_id_area")
-                      option(value="" disabled selected) Selecciona el área
-                      option(ng-repeat="tipo in tiposAreas", value="{{tipo.id_area}}") {{tipo.are_nombre}}
-              tr(ng-show="showCarreras")
+                  div(class="input-field col s6")
+                    input(id="tipo_inventario_name", type="text", class="validate", ng-model="formTipoInventario.tin_nombre")
+                    label(for="tipo_inventario_name") Nombre del tipo de inventario
+              tr
                 td(colspan="2")
-                  div(class="input-field col s12")
-                    select(class="browser-default", ng-model="formUsuarioExtra.usu_id_carrera")
-                      option(value="" disabled selected) Selecciona la carrera
-                      option(ng-repeat="carrera in carreras", value="{{carrera.id_carrera}}") {{carrera.car_nombre}}
+                  div(class="input-field col s6")
+                    textarea(id="tipo_inventario_desc", class="materialize-textarea", class="validate", ng-model="formTipoInventario.tin_descripcion")
+                    label(for="tipo_inventario_desc") Descripción del tipo de inventario
               tr
                 td
-                  div(class="input-field col s6")
-                    input(id="usuario_name", type="text", class="validate", ng-model="formUsuario.usu_nombre")
-                    label(for="usuario_name") Nombre
+                  input(type="checkbox", id="tin_es_computadora", ng-model="formTipoInventario.tin_es_computadora")
+                  label(for="tin_es_computadora") Computadora
                 td
-                  div(class="input-field col s6")
-                    input(id="usuario_ape1", type="text", class="validate", ng-model="formUsuario.usu_primer_apellido")
-                    label(for="usuario_ape1") Apellido Paterno
-              tr
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_ape2", type="text", class="validate", ng-model="formUsuario.usu_segundo_apellido")
-                    label(for="usuario_ape2") Apellido Materno
-                td
-                  div(class="input-field col s6")
-                    input(id="usuario_email", type="email", class="validate", ng-model="formUsuario.usu_email")
-                    label(for="usuario_email") Correo electronico
-              tr
-                td
-                  div(class="input-field col s12")
-                    select(class="browser-default", ng-model="formUsuario.usu_sexo")
-                      option(value="", disabled, selected) Selecciona el sexo del usuario
-                      option(value="M") Masculino
-                      option(value="F") Femenino
-                td
-                  label(style="font-size:18px") Foto
-                  form(id="formFileUsuario")
-                    input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
-            p(class="divider")
-            //input(type="checkbox", id="check", ng-model="formUsuario.definirUsuario")
-            //label(for="check") Definir usuario
-            //table(class="bordered", ng-show="formUsuario.definirUsuario")
-            //  tr
-            //    td
-            //      div(class="input-field col s6")
-            //        input(id="usuario_usuario", type="text", class="validate", ng-model="formUsuario.usu_usuario")
-            //        label(for="usuario_usuario") Usuario
-            //    td
-            //      div(class="input-field col s6")
-            //        input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
-            //        label(for="usuario_contra") Contraseña
+                  p Selecciona una foto
+                    form(id="formFoto")
+                      input(type="file", id="tipo_foto", file-model="formTipoInventario.tin_foto", accept="image/*")
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoInventario()", id="btnOpcionAreas") {{opcAccion}}
 
-            div(class="modal-footer")
-              a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
-              button(class="waves-effect waves-green btn-flat", ng-click="opcionUsuario()", id="btnOpcionTipoUsuario") {{accionUsuario}}
+        // SHOW TIPOS DE INVENTARIOS
+        div(class="row", ng-init="getTiposInventarios()")
+          div(class="card small col s12 m6 l4", ng-repeat="tipo in tiposInventarios")
+            div(class="card-image waves-effect waves-block waves-light")
+              img(class="activator" src="{{tipo.tin_foto}}")
+            div(class="card-content")
+              span(class="card-title activator grey-text text-darken-4") {{tipo.tin_nombre}}
+                i(class="material-icons right") more_vert
+              p {{tipo.tin_descripcion}}
+            div(class="card-reveal")
+              span(class="card-title grey-text text-darken-4") {{tipo.tin_nombre}}
+                i(class="material-icons right") close
 
-      div(ng-controller="HorariosController")
-        div(style="width:250px;min-height:120px;position:absolute;background-color:#f1f1f1;border-radius:5px;z-index:99999;border:solid 1px rgba(0, 0, 0, .3);overflow:hidden;", id="cajaDetalle", hidden)
-          label(onclick="document.getElementById('cajaDetalle').setAttribute('hidden','')", style="position:absolute;right:0;backgroundColor:#333;color:#fff;padding:3px;cursor:pointer;") X
-          p(style="padding-left:5px") Usuario: {{horarioDetalle.usu_nombre}} {{horarioDetalle.usu_primer_apellido}} {{horarioDetalle.usu_segundo_apellido}}
-          p(style="padding-left:5px") Área: {{horarioDetalle.are_nombre}}
-          p(ng-show="horarioDetalle.id_materia",style="padding-left:5px") Materia: {{horarioDetalle.id_materia}} - {{horarioDetalle.mat_nombre}}
-          p(style="padding-left:5px") Inicio: {{horarioDetalle.hua_fecha_inicio.split("T")[0]}}
-          p(style="padding-left:5px") Fin: {{horarioDetalle.hua_fecha_fin.split("T")[0]}}
-        div(class="fixed-action-btn", style="top: 23%; right: 21%;z-index:9999;", ng-show="horarios.length > 0 && !asignarHorario")
-          //a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="setDatosAsignarHorario()")
-          a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="createHorario()")
-            i {{horarios.length}} +
-        div(class="modal", id="modalHorarioAula")
-          div(class="modal-content")
-            h4 Horario de usuario en área
-            div
-              table(class="bordered")
-                tr
-                  td Inicio
-                  td
-                    input(type="date", ng-model="fecha_inicio", class="datepicker", id="fecha_inicio", ng-change="getHorario()")
-                  td Fin
-                  td
-                    input(type="date", ng-model="fecha_fin", class="datepicker", id="fecha_fin", ng-change="getHorario()")
-                  td(ng-show="!isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
-                    button(class="btn waves-effect white-text", ng-click="getHorario()") Recargar
-                //tr(ng-show="tipoHorario==2 && registrarHorarioClases")
-                  //td(colspan="1")
-                    //p Selecciona el usuario
-                  //td(colspan="4")
-                    //div(class="input-field col s12")
-                      //select(class="browser-default", ng-model="idUsuario",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
-                        //option(value="0" disabled selected) Selecciona el usuario
-                        //option(ng-repeat="usuario in usuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
-                tr(ng-show="idUsuario!=0 && tipoHorario==2 && registrarHorarioClases")
-                  td(colspan="1")
-                    div(class="input-field col s6")
-                      input(type="text",id="textSearchMateria", ng-model="textSearchMateria", ng-change="getMateriasUsuarioByText(textSearchMateria)")
-                      label(for="textSearchMateria") Busca la materia
-                  td(colspan="2")
-                    div(class="input-field col s12", ng-show="materiasSeach.length > 0")
-                      select(class="browser-default", ng-model="idMateriaSelect",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
-                        option(value="0" disabled selected) Selecciona una materia
-                        option(ng-repeat="materia in materiasSeach", value="{{materia.id_materia}}") {{materia.id_materia}} {{materia.mat_nombre}}
-                  td(colspan="2")
-                tr(ng-show="registrarHorarioClases")
-                  td(colspan="5")
-                    button(class="btn waves-effect red white-text right",ng-click="registrarHorarioClases=false;") Cancelar
-                    button(class="btn waves-effect blue white-text right", ng-click="asignarHorarioClases()") Asignar horas
-                tr(ng-show="!isEmpty(fechaInicio) && !isEmpty(fechaFin)")
-                  td(colspan="5")
-                    p Total horas entre {{fechaInicio}} y {{fechaFin}}:
-                      label(style="font-size:20px")
-                        i {{horarioUsuario.length}} hrs.
-            div(ng-show="!registrarHorarioClases && !isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
-              horario-semana(id="horarioArea", callback="calendar", area="0")
-      div(ng-controller="MateriasController")
-        div(class="modal", id="modalMateriasUsuario")
-          div(class="modal-content")
-            h4 Materias
-            p(class="divider")
-            div(ng-show="!crearMateria")
-              div(class="input-field")
-                i(class="material-icons prefix") search
-                input(type="text", id="inputSearchMateriaUser", ng-model="wordSearchMatUser", ng-change="getMateriasUsuarioByText(wordSearchMatUser)")
-                label(for="inputSearchMateriaUser") Buscar usuario
-              table(class="bordered")
-                tr
-                  th NRC
-                  th Materia
-                  th Descripción
-                  th
-                tr(ng-show="materiasUsuario.length == 0 && (wordSearchMatUser.length == 0 || !wordSearchMatUser)")
-                  td(colspan="4") No hay materias que mostrar
-                tr(ng-show="materiasUsuario.length == 0 && wordSearchMatUser.length > 0")
-                  td(colspan="4") No hay materias que coincidan...
-                    a(href="#!", class="btn waves-effect white-text", ng-click="crearMateria=true;formMateria.id_materia=wordSearchMatUser;formMateria.mat_nombre=wordSearchMatUser;") Crear {{wordSearchMatUser}}
-                tr(ng-repeat="materia in materiasUsuario")
-                  td {{materia.id_materia}}
-                  td {{materia.mat_nombre}}
-                  td {{materia.mat_descripcion}}
-                  td
-                    a(href="#!", class="waves-effect", ng-click="asignarMateriaUsuario(materia)", title="Asignar", ng-show="materia.id_usuario == null")
-                        i(class="material-icons") add
-                    a(href="#!", class="waves-effect", ng-click="deleteMateriaUsuario(materia)", title="Eliminar asignación", ng-show="materia.id_usuario != null")
-                        i(class="material-icons") delete
-              ul(class="pagination")
-                li(class="{{pag.selected?'active':'waves-effect'}}", ng-repeat="pag in pagination", ng-click="pag.paginate()")
-                  a(href="#!") {{pag.number}}
-            div(ng-show="crearMateria")
-              table
-                tr
-                  td
-                    div(class="input-field col s6")
-                      input(id="mat_id", type="text", class="validate", ng-model="formMateria.id_materia")
-                      label(for="mat_id") NRC de la materia
-                tr
-                  td
-                    div(class="input-field col s6")
-                      input(id="mat_name", type="text", class="validate", ng-model="formMateria.mat_nombre")
-                      label(for="mat_name") Nombre de la materia
-                tr
-                  td
-                    div(class="input-field col s6")
-                      textarea(id="mat_descripcion", class="materialize-textarea", class="validate", ng-model="formMateria.mat_descripcion")
-                      label(for="mat_descripcion") Descripción del materia
-              a(href="#!" class="waves-effect btn-flat right", ng-click="crearMateria=false") Cancelar
-              button(class=" waves-effect waves-green btn-flat right", ng-click="opcionAccionMateria()", id="btnOpcionAreas") Crear
-              br
+              p(class="red-text") ACCIONES
+                br
+                br
+                button(class="btn white-text waves-effect blue", ng-click="setDatosEditarTipoInventario(tipo)") EDITAR
+                button(class="btn white-text red waves-effect", ng-click="eliminarTipoInvetario(tipo.id_tipo_inventario)") ELIMINAR
 
 
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
   script(src="/javascripts/angular/directives/fileModel.js")
-  script(src="/javascripts/angular/directives/horarioSemana.js")
-  script(src="/javascripts/angular/directives/cardLineUser.js")
-  script(src="/javascripts/angular/directives/cardDetailUser.js")
-  script(src="/javascripts/angular/services/util.js")
   script(src="/javascripts/angular/services/multipartForm.js")
-  script(src="/javascripts/angular/controllers/UsuariosController.js")
-  script(src="/javascripts/angular/controllers/HorariosController.js")
-  script(src="/javascripts/angular/controllers/MateriasController.js")
+  script(src="/javascripts/angular/services/util.js")
+  script(src="/javascripts/angular/controllers/TiposInventarios.js")

@@ -1,4 +1,4 @@
-SIACCApp.controller("AreasController", ["$scope", "$http", "scopes" function($scope, $http, scopes) {
+SIACCApp.controller("AreasController", ["$scope", "$http", "scopes", function($scope, $http, scopes) {
 
   scopes.set("AreasController", $scope);
 
