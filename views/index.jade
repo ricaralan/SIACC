@@ -36,7 +36,7 @@ block content
         div(class="row")
           div(class="card small col s12 m6 l4", ng-repeat="area in areas")
             div(class="card-image waves-effect waves-block waves-light")
-              img(class="activator" src="/images/system/escritorio-area.png")
+              img(class="activator" src="{{getTipoArea(area.are_id_tipo_area).tipo_imagen}}")
             div(class="card-content")
               span(class="card-title activator grey-text text-darken-4") {{area.are_nombre}}
                 i(class="material-icons right") more_vert
@@ -46,7 +46,9 @@ block content
                 i(class="material-icons right") close
               P
                 button(class="btn waves-effect white-text", ng-click="setInventario(area.id_area)") Inventarios
-              p(class="red-text") DANGER ZONE
+              p
+                button(class="btn waves-effect white-text", ng-click="setControlAcceso(area.id_area)") Control de acceso
+              p(class="red-text") ZONA DE PELIGRO
                 br
                 button(class="btn white-text waves-effect blue", ng-click="setDatosEditarArea(area.id_area)") EDITAR
                 button(class="btn white-text red waves-effect", ng-click="eliminarArea(area.id_area)") ELIMINAR
@@ -55,7 +57,7 @@ block content
 
 
     // INVENTARIOS
-    div(style="position:fixed;background-color:rgba(0,0,0,.6);width:100%;height:100%;top:0;left:0;z-index:9999;overflow:hidden", id="xy", hidden, ng-controller="InventariosController")
+    div(style="position:fixed;background-color:rgba(0,0,0,.6);width:100%;height:100%;top:0;left:0;z-index:9999;overflow:hidden", id="contentInventarios", hidden, ng-controller="InventariosController")
       // MODAL RESGUARDO INVENTARIO
       div(id="modalResguardoInventario" class="modal", style="z-index:9999;")
         div(class="modal-content", style="z-index:9999;")
@@ -126,11 +128,14 @@ block content
                   input(id="inv_capacidad", type="number", step="any", class="validate", ng-model="formInventario.inv_capacidad")
                   label(for="inv_capacidad") Capacidad GB
             tr(ng-show="formInventario.inv_tipo")
-              td(colspan="2")
+              td(colspan="1")
                 div(class="input-field col s6")
                   input(id="inv_marca", type="text", class="validate", ng-model="formInventario.inv_marca")
                   label(for="inv_marca") Marca
               td(colspan="2")
+                input(type="checkbox", id="checkUsarCA", ng-model="formInventario.inv_usar_control_acceso")
+                label(for="checkUsarCA") Usuarios diferente a SS pueden utilizar
+              td(colspan="1")
                 select(class="browser-default", ng-model="formInventario.inv_status")
                   option(value="" disabled selected) Selecciona el tipo de estado
                   option(value="1") Bueno
@@ -147,13 +152,13 @@ block content
 
 
       div(style="position:relative;width:80%;margin-left:10%;background-color:#fff;padding:10px;margin-top:20px;")
-        i(onclick="document.getElementById('xy').setAttribute('hidden','');document.getElementsByTagName('body')[0].style.overflow='auto';",class="material-icons prefix",style="position:absolute;right:0;padding:5px;cursor:pointer;") close
+        i(onclick="document.getElementById('contentInventarios').setAttribute('hidden','');document.getElementsByTagName('body')[0].style.overflow='auto';",class="material-icons prefix",style="position:absolute;right:0;padding:5px;cursor:pointer;") close
         h4 Inventario de {{area.are_nombre}}
         div(class="row")
             div(class="col s12")
               ul(class="tabs card")
                 li(class="tab col s2", ng-repeat="tipo in tiposInventarios")
-                  a(href="!#", ng-click="getInventarioTipoArea(tipo.id_tipo_inventario)") {{tipo.tin_nombre}}
+                  a(href="!#", ng-click="getInventarioTipoArea(tipo.id_tipo_inventario)", class="waves-effect") {{tipo.tin_nombre}}
         div(class="row", style="margin:0;padding:0")
             div(class="input-field col s5", ng-show="inventarios.length > 0", style="margin:0;padding:0")
               i(class="material-icons prefix") search
@@ -165,6 +170,7 @@ block content
 
         // CONTENT INVENTARIOS
         div(style="width:100%;left:0;height:400px !important;background-color:#fff;position:absolute;padding:10px;overflow:auto;")
+          h4(ng-show="inventarios.length==0", style="text-align:center;") No hay inventario registrado
           div(class="row")
             div(class="card small col s12 m6 l4", ng-repeat="inventario in inventarios | filter:searchInventario")
               div(class="card-image waves-effect waves-block waves-light")
@@ -212,10 +218,88 @@ block content
                   button(class="btn white-text red waves-effect", ng-click="eliminarInventario(inventario.num_inventario)") ELIMINAR
                   button(class="btn waves-effect yellow", ng-click="setInventario(area.id_area)") Dar de baja
 
+    div(style="position:fixed;background-color:rgba(0,0,0,.6);width:100%;height:100%;top:0;left:0;z-index:9999;overflow:hidden", id="contentControlAcceso", hidden, ng-controller="ControlAccesoController")
+      div(style="position:relative;width:80%;margin-left:10%;background-color:#fff;padding:10px;margin-top:20px;")
+        i(onclick="document.getElementById('contentControlAcceso').setAttribute('hidden','');document.getElementsByTagName('body')[0].style.overflow='auto';",class="material-icons prefix",style="position:absolute;right:0;padding:5px;cursor:pointer;") close
+        h4 Control de acceso
+        div(class="row")
+            div(class="col s12")
+              ul(class="tabs card", ng-init="initTabsAcceso('#tabsAcceso')", id="tabsAcceso")
+                li(class="tab col s2")
+                  a(href="#a1", class="waves-effect", ng-click="getAccesos(1)") Acceso simple
+                li(class="tab col s2")
+                  a(href="#a2", class="waves-effect", ng-click="getAccesos(2)") Acceso a y utilización de equipo de cómputo
+        div(class="input-field col s5", style="margin:0;padding:0", ng-show="accesos.length>0")
+          i(class="material-icons prefix") search
+          input(type="text", ng-model="searchAcceso")
+          label(for="icon_prefix") Buscar...
+        div(style="width:100%;left:0;height:400px !important;background-color:#fff;position:absolute;padding:10px;overflow:auto;")
+          div(ng-show="tipoAcceso == 1")
+            button(class="btn waves-effect right white-text", ng-click="setDatosRegistrarAcceso()") Registrar acceso
+            table(class="bordered")
+              tr
+                th Matricula/No. Personal
+                th Nombre
+                th Fecha inicio
+                th Hora inicio
+                td Registrar
+              tr(ng-repeat="acceso in accesos | filter:searchAcceso")
+                td {{acceso.id_usuario}}
+                td {{acceso.usu_nombre}} {{acceso.usu_primer_apellido}} {{acceso.usu_segundo_apellido}}
+                td {{acceso.acc_fecha_registro.split("T")[0]}}
+                td {{acceso.acc_hora_inicio}}
+                td
+                  button(class="btn waves-effect red white-text", ng-click="setDatosRegistrarSalida(acceso)") Salida
+          div(ng-show="tipoAcceso==2")
+            table(class="bordered")
+              tr
+                th #
+                th No. Inventario
+                th Matricula/No. Personal
+                th Nombre
+                th Fecha inicio
+                th Hora inicio
+                th Registrar
+              tr(ng-repeat="acceso in accesos | filter:searchAcceso")
+                td {{acceso.inv_num_maq}}
+                td {{acceso.num_inventario}}
+                td {{acceso.id_usuario}}
+                td {{acceso.usu_nombre}} {{acceso.usu_primer_apellido}} {{acceso.usu_segundo_apellido}}
+                td {{acceso.acc_fecha_registro.split("T")[0]}}
+                td {{acceso.acc_hora_inicio}}
+                td
+                  button(class="btn waves-effect blue white-text", ng-click="setDatosRegistrarAcceso(acceso)", ng-show="!acceso.id_usuario") Acceso
+                  button(class="btn waves-effect red white-text", ng-click="setDatosRegistrarSalida(acceso)", ng-show="acceso.id_usuario") Salida
 
+        // MODAL OPCIONES ACCESO
+        div(id="modalOpcionesAcceso" class="modal", style="z-index:9999;")
+          div(class="modal-content", style="z-index:9999;")
+            i(class="right material-icons", onclick='$("#modalOpcionesAcceso").closeModal();', style="cursor:pointer;") close
+            h4 Acceso
+            table(class="bordered")
+              tr
+                th Busque el usuario
+                th Seleccione el usuario
+              tr
+                td
+                  div(class="input-field col s5", style="margin:0;padding:0")
+                    i(class="material-icons prefix") search
+                    input(type="text", ng-model="searchUsuarioAcceso", ng-change="buscarUsuarios(searchUsuarioAcceso)", id="searchUsuarioAcceso")
+                    label(for="icon_prefix") Buscar...
+                td
+                  select(class="browser-default", ng-model="idUsuarioAcceso")
+                    option(value="" disabled selected) Selecciona el usuario
+                    option(ng-repeat="usuario in findUsuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+              tr(ng-show="datosInventarioAcceso.num_inventario")
+                td
+                  p No. Inventario: {{datosInventarioAcceso.num_inventario}}
+                td
+                  p Equipo No. {{datosInventarioAcceso.inv_num_maq}}
 
+            button(class="btn waves-effect right white-text", ng-show="idUsuarioAcceso!=null", ng-click="opcionAcceso()") REGISTRAR {{registrarAccesoBoolean?"ACCESO":"SALIDA"}}
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
   script(src="/javascripts/angular/services/util.js")
   script(src="/javascripts/angular/controllers/AreasController.js")
   script(src="/javascripts/angular/controllers/InventariosController.js")
+  script(src="/javascripts/angular/controllers/ControlAccesoController.js")

@@ -7,7 +7,7 @@ var InventariosController = function() {
 var self;
 
 InventariosController.prototype.getInventarioTipoArea = function(idArea, tipoInv,callback) {
-  query = "SELECT id_resguardo,rin_id_usuario,num_inventario,inv_id_area,inv_tipo,inv_num_maq,"
+  query = "SELECT id_resguardo,inv_usar_control_acceso,rin_id_usuario,num_inventario,inv_id_area,inv_tipo,inv_num_maq,"
         + "inv_ram,inv_procesador,inv_vel_procesador,inv_capacidad,inv_no_serie,"
         + "inv_marca,inv_status,inv_disponibilidad,inv_descripcion FROM inventario "
         + "LEFT JOIN resguardo_inventario ON num_inventario=rin_num_inventario AND "
@@ -33,7 +33,8 @@ InventariosController.prototype.update = function(jsonData, numInventario, callb
     inv_marca : jsonData.inv_marca,
     inv_status : jsonData.inv_status,
     inv_disponibilidad : jsonData.inv_disponibilidad,
-    inv_descripcion : jsonData.inv_descripcion
+    inv_descripcion : jsonData.inv_descripcion,
+    inv_usar_control_acceso : jsonData.inv_usar_control_acceso
   }, { num_inventario : numInventario }, callback);
 };
 

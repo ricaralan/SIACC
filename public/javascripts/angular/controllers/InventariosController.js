@@ -76,6 +76,7 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
       $scope.opcAccion = "Editar";
       $scope.crearInventario = false;
       $scope.formInventario = inventario;
+      $scope.formInventario.inv_usar_control_acceso = $scope.formInventario.inv_usar_control_acceso==1;
     }, 0);
     $("#modalOpcionesInventarios").openModal();
   };

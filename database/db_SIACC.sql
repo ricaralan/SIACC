@@ -160,6 +160,7 @@
   num_inventario VARCHAR(20) PRIMARY KEY,
   inv_id_area INT,
   inv_tipo INT(2) NOT NULL,
+  inv_usar_control_acceso BOOLEAN,
   inv_num_maq INT(3),
   inv_ram double,
   inv_procesador VARCHAR(20),
@@ -201,32 +202,19 @@
   FOREIGN KEY(rin_id_usuario) REFERENCES usuario(id_usuario)
   );
 
-  # Esta tabla llevará el registro de ingreso de usuarios a los centros de computo.
-  CREATE TABLE acceso_a_centro_de_computo(
-  id_entrada INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  acc_id_usuario VARCHAR(9) NOT NULL,
+  # Esta tabla llevará el registro de ingreso de usuarios a las areás
+  CREATE TABLE acceso_area(
+  id_acceso INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  acc_id_area INT NOT NULL,
+  acc_id_usuario VARCHAR(10) NOT NULL,
   acc_id_inventario VARCHAR(20),
   acc_fecha_registro date NOT NULL,
   acc_hora_inicio time NOT NULL,
   acc_hora_fin time NOT NULL,
-  acc_tot_pago double,
-  acc_salida BOOLEAN NOT NULL,
-  FOREIGN KEY (acc_id_usuario) REFERENCES usuario (id_usuario),
+  FOREIGN KEY (acc_id_area) REFERENCES area(id_area),
+  FOREIGN KEY (acc_id_usuario) REFERENCES usuario(id_usuario),
   FOREIGN KEY (acc_id_inventario) REFERENCES inventario(num_inventario)
   );
-
-  # Esta tabla llevará el registro de ingreso de usuarios a las areas.
-  # Esto puede ser util para usar en una biblioteca o en un evento
-  CREATE TABLE acceso_area(
-  id_entrada INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  aa_id_usuario VARCHAR(9) NOT NULL,
-  aa_fecha_registro date NOT NULL,
-  aa_hora_inicio time NOT NULL,
-  aa_hora_fin time NOT NULL,
-  aa_salida BOOLEAN NOT NULL,
-  FOREIGN KEY (aa_id_usuario) REFERENCES usuario (id_usuario)
-  );
-
 
   /**
   * INSERTS CARRERAS

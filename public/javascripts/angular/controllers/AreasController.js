@@ -3,7 +3,7 @@ SIACCApp.controller("AreasController", ["$scope", "$http", "scopes", function($s
   scopes.set("AreasController", $scope);
 
   $scope.areas = [];
-  $scope.tiposAreas;
+  $scope.tiposAreas = [];
   $scope.formArea = {};
   $scope.sePuedeCrearArea = true;
   $scope.opcAccion;
@@ -13,6 +13,15 @@ SIACCApp.controller("AreasController", ["$scope", "$http", "scopes", function($s
     $http.get("/tipoArea/getTiposArea").success(function(tiposAreas) {
       $scope.tiposAreas = tiposAreas;
     });
+  };
+
+  $scope.getTipoArea = function(idTipoArea) {
+    for(var i = 0; i < $scope.tiposAreas.length; i++) {
+      if($scope.tiposAreas[i].id_tipo_area == idTipoArea) {
+        return $scope.tiposAreas[i];
+      }
+    }
+    return null;
   };
 
   $scope.initAreas = function() {
@@ -109,7 +118,14 @@ SIACCApp.controller("AreasController", ["$scope", "$http", "scopes", function($s
   $scope.setInventario = function(idArea) {
     $scope.scopeInventarios = scopes.get("InventariosController");
     $scope.scopeInventarios.setArea(idArea);
-    document.getElementById('xy').removeAttribute('hidden');
+    document.getElementById('contentInventarios').removeAttribute('hidden');
+    document.getElementsByTagName('body')[0].style.overflow='hidden';
+  };
+
+  $scope.setControlAcceso = function(idArea) {
+    $scope.scopeControlAcceso = scopes.get("ControlAccesoController");
+    $scope.scopeControlAcceso.setArea(idArea);
+    document.getElementById('contentControlAcceso').removeAttribute('hidden');
     document.getElementsByTagName('body')[0].style.overflow='hidden';
   };
 
