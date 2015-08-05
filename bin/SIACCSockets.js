@@ -77,6 +77,13 @@ module.exports = function(server){
       io.emit("changeOnControlAcceso", mensaje);
     });
 
+    /**
+    * CHANGE ON TIPOS SERVICIOS SOCKETS
+    **/
+    socket.on("changeOnTiposServicios", function(mensaje) {
+      io.emit("changeOnTiposServicios", mensaje);
+    });
+
   });
 
 };

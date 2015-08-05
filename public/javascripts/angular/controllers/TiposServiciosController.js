@@ -3,6 +3,7 @@ SIACCApp.controller("TiposServiciosController", ["$scope", "$http", "util", func
   $scope.crearTipoServicio;
   $scope.formTipoServicio = {};
   $scope.tiposServicios = [];
+  $scope.socket = io();
 
   $scope.getTiposServicios = function() {
     $http.get("/tipo_servicio/getTiposServicios").success(function(tiposServicios) {
@@ -29,9 +30,10 @@ SIACCApp.controller("TiposServiciosController", ["$scope", "$http", "util", func
       if($scope.crearTipoServicio) {
         $http.post("/tipo_servicio/create",{jsonTipoServicio : $scope.formTipoServicio})
         .success(function(data) {
-          console.log(data);
           if(data.success) {
+            $scope.socket.emit("changeOnTiposServicios", {});
             Materialize.toast("Tipo de servicio creado correctamente", 2000);
+            $("#modalOpcionesTipoServicio").closeModal();
           }
         });
       } else {
@@ -39,8 +41,9 @@ SIACCApp.controller("TiposServiciosController", ["$scope", "$http", "util", func
           jsonTipoServicio : $scope.formTipoServicio,
           idTipoServicio : $scope.formTipoServicio.id_tipo_servicio
         }).success(function(data) {
-          console.log(data);
           if(data.success) {
+            $scope.socket.emit("changeOnTiposServicios", {});
+            $("#modalOpcionesTipoServicio").closeModal();
             Materialize.toast("Tipo de servicio editado correctamente", 2000);
           }
         });
@@ -53,7 +56,9 @@ SIACCApp.controller("TiposServiciosController", ["$scope", "$http", "util", func
   $scope.deleteTipoServicio = function(idTipoServicio) {
     if(confirm("¿Esta seguro de eliminar el tipo de servicio?")) {
       $http.delete("/tipo_servicio/delete/"+idTipoServicio).success(function(data) {
-        console.log(data);
+        if(data.success) {
+          $scope.socket.emit("changeOnTiposServicios", {});
+        }
       });
     }
   };
@@ -61,5 +66,9 @@ SIACCApp.controller("TiposServiciosController", ["$scope", "$http", "util", func
   $scope.formularioValido = function() {
     return !util.empty($scope.formTipoServicio.tse_nombre);
   };
+
+  $scope.socket.on("changeOnTiposServicios", function(data) {
+    $scope.getTiposServicios();
+  });
 
 }]);
