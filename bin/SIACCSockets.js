@@ -70,6 +70,13 @@ module.exports = function(server){
       io.emit("changeOnInventarios", mensaje);
     });
 
+    /**
+    * CHANGE ON CONTROL DE ACCESO SOCKETS
+    **/
+    socket.on("changeOnControlAcceso", function(mensaje) {
+      io.emit("changeOnControlAcceso", mensaje);
+    });
+
   });
 
 };

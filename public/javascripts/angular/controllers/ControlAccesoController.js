@@ -19,15 +19,14 @@ SIACCApp.controller("ControlAccesoController", ["$scope", "$http", "scopes", "ut
   };
 
   $scope.getAccesos = function(tipoAcceso) {
-    $scope.tipoAcceso = tipoAcceso;
-    URI = "/acceso_area/getTipoAccesosActualesArea/"+tipoAcceso+"/"+$scope.idArea;
-    if(tipoAcceso == 1 || tipoAcceso == 2) {
+    if(!util.empty(tipoAcceso)) {
+      $scope.tipoAcceso = tipoAcceso;
+    }
+    URI = "/acceso_area/getTipoAccesosActualesArea/"+$scope.tipoAcceso+"/"+$scope.idArea;
+    if($scope.tipoAcceso == 1 || $scope.tipoAcceso == 2) {
       $http.get(URI).success(function(accesos) {
         $scope.accesos = accesos;
       });
-    } else {
-      // ERROR SOLO EXISTEN DOS TIPOS DE ACCESO!!
-      alert("ERROR: tipo de acceso no valido!");
     }
   };
 
@@ -81,7 +80,7 @@ SIACCApp.controller("ControlAccesoController", ["$scope", "$http", "scopes", "ut
       $http.post("/acceso_area/registrarAcceso", {jsonData:json}).success(function(data) {
         if(data.success) {
           // AQUÍ VA EL SOCKET
-          $scope.getAccesos($scope.tipoAcceso);
+          $scope.socket.emit("changeOnControlAcceso", {});
           $("#modalOpcionesAcceso").closeModal();
           Materialize.toast("Acceso registrado correctamente", 2000);
         }
@@ -96,7 +95,7 @@ SIACCApp.controller("ControlAccesoController", ["$scope", "$http", "scopes", "ut
       id_acceso : $scope.datosInventarioAcceso.id_acceso,
       acc_hora_fin : util.getHour()
     }).success(function(data) {
-      $scope.getAccesos($scope.tipoAcceso);
+      $scope.socket.emit("changeOnControlAcceso", {});
       $("#modalOpcionesAcceso").closeModal();
       Materialize.toast("Salida registrada correctamente", 2000);
     });
@@ -111,5 +110,9 @@ SIACCApp.controller("ControlAccesoController", ["$scope", "$http", "scopes", "ut
     }
     return true;
   };
+
+  $scope.socket.on("changeOnControlAcceso", function(data) {
+    $scope.getAccesos();
+  });
 
 }]);
