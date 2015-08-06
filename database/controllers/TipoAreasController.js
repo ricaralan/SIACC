@@ -36,25 +36,28 @@ TiposAreasController.prototype.createPermisos = function(idTipoArea, idPermiso, 
   self.abstractModel.insert("permiso_asignado", {
     moa_id_tipo_area : idTipoArea,
     moa_id_permiso : idPermiso,
-    moa_ver : jsonPermisos.moa_ver,
-    moa_crear : jsonPermisos.moa_crear,
-    moa_editar : jsonPermisos.moa_editar,
-    moa_eliminar : jsonPermisos.moa_eliminar
+    moa_ver : jsonPermisos.moa_ver
   }, function(err, data) { });
 };
 
 TiposAreasController.prototype.updatePermisos = function(idTipoArea, idPermiso, jsonPermisos) {
-  self.abstractModel.update("permiso_asignado", {
-    moa_id_tipo_area : idTipoArea,
-    moa_id_permiso : idPermiso,
-    moa_ver : jsonPermisos.moa_ver,
-    moa_crear : jsonPermisos.moa_crear,
-    moa_editar : jsonPermisos.moa_editar,
-    moa_eliminar : jsonPermisos.moa_eliminar
-  }, {
+  self.abstractModel.select("permiso_asignado",["moa_id_tipo_area"],{
     moa_id_tipo_area : idTipoArea,
     moa_id_permiso : idPermiso
-  }, function(err, data) {});
+  }, function(err, permisos) {
+    if(permisos.length == 0) {
+      self.createPermisos(idTipoArea, idPermiso, jsonPermisos);
+    } else {
+      self.abstractModel.update("permiso_asignado", {
+        moa_id_tipo_area : idTipoArea,
+        moa_id_permiso : idPermiso,
+        moa_ver : jsonPermisos.moa_ver
+      }, {
+        moa_id_tipo_area : idTipoArea,
+        moa_id_permiso : idPermiso
+      }, function(err, data) {});
+    }
+  });
 };
 
 TiposAreasController.prototype.create = function(jsonData, callback) {

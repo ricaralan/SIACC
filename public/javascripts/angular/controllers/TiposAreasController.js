@@ -45,10 +45,10 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
         var uploadURI = "/tipoArea/create/";
         multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
           if(data.success) {
-            $http.post("/tipoArea/asignarPermisosTipoArea",{idTipoArea:data.idTipoArea, permisos : $scope.getPermisosSeleccionados()})
-              .success(function(data) {
-                console.log(data);
-            });
+            $http.post("/tipoArea/asignarPermisosTipoArea",{
+              idTipoArea:data.idTipoArea,
+              permisos : $scope.getPermisosSeleccionados()
+              }).success(function(data) {});
             $scope.socket.emit("changeOnTiposAreas", {});
             $scope.cleanFormTipoArea();
             Materialize.toast("El tipo de área se creó correctamente!", 4000);
@@ -61,10 +61,10 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
         var uploadURI = "/tipoArea/update/";
         multipartForm.put(uploadURI, $scope.formTipoArea, function(data) {
           if(data.success) {
-            $http.put("/tipoArea/updatePermisosTipoArea",{idTipoArea:$scope.formTipoArea.id_tipo_area, permisos : $scope.getPermisosSeleccionados()})
-              .success(function(data) {
-                console.log(data);
-            });
+            $http.put("/tipoArea/updatePermisosTipoArea", {
+              idTipoArea:$scope.formTipoArea.id_tipo_area,
+              permisos : $scope.getPermisosSeleccionados()
+            }).success(function(data) {});
             $scope.socket.emit("changeOnTiposAreas", {});
             $scope.cleanFormTipoArea();
             Materialize.toast("El tipo de área se editó correctamente!", 4000);

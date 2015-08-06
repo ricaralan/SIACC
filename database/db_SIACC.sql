@@ -53,7 +53,8 @@
   * Esta tabla guardará los modulos que puede ver un tipo de usuario
   */
   CREATE TABLE permiso_asignado(
-  moa_id_permiso VARCHAR(25) NOT NULL PRIMARY KEY,
+  id_permiso_asignado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  moa_id_permiso VARCHAR(25) NOT NULL,
   /* Asignación de permiso a usuario */
   moa_id_tipo_usuario INT,
   /* ó asignación a un tipo de área */
