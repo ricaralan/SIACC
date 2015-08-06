@@ -11,13 +11,11 @@ router.get("/getTiposArea", function(req, res) {
   })
 });
 
-/** TODO REVISAR SI ESTO YA NO SE UTILIZARÁ... Para eliminar código basura
-router.get("/getModulosControladosPorAreas", function(req, res) {
-  controller.getModulosControladosPorAreas(function(modulos) {
-    res.send(modulos);
+router.get("/getPermisosTipoArea/:idTipoArea", function(req, res) {
+  controller.getPermisosTipoArea(req.params.idTipoArea, function(err, data) {
+    res.send(data);
   });
 });
-*/
 
 router.post("/create/", function(req, res) {
   var file = req.files.tipo_foto;
@@ -47,10 +45,26 @@ router.post("/create/", function(req, res) {
             }
         });
       }
-      res.send({success : true});
+      res.send({success : true, idTipoArea : data.insertId});
     }else {
       res.send({success : false, err : err});
     }
+  });
+});
+
+router.post("/asignarPermisosTipoArea", function(req, res) {
+  idTipoArea = req.body.idTipoArea;
+  permisos = req.body.permisos;
+  controller.asignarPermisosTipoArea(idTipoArea, permisos, function(err, data) {
+    res.send(data);
+  });
+});
+
+router.put("/updatePermisosTipoArea", function(req, res) {
+  idTipoArea = req.body.idTipoArea;
+  permisos = req.body.permisos;
+  controller.updatePermisosTipoArea(idTipoArea, permisos, function(err, data) {
+    res.send(data);
   });
 });
 

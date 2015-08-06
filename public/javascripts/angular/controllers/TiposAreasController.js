@@ -4,12 +4,31 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
   $scope.formTipoArea = {};
   $scope.registrarTipoArea = true;
   $scope.opcAccion;
+  $scope.todosLosPermisos = [];
   $scope.socket = io();
 
   $scope.getTiposAreas = function() {
     $http.get("/tipoArea/getTiposArea").success(function(tiposAreas) {
       $scope.tiposAreas = tiposAreas;
     });
+  };
+
+  $scope.getTodosLosPermisos = function() {
+    $http.get("/permisos/getPermisos").success(function(permisos) {
+      $scope.todosLosPermisos = permisos;
+    });
+  };
+
+  $scope.getPermisosSeleccionados = function() {
+    var arrayChecks = {};
+    var checks = document.getElementsByClassName("checksOpcUsuario");
+    for(var i = 0; i < checks.length; i++) {
+      if(!arrayChecks[checks[i].getAttribute("permiso")]) {
+        arrayChecks[checks[i].getAttribute("permiso")] = {};
+      }
+      arrayChecks[checks[i].getAttribute("permiso")][checks[i].id.split("-")[1]] = checks[i].checked;
+    }
+    return arrayChecks;
   };
 
   $scope.setDatosCrearTipoArea = function() {
@@ -26,6 +45,10 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
         var uploadURI = "/tipoArea/create/";
         multipartForm.post(uploadURI, $scope.formTipoArea, function(data) {
           if(data.success) {
+            $http.post("/tipoArea/asignarPermisosTipoArea",{idTipoArea:data.idTipoArea, permisos : $scope.getPermisosSeleccionados()})
+              .success(function(data) {
+                console.log(data);
+            });
             $scope.socket.emit("changeOnTiposAreas", {});
             $scope.cleanFormTipoArea();
             Materialize.toast("El tipo de área se creó correctamente!", 4000);
@@ -38,6 +61,10 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
         var uploadURI = "/tipoArea/update/";
         multipartForm.put(uploadURI, $scope.formTipoArea, function(data) {
           if(data.success) {
+            $http.put("/tipoArea/updatePermisosTipoArea",{idTipoArea:$scope.formTipoArea.id_tipo_area, permisos : $scope.getPermisosSeleccionados()})
+              .success(function(data) {
+                console.log(data);
+            });
             $scope.socket.emit("changeOnTiposAreas", {});
             $scope.cleanFormTipoArea();
             Materialize.toast("El tipo de área se editó correctamente!", 4000);
@@ -71,10 +98,24 @@ SIACCApp.controller("TiposAreasController", ["$scope","$http","multipartForm", "
   };
 
   $scope.setDatosEditarTipoArea = function(tipoArea) {
+    $http.get("/tipoArea/getPermisosTipoArea/"+tipoArea.id_tipo_area)
+    .success(function(data) {
+      $scope.setSelectedPermisosTiposUsuario(data);
+    });
     $scope.formTipoArea = tipoArea;
     $scope.registrarTipoArea = false;
     $scope.opcAccion = "Editar";
     $('#modalOpcionesTipoArea').openModal();
+  };
+
+  $scope.setSelectedPermisosTiposUsuario = function(permisos) {
+    for(var i = 0; i < permisos.length; i++) {
+      $scope.checkedPermisoById("check-moa_ver-"+permisos[i].id_permiso, permisos[i].moa_ver);
+    }
+  };
+
+  $scope.checkedPermisoById = function(id, permiso) {
+    document.getElementById(id).checked = !util.empty(permiso) && permiso == 1;
   };
 
   $scope.cleanFormTipoArea = function() {

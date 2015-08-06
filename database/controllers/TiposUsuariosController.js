@@ -13,9 +13,6 @@ TiposUsuariosController.prototype.getTiposUsuario = function(callback) {
 };
 
 TiposUsuariosController.prototype.getPermisosTipoUsuario = function(idTipoUsuario, callback) {
-  /*self.abstractModel.select("permiso_asignado",[
-    "moa_id_permiso", "moa_ver", "moa_crear", "moa_editar", "moa_eliminar"
-  ], { moa_id_tipo_usuario : idTipoUsuario }, callback);*/
   query = "SELECT id_permiso, moa_id_permiso, moa_ver, moa_crear, moa_editar, moa_eliminar FROM "
         + "permiso LEFT JOIN permiso_asignado ON id_permiso=moa_id_permiso AND moa_id_tipo_usuario="+idTipoUsuario;
   self.connection.query(query, callback);
@@ -25,7 +22,7 @@ TiposUsuariosController.prototype.create = function(jsonDataTipoUsuario, jsonPer
   self.abstractModel.insert(self.table, jsonDataTipoUsuario, function(err, data) {
     if(!err) {
       for(permiso in jsonPermisos) {
-        self.createPermisos(data.insertId , permiso, jsonPermisos[permiso]);
+        self.createPermisos(data.insertId, permiso, jsonPermisos[permiso]);
       }
       // Esto tiene que arrojar el estado completo de la inserción... El error, etc...
       callback({success : true});

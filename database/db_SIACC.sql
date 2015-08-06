@@ -53,7 +53,7 @@
   * Esta tabla guardará los modulos que puede ver un tipo de usuario
   */
   CREATE TABLE permiso_asignado(
-  moa_id_permiso VARCHAR(25) NOT NULL,
+  moa_id_permiso VARCHAR(25) NOT NULL PRIMARY KEY,
   /* Asignación de permiso a usuario */
   moa_id_tipo_usuario INT,
   /* ó asignación a un tipo de área */
@@ -66,7 +66,6 @@
   moa_crear BOOLEAN,
   moa_editar BOOLEAN,
   moa_eliminar BOOLEAN,
-  PRIMARY KEY(moa_id_permiso, moa_id_tipo_usuario),
   FOREIGN KEY(moa_id_permiso) REFERENCES permiso(id_permiso),
   FOREIGN KEY(moa_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario),
   FOREIGN KEY(moa_id_tipo_area) REFERENCES tipo_area(id_tipo_area)

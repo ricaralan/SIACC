@@ -12,24 +12,49 @@ TiposAreasController.prototype.getTiposArea = function(callback) {
     ], {}, callback);
 };
 
-/**
-* Este método regresa un arreglo de json's de todas las tipos_areas... {tipo_area:[modulos_que_controla]}
-*/
-TiposAreasController.prototype.getModulosControladosPorAreas = function(callback) {
-  // TODO ELIMINAR ESTO SI NO SE PONDRÁN MODULOS POR ÁREAS!!
-  query = "SELECT id_tipo_area,tipo_nombre, moa_id_modulo, mod_nombre FROM (tipo_area "
-        + "INNER JOIN modulo_en_area ON moa_id_tipo_area=id_tipo_area)"
-        + "LEFT JOIN modulo ON id_modulo=moa_id_modulo WHERE moa_area_controla_mod=true ORDER BY id_tipo_area";
-  self.connection.query(query, function(err, tipos_areas) {
-    var json = [];
-    for(tipo in tipos_areas) {
-      if(!json[tipos_areas[tipo].id_tipo_area]){
-        json[tipos_areas[tipo].id_tipo_area] = [];
-      }
-      json[tipos_areas[tipo].id_tipo_area].push(tipos_areas[tipo]);
-    }
-    callback(json)
-  });
+TiposAreasController.prototype.getPermisosTipoArea = function(idTipoArea, callback) {
+  query = "SELECT id_permiso, moa_id_permiso, moa_ver FROM "
+        + "permiso LEFT JOIN permiso_asignado ON id_permiso=moa_id_permiso AND moa_id_tipo_area="+idTipoArea;
+  self.connection.query(query, callback);
+};
+
+TiposAreasController.prototype.asignarPermisosTipoArea = function(idTipoArea, permisos, callback) {
+  for(permiso in permisos) {
+    self.createPermisos(idTipoArea, permiso, permisos[permiso]);
+  }
+  callback({success : true});
+};
+
+TiposAreasController.prototype.updatePermisosTipoArea = function(idTipoArea, permisos, callback) {
+  for(permiso in permisos) {
+    self.updatePermisos(idTipoArea, permiso, permisos[permiso]);
+  }
+  callback({success : true});
+};
+
+TiposAreasController.prototype.createPermisos = function(idTipoArea, idPermiso, jsonPermisos) {
+  self.abstractModel.insert("permiso_asignado", {
+    moa_id_tipo_area : idTipoArea,
+    moa_id_permiso : idPermiso,
+    moa_ver : jsonPermisos.moa_ver,
+    moa_crear : jsonPermisos.moa_crear,
+    moa_editar : jsonPermisos.moa_editar,
+    moa_eliminar : jsonPermisos.moa_eliminar
+  }, function(err, data) { });
+};
+
+TiposAreasController.prototype.updatePermisos = function(idTipoArea, idPermiso, jsonPermisos) {
+  self.abstractModel.update("permiso_asignado", {
+    moa_id_tipo_area : idTipoArea,
+    moa_id_permiso : idPermiso,
+    moa_ver : jsonPermisos.moa_ver,
+    moa_crear : jsonPermisos.moa_crear,
+    moa_editar : jsonPermisos.moa_editar,
+    moa_eliminar : jsonPermisos.moa_eliminar
+  }, {
+    moa_id_tipo_area : idTipoArea,
+    moa_id_permiso : idPermiso
+  }, function(err, data) {});
 };
 
 TiposAreasController.prototype.create = function(jsonData, callback) {
