@@ -16,17 +16,17 @@ router.get("/getPermisosTipoUsuario/:idTipoUsuario", function(req, res) {
   });
 });
 
-router.post("/create/:jsonTipoUsuario/:jsonPermisos/", function(req, res) {
-  var jsonTipoUsuario = JSON.parse(req.params.jsonTipoUsuario);
-  var jsonPermisos = JSON.parse(req.params.jsonPermisos);
+router.post("/create", function(req, res) {
+  var jsonTipoUsuario = req.body.jsonTipoUsuario;
+  var jsonPermisos = req.body.jsonPermisos;
   controllerTipoUsuario.create(jsonTipoUsuario, jsonPermisos, function(data) {
     res.send(data);
   });
 });
 
-router.put("/update/:jsonTipoUsuario/:jsonPermisos/", function(req, res) {
-  var jsonTipoUsuario = JSON.parse(req.params.jsonTipoUsuario);
-  var jsonPermisos = JSON.parse(req.params.jsonPermisos);
+router.put("/update", function(req, res) {
+  var jsonTipoUsuario = req.body.jsonTipoUsuario;
+  var jsonPermisos = req.body.jsonPermisos;
   controllerTipoUsuario.update(jsonTipoUsuario, jsonPermisos, function(err, data) {
     res.send(data);
   });

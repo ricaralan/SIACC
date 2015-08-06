@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp")
+    app-for-users
+      div(id="contentApp", hidden, ng-controller="MesaAyudaSolicitanteController")
+        h3 Levantar reporte
+        h5 Datos del solicitante
+        table(class="bordered", ng-init="initDataUsuario()")
+          tr
+            th Área
+            th No. Personal
+            th Nombre
+            th Correo
+          tr
+            td {{dataUsuario.are_nombre}}
+            td {{dataUsuario.id_usuario}}
+            td {{dataUsuario.usu_nombre}} {{dataUsuario.usu_primer_apellido}} {{dataUsuario.usu_segundo_apellido}}
+            td {{dataUsuario.usu_email}}
+        h5 Detalle del problema
+        table(class="bordered", ng-init="getServicios()")
+          tr
+            th Área del solicitante
+            th Seleccione el tipo de servicio
+          tr
+            td {{dataUsuario.are_nombre}}
+            td
+              select(class="browser-default", ng-model="formMesaAyuda.mes_id_tipo_servicio")
+                option(value="-1" disabled selected) Selecciona el tipo de área
+                option(ng-repeat="servicio in servicios", value="{{servicio.id_tipo_servicio}}") {{servicio.tse_nombre}}
+                option(value="0") Otro
+        div(ng-show="formMesaAyuda.mes_id_tipo_servicio == 0", class="input-field")
+          input(type="text",id="inputOtroServicio", ng-model="formMesaAyuda.mes_otro_tipo_servicio")
+          label(for="inputOtroServicio", class="validate") Especifique su servicio en menos de 50 caracteres
+        div(ng-show="formMesaAyuda.mes_id_tipo_servicio != -1", class="input-field")
+          textarea(class="materialize-textarea", id="inputDescripcionProblema", ng-model="formMesaAyuda.mes_descripcion_problema")
+          label(for="inputDescripcionProblema", class="validate") Especifique su problema en menos de 150 caracteres
+        button(class="btn waves-effect blue white-text right", ng-click="solicitarServicio()") Solicitar servicio
+
+  script(src="/socket.io/socket.io.js")
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/services/util.js")
+  script(src="/javascripts/angular/controllers/MesaAyudaSolicitanteController.js")

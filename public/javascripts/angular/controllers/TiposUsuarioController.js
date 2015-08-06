@@ -1,4 +1,4 @@
-SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scope, $http) {
+SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", function($scope, $http, util) {
 
   $scope.tiposUsuario = [];
   $scope.todosLosPermisos = [];
@@ -27,16 +27,16 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
   };
 
   $scope.opcionTipoUsuario = function() {
-    json = encodeURIComponent(JSON.stringify({
+    json = {
       id_tipo_usuario : $scope.formTipoUsuario.id_tipo_usuario,
       tipo_nombre : $scope.formTipoUsuario.tipo_nombre,
       tipo_descripcion : $scope.formTipoUsuario.tipo_descripcion,
       tipo_asignar_carrera : document.getElementById("check_asignar_carrera").checked,
       tipo_asignar_area : document.getElementById("check_asignar_area").checked
-    }));
-    jsonPermisos = encodeURIComponent(JSON.stringify($scope.getPermisosSeleccionados()));
+    };
+    jsonPermisos = $scope.getPermisosSeleccionados();
     if($scope.crearTipoUsuario) {
-      $http.post("/tipo_usuario/create/"+json+"/"+jsonPermisos).success(function(data) {
+      $http.post("/tipo_usuario/create/",{jsonTipoUsuario:json, jsonPermisos:jsonPermisos}).success(function(data) {
         if(data.success) {
           $("#modalOpcionesTipoUsuario").closeModal();
           $scope.socket.emit("changeOnTiposUsuarios", {});
@@ -44,7 +44,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
         }
       });
     } else {
-      $http.put("/tipo_usuario/update/"+json+"/"+jsonPermisos).success(function(data) {
+      $http.put("/tipo_usuario/update/",{jsonTipoUsuario:json, jsonPermisos:jsonPermisos}).success(function(data) {
         $("#modalOpcionesTipoUsuario").closeModal();
         $scope.socket.emit("changeOnTiposUsuarios", {});
         Materialize.toast("El tipo de usuario se editó correctamente!", 4000);
@@ -53,15 +53,15 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
   };
 
   $scope.getPermisosSeleccionados = function() {
-    checks = document.getElementsByClassName("checksOpcUsuario");
-    var json = [];
+    var arrayChecks = {};
+    var checks = document.getElementsByClassName("checksOpcUsuario");
     for(var i = 0; i < checks.length; i++) {
-      json.push({
-        moa_id_permiso : checks[i].getAttribute("permiso"),
-        moa_area_controla_mod : checks[i].checked
-      });
+      if(!arrayChecks[checks[i].getAttribute("permiso")]) {
+        arrayChecks[checks[i].getAttribute("permiso")] = {};
+      }
+      arrayChecks[checks[i].getAttribute("permiso")][checks[i].id.split("-")[1]] = checks[i].checked;
     }
-    return json;
+    return arrayChecks;
   };
 
   $scope.cleanFormTipoUsuario = function() {
@@ -92,9 +92,15 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", function($scop
 
   $scope.setSelectedPermisosTiposUsuario = function(permisos) {
     for(var i = 0; i < permisos.length; i++) {
-      check = document.getElementById("check"+permisos[i].moa_id_permiso);
-      check.checked = permisos[i].moa_area_controla_mod;
+      $scope.checkedPermisoById("check-moa_ver-"+permisos[i].id_permiso, permisos[i].moa_ver);
+      $scope.checkedPermisoById("check-moa_crear-"+permisos[i].id_permiso, permisos[i].moa_crear);
+      $scope.checkedPermisoById("check-moa_editar-"+permisos[i].id_permiso, permisos[i].moa_editar);
+      $scope.checkedPermisoById("check-moa_eliminar-"+permisos[i].id_permiso, permisos[i].moa_eliminar);
     }
+  };
+
+  $scope.checkedPermisoById = function(id, permiso) {
+    document.getElementById(id).checked = !util.empty(permiso) && permiso == 1;
   };
 
   $scope.deleteTipoUsuario = function(idTipoUsuario) {

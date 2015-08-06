@@ -97,7 +97,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
       usu_id_carrera : $scope.usuarioDetalle.usu_id_carrera,
       usu_id_area : $scope.usuarioDetalle.usu_id_area
     };
-    $scope.formUsuario._id_usuario = $scope.formUsuario.id_usuario;
+    $scope.formUsuario._id_usuario = ""+$scope.formUsuario.id_usuario;
     $scope.accionUsuario = "Editar";
     $scope.cambioTipoUsuario();
   };

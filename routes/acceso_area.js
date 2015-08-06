@@ -19,6 +19,7 @@ router.get("/getTipoAccesosActualesArea/:tipoAcceso/:idArea", function(req, res)
 
 router.post("/registrarAcceso", function(req, res) {
   controller.create(req.body.jsonData, function(err, data) {
+    console.log(err, data);
     res.send( { success : !err && data.affectedRows == 1 } );
   });
 });

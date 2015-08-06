@@ -8,6 +8,11 @@ router.get('/', function(req, res) {
   res.send(req.session.user);
 });
 
+router.get("/getIdUsuarioLogueado", function(req, res) {
+  // CUANDO ESTEN LAS SESIONES SE DEBE CAMBIAR ESTO POR SESIONES req.session.user...
+  res.send({idUsuario : "S000"});
+});
+
 router.get("/getDataUsuario/:idUsuario", function(req, res) {
   var idUsuario = req.params.idUsuario;
   controller.getDataUsuario(idUsuario, function(err, usuario) {

@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp")
+    app-for-users
+      div(id="contentApp", hidden, ng-controller="TiposServiciosController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoServicio()") Crear nuevo
+        h3 Tipos de servicio - mesa de ayuda
+        // MODAL OPCIONES TIPOS SERVICIOS
+        div(id="modalOpcionesTipoServicio" class="modal")
+          div(class="modal-content")
+            h4 {{opcAccion}} tipo servicio
+            table
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="carrera_nombre", type="text", class="validate", ng-model="formTipoServicio.tse_nombre")
+                    label(for="carrera_nombre") Nombre del tipo de servicio
+              tr
+                td
+                  div(class="input-field col s6")
+                    textarea(id="descripcionTipoServicio", class="materialize-textarea", ng-model="formTipoServicio.tse_descripcion")
+                    label(for="descripcionTipoServicio") Descripción del servicio
+
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoServicio()", id="btnOpcionCarrera") {{opcAccion}}
+
+        table(class="bordered", ng-init="getTiposServicios()")
+          tr
+            th  Nombre
+            th  Descripción
+            th
+          tr(ng-repeat="tipo in tiposServicios")
+            td {{tipo.tse_nombre}}
+            td {{tipo.tse_descripcion}}
+            td
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoServicio(tipo.id_tipo_servicio)") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarTipoServicio(tipo)") Editar
+
+  script(src="/socket.io/socket.io.js")
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/services/util.js")
+  script(src="/javascripts/angular/controllers/TiposServiciosController.js")
