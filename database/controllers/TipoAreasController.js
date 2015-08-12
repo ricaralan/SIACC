@@ -69,7 +69,11 @@ TiposAreasController.prototype.update = function(jsonData, id_tipo_area, callbac
 };
 
 TiposAreasController.prototype.delete = function(id_tipo_area, callback) {
-  self.abstractModel.delete(self.table, { id_tipo_area : id_tipo_area }, callback);
+  self.abstractModel.delete("permiso_asignado", { moa_id_tipo_area : id_tipo_area }, function(err, data) {
+    if(!err) {
+      self.abstractModel.delete(self.table, { id_tipo_area : id_tipo_area }, callback);
+    }
+  });
 };
 
 module.exports = new TiposAreasController();
