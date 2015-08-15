@@ -2,6 +2,10 @@ var express = require("express");
 var router = express.Router();
 var controller = require("../database/controllers/CarrerasController");
 
+router.get("/", function(req, res) {
+  res.render('carreras', { title: 'SIACC'});
+});
+
 router.get("/getCarreras", function(req, res) {
   controller.getCarreras(function(err, carreras) {
     if(!err) {

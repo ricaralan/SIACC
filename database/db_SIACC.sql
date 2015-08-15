@@ -16,6 +16,8 @@
   CREATE TABLE permiso(
   id_permiso VARCHAR(25) NOT NULL PRIMARY KEY,
   per_nombre VARCHAR(80),
+  per_nombre_corto VARCHAR(50),
+  per_url VARCHAR(70),
   per_descripcion VARCHAR(200)
   );
 
@@ -287,27 +289,20 @@
   * INSERTS permisos
   */
 
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("asignacion_materias", "Asignación de materias", "Esto permite saber las materias que imparte un usuario");
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("asignacion_materias", "Asignación de materias","materias", "/materias", "Esto permite saber las materias que imparte un usuario");
 
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("usuarios", "Control de usuarios", "Este módulo da acceso al control de usuarios, pero los tipos de usuarios permitidos se dan en otra tabla...");
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("inventarios", "Control de inventarios", "Este módulo controla los inventarios de el área");
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("usuarios", "Control de usuarios", "usuarios", "/usuarios", "Este módulo da acceso al control de usuarios, pero los tipos de usuarios permitidos se dan en otra tabla...");
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("inventarios", "Control de inventarios", "inventarios", "/inventarios", "Este módulo controla los inventarios de el área");
   /* Control de acceso de tipo 1: controla solo el acceso a un área */
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("acceso_simple", "Control de acceso de usuarios", "Control de acceso de tipo 1: controla solo el acceso a un área");
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("acceso_simple", "Control de acceso de usuarios", "control acceso simple", "/acceso_area", "Control de acceso de tipo 1: controla solo el acceso a un área");
   /* Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo  */
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("acceso_equipo_computo", "Control de acceso de usuarios y uso de equipo de computo", "Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo");
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("acceso_equipo_computo", "Control de acceso de usuarios y uso de equipo de computo", "control acceso inventario", "/acceso_area", "Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo");
   /* Modulo de mesa de ayuda de tipo 1: Es control en modo administrador */
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda en modo administrador", "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda en modo administrador", "mesa de ayuda", "/acceso_area", "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
   /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda en modo solicitante", "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda en modo solicitante", "mesa de ayuda", "/mesa_ayuda", "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
   /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
-  INSERT INTO permiso(id_permiso, per_nombre, per_descripcion) VALUES("system_config", "Configuraciones que mueven el sistema", "Configuraciones de todo el sistema");
-
-  /**
-  * INSERTS PERMISOS POR TIPO DE USUARIO
-  */
-  /* Permisos del coordinador */
-
-
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("system_config", "Configuraciones que mueven el sistema", "configuraciones", "/configuraciones", "Configuraciones de todo el sistema");
 
   /*****************************************************************************
   * INSERT TIPO DE ÁREA
@@ -317,16 +312,6 @@
   * INSERT AREA DE PRUEBA
   *****************************************************************************/
   INSERT INTO area(are_nombre, are_id_tipo_area) VALUES("AREA DE PRUEBA", 1);
-
-  /*****************
-  * INSERT MÓDULO EN ÁREA(MÓDULOS QUE CONTROLA EL ÁREA PRINCIPAL)
-  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "usuarios", 1);
-  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "inventarios", 1);
-  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "acceso_simple", 0);
-  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "acceso_equipo_computo", 1);
-  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_administrador", 1);
-  INSERT INTO modulo_en_area(moa_id_tipo_area, moa_id_modulo, moa_area_controla_mod) VALUES(1, "mesa_ayuda_solicitante", 1);
-  *****************************************************************************/
 
   /***
   * INSERTS TIPOS DE INVENTARIO

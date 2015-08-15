@@ -2,6 +2,10 @@ var express = require("express");
 var router = express.Router();
 var controller = require("../database/controllers/TiposServiciosController");
 
+router.get("/", function(req, res) {
+  res.render('tipos_servicios', { title: 'SIACC'});
+});
+
 router.get("/getTiposServicios", function(req, res) {
   controller.getTiposServicios(function(err, carreras) {
     if(!err) {

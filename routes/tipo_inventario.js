@@ -3,6 +3,10 @@ var router = express.Router();
 var controller = require("../database/controllers/TiposInventariosController");
 var fs = require("fs");
 
+router.get("/", function(req, res) {
+  res.render('tipos_inventarios', { title: 'SIACC'});
+});
+
 router.get("/getTiposInventarios", function(req, res) {
   controller.getTiposInventarios(function(err, tipos) {
     res.send(tipos);

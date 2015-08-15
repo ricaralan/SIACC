@@ -2,6 +2,10 @@ var express = require("express");
 var router = express.Router();
 var controllerTipoUsuario = require("../database/controllers/TiposUsuariosController");
 
+router.get("/", function(req, res) {
+  res.render('tipos_usuarios', { title: 'SIACC'});
+});
+
 router.get("/getTiposUsuario", function(req, res) {
   controllerTipoUsuario.getTiposUsuario(function(err, tiposUsuario) {
     res.send(tiposUsuario);

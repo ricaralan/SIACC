@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
   if (req.session.user != null){
     res.render('index', { title: 'SIACC'});
   } else {
-    res.render('login', { title: 'Login' });
+    res.render('login', { title: 'Login - SIACC' });
   }
 });
 

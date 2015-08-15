@@ -35,15 +35,12 @@
       <a href="/" class="brand-logo"> &nbsp;SIACC</a>
       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="input material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down"><!-- right hide-on-med-and-down      side-nav fixed -->
-        <li><a href="#">Areas</a></li>
-        <li><a href="#">Usuarios</a></li>
-        <li><a href="#">Inventarios</a></li>
-        <li><a href="#">Mesa de ayuda</a></li>
+        <li ng-repeat="permiso in permisos"><a href="{{permiso.url}}">{{permiso.nombre_corto}}</a></li>
         <li><a class='dropdown-button' href='#' data-activates='configuracion'><img src="/images/system/icon-user.png" alt="" width="64px"/></a>
           <ul id='configuracion' class='dropdown-content'>
             <li><a href="#!">Perfil</a></li>
             <li class="divider"></li>
-            <li><a href="#!">Salir</a></li>
+            <li><a href="/usuarios/logout">Salir</a></li>
           </ul>
         </li>
       </ul>

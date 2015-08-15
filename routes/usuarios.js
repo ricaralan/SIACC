@@ -3,9 +3,8 @@ var router = express.Router();
 var controller = require("../database/controllers/UsuariosController");
 var fs = require("fs");
 
-/* GET users listing. */
 router.get('/', function(req, res) {
-  res.send(req.session.user);
+  res.render('usuarios', { title: 'SIACC'});
 });
 
 router.get("/getIdUsuarioLogueado", function(req, res) {
@@ -168,9 +167,9 @@ router.get("/createSession", function(req, res) {
   res.send(req.session.user);
 });
 
-router.get("/destroy", function(req, res) {
+router.get("/logout", function(req, res) {
   req.session.destroy(function (){
-    res.send("session destruida");
+    res.redirect("/");
   });
 });
 

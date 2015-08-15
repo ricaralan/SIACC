@@ -2,6 +2,10 @@ var express = require("express");
 var router  = express.Router();
 var controller = require("../database/controllers/MateriasController");
 
+router.get("/", function(req, res) {
+  res.render('materias', { title: 'SIACC'});
+});
+
 router.get("/getMateria/:idMateria", function(req, res) {
   controller.getMateria(req.params.idMateria, function(err, materia) {
     if(!err) {

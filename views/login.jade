@@ -3,12 +3,12 @@ extends layout
 block content
   div(ng-app="SIACCApp", class="container row")
     div(ng-controller="LoginController", class="col s4 offset-s4 contentLogin")
-      h5(class="center-align") #{title} - SIACC
+      h5(class="center-align") #{title}
       p(class="divider")
       form(ng-submit="login()")
         div(class="input-field col s12")
           i(class="material-icons prefix") account_circle
-          input(type="text", ng-model="textUser")
+          input(type="text", ng-model="textUser", ng-init="focusInputId('inputUser')", id="inputUser")
           label(for="icon_prefix") Usuario
         div(class="input-field col s12")
           i(class="material-icons prefix") vpn_key

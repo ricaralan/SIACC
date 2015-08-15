@@ -8,7 +8,7 @@ var self;
 LoginController.prototype.verificarUsuario = function(usuario, contrasena, callback) {
   // Esto solo es una prueba... Después se tiene que mandar
   self.abstractModel.select(self.table,[
-    "id_usuario", "usu_usuario", "usu_contrasena"
+    "usu_id_tipo_usuario", "usu_id_area", "id_usuario", "usu_usuario", "usu_contrasena"
   ], {
     usu_usuario : usuario,
     usu_contrasena : contrasena

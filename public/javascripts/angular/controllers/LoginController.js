@@ -16,4 +16,8 @@ SIACCApp.controller("LoginController",["$scope", "$http", "$location", "util", f
     }
   };
 
+  $scope.focusInputId = function(id) {
+    document.getElementById(id).focus();
+  };
+
 }]);

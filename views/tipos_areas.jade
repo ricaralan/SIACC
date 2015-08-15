@@ -1,0 +1,65 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp")
+    app-for-users
+      div(id="contentApp", hidden, ng-controller="TiposAreasController")
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoArea()") Crear nueva
+        h3 Tipos de áreas
+
+        // MODAL OPCION TIPO AREA
+        div(id="modalOpcionesTipoArea" class="modal")
+          div(class="modal-content")
+            h4 {{opcAccion}} tipo de área
+            table
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="area_name", type="text", class="validate", ng-model="formTipoArea.tipo_nombre")
+                    label(for="area_name") Nombre del tipo de área
+              tr
+                td
+                  div(class="input-field col s6")
+                    textarea(id="area_name", class="materialize-textarea", class="validate", ng-model="formTipoArea.tipo_descripcion")
+                    label(for="area_name") Descripción del tipo de área
+              tr
+                td
+                  p Foto del área
+                    form(id="formTipoFoto")
+                      input(type="file", id="tipo_foto", file-model="formTipoArea.tipo_foto", accept="image/*")
+            table(ng-init="getTodosLosPermisos()", class="bordered")
+              tr
+                th Permiso
+                th Ver
+              tr(ng-repeat="permiso in todosLosPermisos")
+                td {{permiso.per_nombre}}
+                  input(type="checkbox", id="check{{permiso.id_permiso}}", permiso="{{permiso.id_permiso}}")
+                td
+                  input(type="checkbox", id="check-moa_ver-{{permiso.id_permiso}}", class="checksOpcUsuario", permiso="{{permiso.id_permiso}}")
+                  label(for="check-moa_ver-{{permiso.id_permiso}}")
+
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoArea()", id="btnOpcionTipoAreas") {{opcAccion}}
+
+
+        div(class="row")
+            div(class="card card small col s12 m6 l4", ng-repeat="tipo in tiposAreas")
+              div(class="card-image")
+                img(src="{{tipo.tipo_imagen}}")
+                p(class="card-title white-text", style="background-color:rgba(0, 0, 0, .7);margin:0;width:100%;") {{tipo.tipo_nombre}}
+              div(class="card-content")
+                p {{tipo.tipo_descripcion}}
+              div(class="card-action")
+                button(class="btn-flat green white-text waves-effect", ng-click="setDatosEditarTipoArea(tipo)") EDITAR
+                button(class="btn-flat red white-text right waves-effect", ng-click="eliminarTipoArea(tipo.id_tipo_area)") ELIMINAR
+
+
+  script(src="/socket.io/socket.io.js")
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/directives/fileModel.js")
+  script(src="/javascripts/angular/services/util.js")
+  script(src="/javascripts/angular/services/multipartForm.js")
+  script(src="/javascripts/angular/controllers/TiposAreasController.js")

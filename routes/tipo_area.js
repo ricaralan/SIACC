@@ -3,6 +3,10 @@ var router = express.Router();
 var controller = require("../database/controllers/TipoAreasController");
 var fs = require('fs');
 
+router.get("/", function(req, res) {
+  res.render('tipos_areas', { title: 'SIACC'});
+});
+
 router.get("/getTiposArea", function(req, res) {
   controller.getTiposArea(function(err, tipos_area) {
     if(!err) {

@@ -2,6 +2,10 @@ var express = require("express");
 var router = express.Router();
 var areasController = require("../database/controllers/AreasController");
 
+router.get("/", function(req, res) {
+  res.render('areas', { title: 'SIACC'});
+});
+
 router.get("/getAreas", function(req, res) {
   areasController.getAreas(function(err, data) {
     res.send(data);
