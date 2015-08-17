@@ -16,12 +16,11 @@ router.get("/getPermisosUserLog", function(req, res) {
   if(!req.session.user) {
     res.send("No hay un usuario logueado");
   } else {
-    userIdSess = req.session.user[0];
-    controller.getPermisosTipoUsuario(req.session.user[0].usu_id_tipo_usuario, function(err, permisosTUsu) {
-      controller.getPermisosTipoArea(req.session.user[0].usu_id_area, function(err, permisosTAre) {
-        res.send({
-          permisosTipoUsuario : controller.getJsonPermisos(permisosTUsu),
-          permisosTipoArea : controller.getJsonPermisos(permisosTAre)
+    userSess = req.session.user[0];
+    controller.getPermisosTipoUsuario(userSess.usu_id_tipo_usuario, function(err, permisosTUsu) {
+      controller.getPermisosTipoArea(userSess.usu_id_area, function(err, permisosTAre) {
+        permisos : controller.getJsonPermisos(permisosTUsu, permisosTAre, userSess.usu_id_tipo_usuario, function(permisos) {
+          res.send(permisos);
         });
       });
     });

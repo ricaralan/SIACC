@@ -30,30 +30,9 @@ SIACCApp.directive("appForUsers", ["$http", function($http) {
       });
       document.getElementById("contentApp").removeAttribute("hidden");
       $http.get("/permisos/getPermisosUserLog").success(function(permisos) {
-        initPermisos(permisos);
+        scope.permisos = permisos;
         document.getElementById("loadPage").remove();
       });
-      function initPermisos(permisos) {
-        scope.permisos = {};
-        if(permisos.permisosTipoArea != {}) {
-          // Menú basado en los permisos del usuario
-          for(permiso in permisos.permisosTipoUsuario){
-            if(permisos.permisosTipoUsuario[permiso].ver == 1) {
-              scope.permisos[permiso] = {
-                nombre_corto : permisos.permisosTipoUsuario[permiso].nombre_corto,
-                url : permisos.permisosTipoUsuario[permiso].url,
-                ver : permisos.permisosTipoUsuario[permiso].ver,
-                crear : permisos.permisosTipoUsuario[permiso].crear,
-                editar : permisos.permisosTipoUsuario[permiso].editar,
-                eliminar : permisos.permisosTipoUsuario[permiso].eliminar
-              };
-            }
-          }
-        } else {
-          // Menú basado en los permisos del área
-        }
-        //scope.permisos = permisos;
-      };
 	};
   return {
     restrict : "E",
