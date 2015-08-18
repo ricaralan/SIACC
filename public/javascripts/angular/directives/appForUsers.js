@@ -1,4 +1,4 @@
-SIACCApp.directive("appForUsers", ["$http", function($http) {
+SIACCApp.directive("appForUsers", ["$http", "util", function($http, util) {
   var init = function (scope, element, attributes) {
       $(".button-collapse").sideNav();
       $('.dropdown-button').dropdown({
@@ -29,7 +29,7 @@ SIACCApp.directive("appForUsers", ["$http", function($http) {
         });
       });
       document.getElementById("contentApp").removeAttribute("hidden");
-      $http.get("/permisos/getPermisosUserLog").success(function(permisos) {
+      util.getPermisosUserLog(function(permisos) {
         scope.permisos = permisos;
         document.getElementById("loadPage").remove();
       });

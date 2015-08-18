@@ -303,6 +303,8 @@
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda en modo solicitante", "mesa de ayuda", "/mesa_ayuda", "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
   /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("system_config", "Configuraciones que mueven el sistema", "configuraciones", "/configuraciones", "Configuraciones de todo el sistema");
+  /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("areas", "Areas", "areas", "/areas", "Muestra todas las áreas");
 
   /*****************************************************************************
   * INSERT TIPO DE ÁREA
