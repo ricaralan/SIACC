@@ -37,7 +37,7 @@
       <ul class="right hide-on-med-and-down"><!-- right hide-on-med-and-down      side-nav fixed -->
         <li ng-show="permisos.areas.ver == 1"><a href="{{permisos.areas.url}}">Areas</a></li>
         <li ng-show="permisos.usuarios.ver == 1"><a href="{{permisos.usuarios.url}}">Usuarios</a></li>
-        <li><a href="#">Inventarios</a></li>
+        <li ng-show="permisos.inventarios.ver == 1"><a href="{{permisos.inventarios.url}}">Inventarios</a></li>
         <li ng-show="permisos.asignacion_materias.ver == 1"><a href="{{permisos.asignacion_materias.url}}">Materias</a></li>
 
         <li><a class='dropdown-button' href='#' data-activates='menu_mesa_ayuda_1'>Mesa de ayuda</a>

@@ -2,7 +2,8 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
 
   scopes.set("InventariosController", $scope);
 
-  $scope.variable = "InventariosController";
+  //$scope.variable = "InventariosController";
+  $scope.areas = [];
   $scope.idArea;
   $scope.area;
   $scope.tiposInventarios = [];
@@ -15,6 +16,12 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
   $scope.resguardo = {};
   $scope.inciarResguardo = true;
   $scope.socket = io();
+
+  $scope.getAreas = function() {
+    $http.get("/areas/getAreas").success(function(areas) {
+      $scope.areas = areas;
+    });
+  };
 
   $scope.setArea = function(idArea) {
     $scope.idArea = idArea;

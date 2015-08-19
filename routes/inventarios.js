@@ -3,6 +3,10 @@ var router = express.Router();
 var controller = require("../database/controllers/InventariosController");
 var resguardoController = require("../database/controllers/ResguardoInventarioController");
 
+router.get("/", function(req, res) {
+  res.render("inventarios", {title : "SIACC"});
+});
+
 /**
 * Esta ruta devuelve los inventarios que hay en un área por el tipo de inventario
 */
