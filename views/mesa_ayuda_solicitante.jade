@@ -1,0 +1,52 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp", ng-controller="MesaAyudaSolicitanteController", ng-init="initDataUsuario()")
+    app-for-users
+      div(id="contentApp", hidden)
+        a(class="waves-effect waves-light btn right" ng-click="setDatosSolicitarServicio()") Solicitar servicio
+        h3 Solicitudes
+
+      div(id="modalOpcionesSolicitarServicio" class="modal")
+        div(class="modal-content")
+          h4 Solicitar servicio
+          p Datos del solicitante
+          table(class="bordered")
+            tr
+              th No. Personal/Matricula
+              th Nombre(s)
+              th Apellidos(s)
+            tr
+              td {{dataUsuario.id_usuario}}
+              td {{dataUsuario.usu_nombre}}
+              td {{dataUsuario.usu_primer_apellido}} {{dataUsuario.usu_segundo_apellido}}
+          p(ng-show="dataUsuario.id_usuario!=0 || dataUsuario.id_usuario") Datos del área solicitante
+          table(class="bordered", ng-show="dataUsuario.id_usuario!=0 || dataUsuario.id_usuario")
+            tr
+              th Nombre
+            tr
+              td {{dataUsuario.are_nombre}}
+          p Datos del servicio
+          select(class="browser-default", ng-model="formMesaAyuda.mes_id_tipo_servicio", ng-change="setTipoServicio(formMesaAyuda.mes_id_tipo_servicio)", ng-init="getTiposServicios()")
+            option(value="" disabled selected) Selecciona el tipo de servicio
+            option(ng-repeat="servicio in servicios", value="{{servicio.id_tipo_servicio}}") {{servicio.tse_nombre}}
+          table
+            tr(ng-show="tipoServicio.tse_otro != 0 && tipoServicio.tse_otro")
+              td
+                div(class="input-field col s6")
+                  input(id="tipo_problema", type="text", class="validate", ng-model="formMesaAyuda.mes_otro_tipo_servicio", maxlength="45")
+                  label(for="tipo_problema") Especifique el tipo de problema
+            tr(ng-show="tipoServicio.tse_nombre")
+              td
+                div(class="input-field col s6")
+                  textarea(id="desc_problema", type="text", class="validate materialize-textarea", ng-model="formMesaAyuda.mes_descripcion_problema", maxlength="160")
+                  label(for="desc_problema") Describa el problema
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(ng-show="tipoServicio.tse_nombre",class=" waves-effect waves-green btn-flat", ng-click="solicitarServicio()", id="btnOpcionTipoAreas") Solicitar servicio
+
+
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/controllers/MesaAyudaSolicitanteController.js")

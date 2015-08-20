@@ -21,6 +21,7 @@ var tipo_inventario = require('./routes/tipo_inventario');
 var inventarios = require('./routes/inventarios');
 var acceso_area = require('./routes/acceso_area');
 var tipo_servicio = require('./routes/tipo_servicio');
+var mesa_ayuda = require('./routes/mesa_ayuda');
 
 var app = express();
 
@@ -55,6 +56,7 @@ app.use('/tipo_inventario', tipo_inventario);
 app.use('/inventarios', inventarios);
 app.use('/acceso_area', acceso_area);
 app.use('/tipo_servicio', tipo_servicio);
+app.use('/mesa_ayuda', mesa_ayuda);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

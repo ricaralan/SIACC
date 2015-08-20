@@ -6,7 +6,8 @@ block content
   div(ng-app="SIACCApp")
     app-for-users
       div(id="contentApp", hidden, ng-controller="InventariosController", ng-init="getAreas()")
-        h3 Inventarios
+        h3(ng-show="!area.are_nombre") Elije un área para ver inventario
+        h3(ng-show="area.are_nombre") Inventarios de {{area.are_nombre}}
         select(class="browser-default", ng-model="idInventarioX", ng-change="setArea(idInventarioX)")
           option(value="" disabled selected) Selecciona el área
           option(ng-repeat="area in areas", value="{{area.id_area}}") {{area.are_nombre}}

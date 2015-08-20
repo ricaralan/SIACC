@@ -42,9 +42,9 @@
 
         <li><a class='dropdown-button' href='#' data-activates='menu_mesa_ayuda_1'>Mesa de ayuda</a>
           <ul id='menu_mesa_ayuda_1' class='dropdown-content'>
-            <li><a href="#!">Solicitante</a></li>
+            <li><a href="/mesa_ayuda/solicitante">Solicitante</a></li>
             <li class="divider"></li>
-            <li><a href="#!">Administrador</a></li>
+            <li><a href="/mesa_ayuda/administrador">Administrador</a></li>
           </ul>
         </li>
         <li ng-show="permisos.system_config.ver == 1"><a class='dropdown-button' href='#' data-activates='configuracion_1'>Configuraciones</a>
@@ -53,7 +53,7 @@
             <li class="divider"></li>
             <li><a href="/tipo_servicio">Tipos servicios</a></li>
             <li class="divider"></li>
-            <li><a href="tipo_inventario">Tipos inventarios</a></li>
+            <li><a href="/tipo_inventario">Tipos inventarios</a></li>
             <li class="divider"></li>
             <li><a href="/tipo_usuario">Tipos usuarios</a></li>
             <li class="divider"></li>
@@ -71,7 +71,7 @@
       <ul class="side-nav" id="mobile-demo">
         <li ng-show="permisos.areas.ver == 1"><a href="{{permisos.areas.url}}">Areas</a></li>
         <li ng-show="permisos.usuarios.ver == 1"><a href="{{permisos.usuarios.url}}">Usuarios</a></li>
-        <li><a href="#">Inventarios</a></li>
+        <li ng-show="permisos.inventarios.ver == 1"><a href="{{permisos.inventarios.url}}">Inventarios</a></li>
         <li ng-show="permisos.asignacion_materias.ver == 1"><a href="{{permisos.asignacion_materias.url}}">Materias</a></li>
         <li>
           <ul class="collapsible" data-collapsible="accordion">
@@ -79,9 +79,9 @@
               <div class="collapsible-header"><i class="material-icons">settings</i>Mesa de ayuda</div>
               <div class="collapsible-body">
                 <ul>
-                  <li><a href="#!">Solicitante</a></li>
+                  <li><a href="/mesa_ayuda/solicitante">Solicitante</a></li>
                   <li class="divider"></li>
-                  <li><a href="#!">Administrador</a></li>
+                  <li><a href="/mesa_ayuda/administrador">Administrador</a></li>
                 </ul>
               </div>
             </li>

@@ -2,7 +2,6 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
 
   scopes.set("InventariosController", $scope);
 
-  //$scope.variable = "InventariosController";
   $scope.areas = [];
   $scope.idArea;
   $scope.area;

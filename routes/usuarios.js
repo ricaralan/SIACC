@@ -8,8 +8,7 @@ router.get('/', function(req, res) {
 });
 
 router.get("/getIdUsuarioLogueado", function(req, res) {
-  // CUANDO ESTEN LAS SESIONES SE DEBE CAMBIAR ESTO POR SESIONES req.session.user...
-  res.send({idUsuario : "S000"});
+  res.send(req.session.user[0].id_usuario);
 });
 
 router.get("/getDataUsuario/:idUsuario", function(req, res) {

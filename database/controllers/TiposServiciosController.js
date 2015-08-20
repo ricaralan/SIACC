@@ -8,7 +8,7 @@ var TiposServiciosController = function(){
 
 TiposServiciosController.prototype.getTiposServicios = function(callback) {
   self.abstractModel.select(self.table,[
-    "id_tipo_servicio", "tse_nombre", "tse_descripcion"
+    "id_tipo_servicio", "tse_nombre", "tse_otro", "tse_descripcion"
     ], {}, callback);
 };
 

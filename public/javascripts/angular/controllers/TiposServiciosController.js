@@ -22,11 +22,13 @@ SIACCApp.controller("TiposServiciosController", ["$scope", "$http", "util", func
     $scope.crearTipoServicio = false;
     $scope.opcAccion = "Editar";
     $scope.formTipoServicio = servicio;
+    document.getElementById("tse_otro").checked = (!util.empty(servicio.tse_otro) && servicio.tse_otro == 1);
     $("#modalOpcionesTipoServicio").openModal();
   };
 
   $scope.opcionTipoServicio = function() {
     if($scope.formularioValido()){
+      $scope.formTipoServicio.tse_otro = document.getElementById("tse_otro").checked;
       if($scope.crearTipoServicio) {
         $http.post("/tipo_servicio/create",{jsonTipoServicio : $scope.formTipoServicio})
         .success(function(data) {

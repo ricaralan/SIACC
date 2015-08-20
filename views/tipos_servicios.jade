@@ -20,6 +20,10 @@ block content
                     label(for="carrera_nombre") Nombre del tipo de servicio
               tr
                 td
+                  input(id="tse_otro", type="checkbox", ng-model="formTipoServicio.tse_otro")
+                  label(for="tse_otro") Otro servicio
+              tr
+                td
                   div(class="input-field col s6")
                     textarea(id="descripcionTipoServicio", class="materialize-textarea", ng-model="formTipoServicio.tse_descripcion")
                     label(for="descripcionTipoServicio") Descripción del servicio

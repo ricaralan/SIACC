@@ -217,6 +217,7 @@
   CREATE TABLE tipo_servicio(
   id_tipo_servicio INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   tse_nombre VARCHAR(40) NOT NULL,
+  tse_otro BOOLEAN,
   tse_descripcion VARCHAR(200)
   );
 
