@@ -22,8 +22,11 @@ SIACCApp.directive("contentTargetas", ["$http", function($http) {
           aam_id_mesa_ayuda : servicio.id_mesa_ayuda,
           aam_id_area : attrs.area
         }).success(function(data) {
-          console.log(data);
-          socket.emit("changeOnServiciosSinSolucionar", data);
+          if(!data.success){
+            Materialize.toast("Ocurrió un error!", 2000);
+          } else {
+            socket.emit("changeOnServiciosSinSolucionar", data);
+          }
         });
       }, false);
     }
