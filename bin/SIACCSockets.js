@@ -84,6 +84,13 @@ module.exports = function(server){
       io.emit("changeOnTiposServicios", mensaje);
     });
 
+    /**
+    * CHANGE ON SERVICIOS SIN SOLUCIONAR SOCKETS
+    **/
+    socket.on("changeOnServiciosSinSolucionar", function(mensaje) {
+      io.emit("changeOnServiciosSinSolucionar", mensaje);
+    });
+
   });
 
 };

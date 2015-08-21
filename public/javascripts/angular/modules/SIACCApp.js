@@ -1,1 +1,1 @@
-var SIACCApp = angular.module("SIACCApp", []);
+var SIACCApp = angular.module("SIACCApp", ["ngDraggable"]);

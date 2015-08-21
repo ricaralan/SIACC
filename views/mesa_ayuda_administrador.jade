@@ -5,7 +5,30 @@ block content
       div(class="indeterminate")
   div(ng-app="SIACCApp")
     app-for-users
-      div(id="contentApp", hidden)
+      div(id="contentApp", hidden, style="min-height:600px;", ng-controller="MesaAyudaAdministradorController")
         h3 Administrador
 
+        div(class="container contenedorCatalogosTareas", ng-init="getServiciosSinSolucionar()")
+          section(class="list")
+            article(class="contentTargetas", content-targetas, area="0")
+              p Solicitudes sin asignar
+              article(class="targeta", ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="!servicio.aam_id_area", draggable="true")
+                img(src="{{servicio.usu_foto}}", width="50px")
+                p Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+                p Área: {{servicio.are_nombre}}
+                p Fecha: {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+          section(ng-repeat="area in areas",class="list")
+            article(class="contentTargetas", content-targetas, area="{{area.id_area}}")
+              p {{area.are_nombre}}
+              article(class="targeta",ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="servicio.aam_id_area==area.id_area", draggable="true")
+                img(src="{{servicio.usu_foto}}", width="50px")
+                p Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+                p Área: {{servicio.are_nombre}}
+                p Fecha: {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+
+  script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/controllers/MesaAyudaAdministradorController.js")
+  script(src="/javascripts/angular/directives/targetaMesaAyuda.js")
+  script(src="/javascripts/angular/directives/contentTargetas.js")
+  link(rel='stylesheet', href='/stylesheets/mesa_ayuda.css')

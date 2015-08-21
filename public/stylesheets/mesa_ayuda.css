@@ -1,0 +1,190 @@
+.contenedorCatalogosTareas{
+			-ms-flex-align: start;
+			-moz-box-align: start;
+			-webkit-box-align: start;
+			-webkit-align-items: flex-start;
+			align-items: flex-start;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-moz-box-orient: horizontal;
+			-webkit-box-orient: horizontal;
+			-ms-flex-direction: row;
+			-webkit-flex-direction: row;
+			flex-direction: row;
+			margin-bottom: 10px;
+			overflow-x: auto;
+			overflow-y: hidden;
+			padding-bottom: 10px;
+			position: absolute;
+			height: 70%;
+			//top: 0;
+			right: 0;
+			//bottom: 0;
+			left: 0;
+		}
+
+		.contentTargetas{
+			-moz-box-flex: 1;
+			-webkit-box-flex: 1;
+			-ms-flex: 1 1 auto;
+			-webkit-flex: 1 1 auto;
+			flex: 1 1 auto;
+			margin-bottom: 0;
+			//overflow-y: auto;
+			//overflow-x: hidden;
+			min-height: 40px;
+			//padding: 4px 4px 1px;
+			position: relative;
+			padding: 5px 5px 23px 5px;
+			z-index: 1;
+		}
+		.targeta{
+			padding: 5px;
+			background-color: #fff;
+			border-bottom: 1px solid #ccc;
+			border-radius: 3px;
+			cursor: pointer;
+			margin-bottom: 5px;
+			max-width: 300px;
+			min-height: 20px;
+			position: relative;
+			margin-bottom : 16px;
+			z-index: 0;
+			transition: .5s;
+      		-webkit-transition: .5s;
+		    -moz-transition-duration: .5s;
+		}
+		.targeta:hover{
+			cursor: move;
+			box-shadow: -1px 34px 25px -23px rgba(0, 0, 0, 0.5);
+			border : dashed 2px rgba(0, 0, 0, .4);
+			transform: rotate(0deg) translate(0px, -3px);
+			-webkit-transform: rotate(0deg) translate(0px, -3px);
+			-moz-transform: rotate(0deg) translate(0px, -3px);
+			z-index: 999px;
+		}
+		.list{
+			background:#e3e3e3;
+			border-radius:3px;
+			-webkit-box-sizing:border-box;
+			-moz-box-sizing:border-box;
+			box-sizing:border-box;
+			display:-moz-box;display:-ms-flexbox;
+			display:-webkit-box;display:-webkit-flex;
+			display:flex;-moz-box-orient:vertical;
+			-webkit-box-orient:vertical;
+			-ms-flex-direction:column;
+			-webkit-flex-direction:column;
+			flex-direction:column;
+			-moz-box-flex:0;
+			-webkit-box-flex:0;
+			-ms-flex:0 0 260px;
+			-webkit-flex:0 0 260px;
+			flex:0 0 260px;
+			margin:0 5px;
+			max-height:100%;
+			padding:4px 3px 3px;
+			position:relative;
+			-webkit-transform:translate3d(0,0,0);
+			width:260px
+		}
+			.list:first-child{margin-left:10px}
+			.list:last-child{margin-right:10px}
+			.hand{
+				cursor: hand;
+			}
+			.flotar{
+			-webkit-animation: animaFlotar .8s infinite; /* Chrome, Safari, Opera */
+		    animation: animaFlotar .8s infinite linear;
+		    -webkit-animation-timing-function: linear;
+		    -webkit-animation-iteration-count: infinite;
+		    -webkit-animation-direction: alternate;
+		}
+		@-webkit-keyframes animaFlotar {
+		    from {
+		    }
+		    to {
+		    	transform : scale(1.1);
+		    	-webkit-transform : scale(1.1);
+		    	-moz-transform : scale(1.1);
+		    	box-shadow: 6px 15px 15px -10px rgba(0, 0, 0, 0.7);
+		    }
+		}
+		.invisible{
+			display: none;
+		}
+		.cuadroVisible{
+			background-color: rgba(255, 255, 255 .8);
+			display: block;
+			border: solid 1px #000;
+			height: 50px;
+		}
+		.fecha_solicitado{
+			width: 142px;
+			font-size: 13px;
+			position: absolute;
+			background-color: #e3e3e3;
+			color: #333;
+			-webkit-transform: translate(-5px, -13px);
+			border-radius: 5px;
+		}
+		.info-targeta,
+		.btnAddUser{
+			float: right;
+			width: 20px;
+			text-align: center;
+			border-radius: 10px;
+			border:solid 1px;
+			-webkit-transform: translate(0px, -18px);
+			-moz-transform: translate(0px, -18px);
+			transform: translate(0px, -18px);
+			transition:.5s;
+		    -webkit-transition:.5s;
+		    -moz-transition:.5s;
+		}
+		.info-targeta:hover,
+		.btnAddUser:hover{
+			transform: translate(0px, -23px) scale(1.4);
+			-webkit-transform: translate(0px, -23px) scale(1.4);
+		}
+		.lblImportancia{
+			border-radius: 0px 0px 0px 5px;
+			box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, .4) inset;
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 5px;
+			width: 100px;
+		}
+		.vencido{
+			background-color: #DF0101;
+			color: #fff;
+			position: absolute;
+			width: 200px;
+			text-align: center;
+			border-radius: 5px;
+			box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, .7);
+			left: 20px;
+			top: 20px;
+		}
+		td{
+			text-align: left !important;
+		}
+		#cargarAddUsers{
+			position: absolute;
+			width: 95%;
+		}
+		.divOpcAddUser{
+			border: solid 1px rgba(0, 0, 0, .3);
+			background-color: #fff;
+			width: 100%;
+			padding: 5px;
+		}
+		.divOpcAddUser:hover{
+			background-color: #09c;
+			color: #fff;
+			cursor: pointer;
+		}

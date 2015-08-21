@@ -14,8 +14,28 @@ router.get("/administrador", function(req, res) {
   }
 });
 
+router.get("/getServiciosSinSolucionar", function(req, res) {
+  controller.getServiciosSinSolucionar(function(err, servicios) {
+    if(!err) {
+      res.send(servicios);
+    } else {
+      // TODO especificar el tipo de error
+    }
+  });
+});
+
 router.post("/solicitar_servicio", function(req, res) {
   controller.create(req.body.jsonData, function(err, data) {
+    res.send({success : !err && data.affectedRows == 1});
+  });
+});
+
+router.post("/cambiar_area_atencion", function(req, res) {
+  controller.cambiarAreaAtencion({
+    aam_id_mesa_ayuda : req.body.aam_id_mesa_ayuda,
+    aam_id_area : req.body.aam_id_area
+  }, function(err, data) {
+    console.log(err, data);
     res.send({success : !err && data.affectedRows == 1});
   });
 });

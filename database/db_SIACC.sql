@@ -247,10 +247,11 @@
   CREATE TABLE area_atiende_mesa(
   aam_id_area INT NOT NULL,
   aam_id_mesa_ayuda INT NOT NULL,
-  aam_fecha_asignación TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  aam_fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   aam_diagnostico VARCHAR(150),
   aam_acciones_tomadas VARCHAR(150),
   aam_observaciones VARCHAR(150),
+  aam_asignacion BOOLEAN DEFAULT true,
   aam_soluciono BOOLEAN,
   PRIMARY KEY(aam_id_area, aam_id_mesa_ayuda),
   FOREIGN KEY(aam_id_area) REFERENCES area(id_area),
