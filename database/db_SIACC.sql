@@ -231,7 +231,7 @@
   mes_id_tipo_servicio INT,/* Que tipo de servicio requiren */
   mes_otro_tipo_servicio VARCHAR(50),
   mes_fecha_solicitado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  mes_fecha_limite TIMESTAMP,
+  mes_fecha_limite DATE,
   mes_fecha_solucionado TIMESTAMP,
   mes_estado TINYINT DEFAULT 1,
   mes_importancia TINYINT DEFAULT 3,
@@ -245,6 +245,7 @@
   * Esta tabla nos permitirá saber que área atiende que problemas de la mesa de ayuda
   **/
   CREATE TABLE area_atiende_mesa(
+  id_area_atiende_mesa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   aam_id_area INT NOT NULL,
   aam_id_mesa_ayuda INT NOT NULL,
   aam_fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -253,7 +254,6 @@
   aam_observaciones VARCHAR(150),
   aam_asignacion BOOLEAN DEFAULT true,
   aam_soluciono BOOLEAN,
-  PRIMARY KEY(aam_id_area, aam_id_mesa_ayuda),
   FOREIGN KEY(aam_id_area) REFERENCES area(id_area),
   FOREIGN KEY(aam_id_mesa_ayuda) REFERENCES mesa_ayuda(id_mesa_ayuda)
   );
@@ -262,7 +262,9 @@
   uam_id_area_atiende_mesa INT NOT NULL,
   uam_id_usuario VARCHAR(10) NOT NULL,
   uam_fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY(uam_id_area_atiende_mesa, uam_id_usuario)
+  PRIMARY KEY(uam_id_area_atiende_mesa, uam_id_usuario),
+  FOREIGN KEY(uam_id_area_atiende_mesa) REFERENCES area_atiende_mesa(id_area_atiende_mesa),
+  FOREIGN KEY(uam_id_usuario) REFERENCES usuario(id_usuario)
   );
 
 
@@ -295,17 +297,12 @@
 
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("usuarios", "Control de usuarios", "usuarios", "/usuarios", "Este módulo da acceso al control de usuarios, pero los tipos de usuarios permitidos se dan en otra tabla...");
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("inventarios", "Control de inventarios", "inventarios", "/inventarios", "Este módulo controla los inventarios de el área");
-  /* Control de acceso de tipo 1: controla solo el acceso a un área */
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("acceso_simple", "Control de acceso de usuarios", "control acceso simple", "/acceso_area", "Control de acceso de tipo 1: controla solo el acceso a un área");
-  /* Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo  */
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("acceso_equipo_computo", "Control de acceso de usuarios y uso de equipo de computo", "control acceso inventario", "/acceso_area", "Control de acceso de tipo 2: Controla acceso a un área y el uso de equipo de computo");
-  /* Modulo de mesa de ayuda de tipo 1: Es control en modo administrador */
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("mesa_ayuda_administrador", "Mesa de ayuda en modo administrador", "mesa de ayuda", "/acceso_area", "Modulo de mesa de ayuda de tipo 1: Es control en modo administrador");
-  /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("mesa_ayuda_solicitante", "Mesa de ayuda en modo solicitante", "mesa de ayuda", "/mesa_ayuda", "Modulo de mesa de ayuda de tipo 2: Es control en modo solicitante de servicios");
-  /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
+  INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("mesa_ayuda_atender", "Mesa de ayuda en modo atencion de solicitudes", "mesa de ayuda", "/mesa_ayuda", "Modulo de mesa de ayuda de tipo 2: Es control en modo de atencion de solicitudes");
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("system_config", "Configuraciones que mueven el sistema", "configuraciones", "/configuraciones", "Configuraciones de todo el sistema");
-  /* Modulo de mesa de ayuda de tipo 1: Es control en modo solicitante de servicios */
   INSERT INTO permiso(id_permiso, per_nombre, per_nombre_corto, per_url, per_descripcion) VALUES("areas", "Areas", "areas", "/areas", "Muestra todas las áreas");
 
   /*****************************************************************************

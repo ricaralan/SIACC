@@ -27,11 +27,57 @@ block content
                 p(class="header") Área: {{servicio.are_nombre}} Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
                 p Problema: {{servicio.mes_descripcion_problema}}
                 p(class="fecha") {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                p(class="importancia {{servicio.mes_importancia==1?'red':''}} {{servicio.mes_importancia==2?'yellow':''}} {{servicio.mes_importancia==3?'green':''}}")
                 p(class="opciones")
                   i(class="material-icons right") done_all
-                  i(class="material-icons right") supervisor_account
-                  i(class="material-icons right") info
+                  i(class="material-icons right", ng-click="showUsuarioService(servicio)") supervisor_account
+                  i(class="material-icons right", ng-click="showInfoService(servicio)") info
 
+        div(id="modalInfoServicio" class="modal")
+          div(class="modal-content")
+            h4 Información del servicio
+            table(class="bordered")
+              tr
+                th Datos servicio
+                th Descripción
+              tr
+                td Solicitante
+                td
+                  img(src="{{servicio.usu_foto}}", width="50px")
+                  p(style="display:inline-block")  {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+              tr
+                td Área
+                td {{servicio.are_nombre}}
+              tr
+                td Fecha solicitud
+                td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+              tr
+                td Tipo de problema
+                td {{servicio.tse_nombre}}
+              tr(ng-show="servicio.tse_otro==1")
+                td Descripción usuario
+                td {{servicio.mes_otro_tipo_servicio}}
+              tr
+                td  Descripción problema
+                td  {{servicio.mes_descripcion_problema}}
+              tr
+                td Importancia
+                td
+                  select(class="browser-default", ng-model="servicio.mes_importancia")
+                    option(value="1") Muy urgente
+                    option(value="2") Urgente
+                    option(value="3") Normal
+              tr
+                td Fecha limite
+                td
+                  input(type="date", class="datepicker", id="mes_fecha_limite")
+            div(class="modal-footer")
+              a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cerrar
+              button(class=" waves-effect waves-green btn-flat", ng-click="guardarCambiosInfo()", id="btnInfoServicio") Guardar cambios
+
+        div(id="modalUsuariosServicio" class="modal")
+          div(class="modal-content")
+            h4 Asignar usuarios
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")

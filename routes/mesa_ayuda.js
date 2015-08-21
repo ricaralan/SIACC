@@ -35,7 +35,12 @@ router.post("/cambiar_area_atencion", function(req, res) {
     aam_id_mesa_ayuda : req.body.aam_id_mesa_ayuda,
     aam_id_area : req.body.aam_id_area
   }, function(err, data) {
-    console.log(err, data);
+    res.send({success : !err && data.affectedRows == 1});
+  });
+});
+
+router.put("/update", function(req, res) {
+  controller.update(req.body.data, req.body.data.id_mesa_ayuda, function(err, data) {
     res.send({success : !err && data.affectedRows == 1});
   });
 });
