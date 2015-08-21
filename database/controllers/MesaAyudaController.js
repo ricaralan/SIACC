@@ -8,7 +8,8 @@ var MesaAyudaController = function() {
 var self;
 
 MesaAyudaController.prototype.getServiciosSinSolucionar = function(callback) {
-  query = "SELECT id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,usu_foto,are_nombre,mes_fecha_solicitado FROM ((mesa_ayuda LEFT JOIN "
+  query = "SELECT id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,usu_primer_apellido,"
+        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM ((mesa_ayuda LEFT JOIN "
         + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion)"
         + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area;";
   self.connection.query(query, callback);

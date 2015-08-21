@@ -54,8 +54,8 @@
 			margin-bottom : 16px;
 			z-index: 0;
 			transition: .5s;
-      		-webkit-transition: .5s;
-		    -moz-transition-duration: .5s;
+      -webkit-transition: .5s;
+		  -moz-transition-duration: .5s;
 		}
 		.targeta:hover{
 			cursor: move;
@@ -187,4 +187,55 @@
 			background-color: #09c;
 			color: #fff;
 			cursor: pointer;
+		}
+
+		.targeta>.header{
+			position: absolute;
+			display:inline-block;
+		}
+
+		.targeta>p{
+			margin: 7px;
+		}
+
+		.targeta>.fecha {
+			position: absolute;
+			background-color:#fff !important;
+			top: -28px;
+			padding:5px;
+			border-radius: 5px;
+			right:0;
+		}
+
+		.targeta>.opciones {
+			position: absolute;
+			top:-35px;
+			cursor:default;
+			left:-27px;
+			background-color: transparent;
+			padding: 0;
+			display: none;
+		}
+
+		.targeta:hover>.opciones {
+			display: block;
+		}
+
+		.opciones>i {
+			padding: 5px;
+			margin: 2px;
+			transition: .5s;
+      -webkit-transition: .5s;
+		  -moz-transition-duration: .5s;
+			border:solid 1px rgba(0, 0, 0, .2);
+			border-radius: 50%;
+			background-color: #333;
+			color: #fff !important;
+		}
+
+		.opciones>i:hover {
+			cursor:pointer;
+			transform: rotate(360deg) translate(0px, 0px);
+			-webkit-transform: rotate(360deg) translate(0px, 0px);
+			-moz-transform: rotate(360deg) translate(0px, 0px);
 		}

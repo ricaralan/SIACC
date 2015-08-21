@@ -12,19 +12,26 @@ block content
           section(class="list")
             article(class="contentTargetas", content-targetas, area="0")
               p Solicitudes sin asignar
-              article(class="targeta", ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="!servicio.aam_id_area", draggable="true")
+              br
+              article(class="targeta",ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="servicio.aam_id_area==area.id_area", draggable="true")
                 img(src="{{servicio.usu_foto}}", width="50px")
-                p Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
-                p Área: {{servicio.are_nombre}}
-                p Fecha: {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                p(class="header") Área: {{servicio.are_nombre}} Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+                p Problema: {{servicio.mes_descripcion_problema}}
+                p(class="fecha") {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
           section(ng-repeat="area in areas",class="list")
             article(class="contentTargetas", content-targetas, area="{{area.id_area}}")
               p {{area.are_nombre}}
+              br
               article(class="targeta",ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="servicio.aam_id_area==area.id_area", draggable="true")
                 img(src="{{servicio.usu_foto}}", width="50px")
-                p Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
-                p Área: {{servicio.are_nombre}}
-                p Fecha: {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                p(class="header") Área: {{servicio.are_nombre}} Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+                p Problema: {{servicio.mes_descripcion_problema}}
+                p(class="fecha") {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                p(class="opciones")
+                  i(class="material-icons right") done_all
+                  i(class="material-icons right") supervisor_account
+                  i(class="material-icons right") info
+
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
