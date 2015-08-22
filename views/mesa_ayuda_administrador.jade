@@ -30,7 +30,7 @@ block content
                 p(class="importancia {{servicio.mes_importancia==1?'red':''}} {{servicio.mes_importancia==2?'yellow':''}} {{servicio.mes_importancia==3?'green':''}}")
                 p(class="opciones")
                   i(class="material-icons right") done_all
-                  i(class="material-icons right", ng-click="showUsuarioService(servicio)") supervisor_account
+                  i(class="material-icons right", ng-click="showUsuarioService(area.id_area, servicio.id_mesa_ayuda, servicio.id_area_atiende_mesa)") supervisor_account
                   i(class="material-icons right", ng-click="showInfoService(servicio)") info
 
         div(id="modalInfoServicio" class="modal")
@@ -78,6 +78,15 @@ block content
         div(id="modalUsuariosServicio" class="modal")
           div(class="modal-content")
             h4 Asignar usuarios
+            input(type="text",ng-model="textSearchUserMesaAyuda", ng-change="getUsuarioPuedenAtenderMesa(textSearchUserMesaAyuda)")
+            table(class="bordered")
+              tr
+                th Nombre
+                th Opción
+              tr(ng-repeat="usuario in usuarioAtiendenMesa")
+                td {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+                td(ng-show="usuario.aam_id_mesa_ayuda", ng-click="eliminarUsuarioMesa(usuario.id_usuario)") eliminar
+                td(ng-show="!usuario.aam_id_mesa_ayuda", ng-click="agregarUsuarioMesa(usuario.id_usuario)") agregar
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")

@@ -3,6 +3,8 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
   $scope.serviciosSinSolucionar = [];
   $scope.areas = [];
   $scope.servicio = {};
+  $scope.usuarioAtiendenMesa = [];
+  $scope.datosAsignarUsuariosMesa = {};
   $scope.socket = io();
 
   $http.get("/areas/getAreasAdministradorasMesaAyuda").success(function(areas) {
@@ -30,8 +32,44 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
     $scope.servicio = servicio;
   };
 
-  $scope.showUsuarioService = function(servicio) {
+  $scope.showUsuarioService = function(idArea, idMesaAyuda, uam_id_area_atiende_mesa) {
+    $scope.datosAsignarUsuariosMesa = {
+      id_area : idArea,
+      id_mesa_ayuda : idMesaAyuda,
+      uam_id_area_atiende_mesa : uam_id_area_atiende_mesa
+    };
     $("#modalUsuariosServicio").openModal();
+    $http.get("/mesa_ayuda/getUsuariosAtiendenMesa/"+idMesaAyuda).success(function(usuarios) {
+      $scope.usuarioAtiendenMesa = usuarios;
+    });
+  };
+
+  $scope.getUsuarioPuedenAtenderMesa = function(palabra) {
+    if(!palabra) {
+      $http.get("/mesa_ayuda/getUsuariosAtiendenMesa/"+$scope.datosAsignarUsuariosMesa.id_mesa_ayuda).success(function(usuarios) {
+        $scope.usuarioAtiendenMesa = usuarios;
+      });
+    } else {
+      $http.get("/mesa_ayuda/getUsuariosAtencionMesaAyudaByText/"+palabra+"/"+$scope.datosAsignarUsuariosMesa.id_area).success(function(usuarios) {
+        $scope.usuarioAtiendenMesa = usuarios;
+      });
+    }
+  };
+
+  $scope.agregarUsuarioMesa = function(idUsuario) {
+    $http.post("/mesa_ayuda/asignarUsuarioMesa/"+idUsuario+"/"+$scope.datosAsignarUsuariosMesa.uam_id_area_atiende_mesa).success(function(data) {
+      $http.get("/mesa_ayuda/getUsuariosAtiendenMesa/"+$scope.datosAsignarUsuariosMesa.id_mesa_ayuda).success(function(usuarios) {
+        $scope.usuarioAtiendenMesa = usuarios;
+      });
+    });
+  };
+
+  $scope.eliminarUsuarioMesa = function(idUsuario) {
+    $http.put("/mesa_ayuda/eliminarUsuarioMesa/"+idUsuario+"/"+$scope.datosAsignarUsuariosMesa.uam_id_area_atiende_mesa).success(function(data) {
+      $http.get("/mesa_ayuda/getUsuariosAtiendenMesa/"+$scope.datosAsignarUsuariosMesa.id_mesa_ayuda).success(function(usuarios) {
+        $scope.usuarioAtiendenMesa = usuarios;
+      });
+    });
   };
 
   $scope.guardarCambiosInfo = function() {

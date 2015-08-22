@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var controller = require("../database/controllers/MesaAyudaController");
+var userController = require("../database/controllers/UsuariosController");
 
 router.get("/solicitante", function(req, res) {
   if(req.session.user != null) {
@@ -42,6 +43,39 @@ router.post("/cambiar_area_atencion", function(req, res) {
 router.put("/update", function(req, res) {
   controller.update(req.body.data, req.body.data.id_mesa_ayuda, function(err, data) {
     res.send({success : !err && data.affectedRows == 1});
+  });
+});
+
+router.get("/getUsuariosAtiendenMesa/:mesaAyuda/", function(req, res) {
+  userController.getUsuariosAtiendenMesa(req.params.mesaAyuda, function(err, data) {
+    if(!err) {
+      res.send(data);
+    }
+  });
+});
+
+router.get("/getUsuariosAtencionMesaAyudaByText/:palabra/:idArea", function(req, res) {
+  userController.getUsuariosAtencionMesaAyudaByText(req.params.palabra,req.params.idArea, function(err, data) {
+    console.log(err);
+    if(!err) {
+      res.send(data);
+    }
+  });
+});
+
+router.post("/asignarUsuarioMesa/:idUsuario/:idAreaAtiendeMesa", function(req, res) {
+  controller.asignarUsuarioMesa(req.params.idUsuario, req.params.idAreaAtiendeMesa, function(err, data) {
+    if(!err) {
+      res.send(data);
+    }
+  });
+});
+
+router.put("/eliminarUsuarioMesa/:idUsuario/:idAreaAtiendeMesa", function(req, res) {
+  controller.eliminarUsuarioMesa(req.params.idUsuario, req.params.idAreaAtiendeMesa, function(err, data) {
+    if(!err) {
+      res.send(data);
+    }
   });
 });
 
