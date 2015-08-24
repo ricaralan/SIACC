@@ -91,6 +91,10 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
     });
   };
 
+  $scope.doneService = function(id_area_atiende_mesa) {
+    $("#modalDoneService").openModal();
+  };
+
   $scope.socket.on("changeOnServiciosSinSolucionar", function(data) {
     $scope.getServiciosSinSolucionar();
   });

@@ -16,8 +16,11 @@ block content
               article(class="targeta",ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="servicio.aam_id_area==area.id_area", draggable="true")
                 img(src="{{servicio.usu_foto}}", width="50px")
                 p(class="header") Área: {{servicio.are_nombre}} Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
-                p Problema: {{servicio.mes_descripcion_problema}}
+                p {{servicio.mes_descripcion_problema}}
                 p(class="fecha") {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                p(class="importancia {{servicio.mes_importancia==1?'red':''}} {{servicio.mes_importancia==2?'yellow':''}} {{servicio.mes_importancia==3?'green':''}}")
+                p(class="opciones")
+                  i(class="material-icons right", ng-click="showInfoService(servicio)") info
           section(ng-repeat="area in areas",class="list")
             article(class="contentTargetas", content-targetas, area="{{area.id_area}}")
               p {{area.are_nombre}}
@@ -25,11 +28,11 @@ block content
               article(class="targeta",ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="servicio.aam_id_area==area.id_area", draggable="true")
                 img(src="{{servicio.usu_foto}}", width="50px")
                 p(class="header") Área: {{servicio.are_nombre}} Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
-                p Problema: {{servicio.mes_descripcion_problema}}
+                p {{servicio.mes_descripcion_problema}}
                 p(class="fecha") {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
                 p(class="importancia {{servicio.mes_importancia==1?'red':''}} {{servicio.mes_importancia==2?'yellow':''}} {{servicio.mes_importancia==3?'green':''}}")
                 p(class="opciones")
-                  i(class="material-icons right") done_all
+                  i(class="material-icons right", ng-click="doneService(servicio.id_area_atiende_mesa)") done_all
                   i(class="material-icons right", ng-click="showUsuarioService(area.id_area, servicio.id_mesa_ayuda, servicio.id_area_atiende_mesa)") supervisor_account
                   i(class="material-icons right", ng-click="showInfoService(servicio)") info
 
@@ -83,10 +86,19 @@ block content
               tr
                 th Nombre
                 th Opción
+              tr(ng-show="usuarioAtiendenMesa.length == 0")
+                td(colspan="2") No hay usuarios para mostrar
               tr(ng-repeat="usuario in usuarioAtiendenMesa")
                 td {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
-                td(ng-show="usuario.aam_id_mesa_ayuda", ng-click="eliminarUsuarioMesa(usuario.id_usuario)") eliminar
-                td(ng-show="!usuario.aam_id_mesa_ayuda", ng-click="agregarUsuarioMesa(usuario.id_usuario)") agregar
+                td(ng-show="usuario.aam_id_mesa_ayuda", ng-click="eliminarUsuarioMesa(usuario.id_usuario)")
+                  i(class="material-icons",style="cursor:pointer") close
+                td(ng-show="!usuario.aam_id_mesa_ayuda", ng-click="agregarUsuarioMesa(usuario.id_usuario)")
+                  i(class="material-icons",style="cursor:pointer") add
+
+
+        div(id="modalDoneService" class="modal")
+          div(class="modal-content")
+            h4 Servicio concluído
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
