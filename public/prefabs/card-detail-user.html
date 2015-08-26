@@ -41,7 +41,7 @@
 				<h6>Carrera: {{userCardDetail.car_nombre}}</h6>
 			<p class="divider"></p>
 		</div>
-		<div class="", ng-show="getPermisoById('asignacion_materias').permitido">
+		<div class="", ng-show="getPermisoById('asignacion_materias').moa_ver == 1">
 				<h6>Materias asignadas
 				<a class="waves-effect waves-teal btn-flat" ng-click="mostrarMateriasUsuario(userCardDetail.id_usuario)">
 					<i class="material-icons">visibility</i>

@@ -1,4 +1,4 @@
-SIACCApp.directive("cardDetailUser", ["$http", "scopes", function($http, scopes) {
+SIACCApp.directive("cardDetailUser", ["$http", "scopes", "util", function($http, scopes, util) {
   return {
     restrict : "E",
     templateUrl : "/prefabs/card-detail-user.html",
@@ -42,7 +42,7 @@ SIACCApp.directive("cardDetailUser", ["$http", "scopes", function($http, scopes)
       };
 
       scope.getPermisoById = function(idPermiso) {
-        if(scope.permisos){
+        if(scope.permisos && !util.empty(idPermiso)){
           for(var i = 0; i < scope.permisos.length; i++) {
             if(scope.permisos[i].permiso == idPermiso) {
               return scope.permisos[i];

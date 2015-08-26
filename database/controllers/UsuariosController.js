@@ -18,8 +18,8 @@ UsuariosController.prototype.getDataUsuario = function(idUsuario, callback) {
 * Por el momento los permisos del usuario son los que se asignan a los tipos de usuario...
 */
 UsuariosController.prototype.getPermisosUsuario = function(idUsuario, callback) {
-  query = "SELECT id_permiso permiso, moa_area_controla_mod permitido FROM permiso LEFT JOIN "
-          + "permiso_usuario ON id_permiso=moa_id_permiso AND moa_id_tipo_usuario=" + idUsuario;
+  query = "SELECT id_permiso_asignado,moa_ver,moa_editar,moa_crear,moa_eliminar,moa_id_permiso permiso FROM permiso LEFT JOIN "
+          + "permiso_asignado ON id_permiso=moa_id_permiso AND moa_id_tipo_usuario=" + idUsuario;
   self.connection.query(query, callback);
 };
 

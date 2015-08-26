@@ -100,7 +100,7 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
     $("#modalDoneService").openModal();
   };
 
-  $scope.conluirServicio = function() {
+  $scope.concluirServicio = function() {
     checkbox = document.getElementById("servicioConcluido");
     $scope.formServicioSolucionado.aam_soluciono = checkbox && checkbox.checked;
     json = {

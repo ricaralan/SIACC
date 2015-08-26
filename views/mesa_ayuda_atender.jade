@@ -1,0 +1,169 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp", ng-controller="MesaAyudaAtenderController", ng-init="initDataUsuario()")
+    app-for-users
+      div(id="contentApp", hidden)
+        a(class="waves-effect waves-light btn right" ng-click="setDatosSolicitarServicio()") Solicitar servicio
+        h3 Solicitudes
+        div(ng-init="getServiciosSinSolucionarUsuario();getServiciosSolucionadosUsuario();")
+          div(class="row")
+            div(class="col s12")
+              ul(class="tabs", ng-init="initTabs()")
+                li(class="tab col s6", id="tab_pendientes")
+                  a(href="#s_pendientes", class="active") Servicios pendientes
+                li(class="tab col s6")
+                  a(href="#s_solucionados") Servicios solucionados
+            div(class="col s12", id="s_pendientes")
+              table(class="bordered")
+                tr
+                  th Área
+                  th Solicitante
+                  th Problema
+                  th Fecha solicitado
+                  th Fecha limite
+                  th Opciones
+                tr(ng-show="serviciosSinSolucionar.length==0")
+                  td(colspan="6") No tienes solicitudes asignadas
+                tr(ng-repeat="servicio in serviciosSinSolucionar")
+                  td {{servicio.are_nombre}}
+                  td {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+                  td {{servicio.mes_descripcion_problema}}
+                  td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                  td {{getFormatDateTimeStamp(servicio.mes_fecha_limite)}}
+                  td
+                    p(class="opciones")
+                      i(class="material-icons right", ng-click="doneService(servicio.id_mesa_ayuda,servicio.id_area_atiende_mesa)") done_all
+                      i(class="material-icons right", ng-click="showUsuarioService(area.id_area, servicio.id_mesa_ayuda, servicio.id_area_atiende_mesa)") supervisor_account
+                      i(class="material-icons right", ng-click="showInfoService(servicio)") info
+            div(class="col s12", id="s_solucionados")
+              table(class="bordered")
+                tr
+                  th Área
+                  th Solicitante
+                  th Problema
+                  th Fecha solicitado
+                  th Fecha limite
+                  th Opciones
+                tr(ng-show="serviciosSolucionados.length==0")
+                  td(colspan="6") No tienes solicitudes solucionadas
+                tr(ng-repeat="servicio in serviciosSolucionados")
+                  td {{servicio.are_nombre}}
+                  td {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+                  td {{servicio.mes_descripcion_problema}}
+                  td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                  td {{getFormatDateTimeStamp(servicio.mes_fecha_limite)}}
+                  td
+                    p(class="opciones")
+                      i(class="material-icons right", ng-click="showUsuarioService(area.id_area, servicio.id_mesa_ayuda, servicio.id_area_atiende_mesa)") supervisor_account
+                      i(class="material-icons right", ng-click="showInfoService(servicio)") info
+
+        div(id="modalInfoServicio" class="modal")
+          div(class="modal-content")
+            h4 Información del servicio
+            table(class="bordered")
+              tr
+                th Datos servicio
+                th Descripción
+              tr
+                td Solicitante
+                td
+                  img(src="{{servicio.usu_foto}}", width="50px")
+                  p(style="display:inline-block")  {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
+              tr
+                td Área
+                td {{servicio.are_nombre}}
+              tr
+                td Fecha solicitud
+                td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+              tr
+                td Tipo de problema
+                td {{servicio.tse_nombre}}
+              tr(ng-show="servicio.tse_otro==1")
+                td Descripción usuario
+                td {{servicio.mes_otro_tipo_servicio}}
+              tr
+                td  Descripción problema
+                td  {{servicio.mes_descripcion_problema}}
+              tr
+                td Importancia
+                td
+                  select(class="browser-default", ng-model="servicio.mes_importancia",disabled)
+                    option(value="1") Muy urgente
+                    option(value="2") Urgente
+                    option(value="3") Normal
+              tr
+                td Fecha limite
+                td
+                  input(type="date", class="datepicker", id="mes_fecha_limite",disabled)
+            div(ng-show="servicio.aam_finalizo && servicio.aam_finalizo == 1")
+              p Datos de termino
+              table(class="bordered")
+                tr
+                  td Estado
+                  td {{servicio.aam_soluciono==1?"Solucionado":"No solucionado"}}
+                tr
+                  td Fecha de asignación
+                  td {{getFormatDateTimeStamp(servicio.aam_fecha_asignacion)}}
+                tr
+                  td Fecha de fin
+                  td {{getFormatDateTimeStamp(servicio.amm_fecha_fin)}}
+                tr
+                  td Diagnostico
+                  td {{servicio.aam_diagnostico}}
+                tr
+                  td Acciones tomadas
+                  td {{servicio.aam_acciones_tomadas}}
+                tr
+                  td Acciones tomadas
+                  td {{servicio.aam_observaciones}}
+
+            div(class="modal-footer")
+              a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cerrar
+
+        div(id="modalUsuariosServicio" class="modal")
+          div(class="modal-content")
+            h4 Usuarios asignados a la solicitud
+            table(class="bordered")
+              tr
+                th Nombre
+              tr(ng-show="usuarioAtiendenMesa.length == 0")
+                td(colspan="2") No hay usuarios para mostrar
+              tr(ng-repeat="usuario in usuarioAtiendenMesa")
+                td {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+
+
+        div(id="modalDoneService" class="modal")
+          div(class="modal-content")
+            h4 Servicio concluído
+            table
+              tr
+                td
+                  div(class="input-field col s6")
+                    textarea(id="desc_diagnostico", type="text", class="validate materialize-textarea", ng-model="formServicioSolucionado.aam_diagnostico", maxlength="150")
+                    label(for="desc_diagnostico") Diagnostico
+              tr
+                td
+                  div(class="input-field col s6")
+                    textarea(id="desc_acciones_tomadas", type="text", class="validate materialize-textarea", ng-model="formServicioSolucionado.aam_acciones_tomadas", maxlength="150")
+                    label(for="desc_acciones_tomadas") Acciones tomadas
+              tr
+                td
+                  div(class="input-field col s6")
+                    textarea(id="desc_observaciones", type="text", class="validate materialize-textarea", ng-model="formServicioSolucionado.aam_observaciones", maxlength="150")
+                    label(for="desc_observaciones") Observaciones
+              tr
+                td
+                  input(type="checkbox", id="servicioConcluido", ng-model="formServicioSolucionado.aam_soluciono")
+                  label(for="servicioConcluido") Solucionado
+          div(class="modal-footer")
+            a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
+            button(class="waves-effect waves-green btn-flat", ng-click="concluirServicio()", id="btnConcliurServicio") Concluír
+
+
+  script(src="/socket.io/socket.io.js")
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/controllers/MesaAyudaAtenderController.js")
+  link(rel='stylesheet', href='/stylesheets/mesa_ayuda.css')

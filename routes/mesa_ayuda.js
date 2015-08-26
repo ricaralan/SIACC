@@ -9,6 +9,12 @@ router.get("/solicitante", function(req, res) {
   }
 });
 
+router.get("/atender", function(req, res) {
+  if(req.session.user != null) {
+    res.render("mesa_ayuda_atender", {title : "SIACC"});
+  }
+});
+
 router.get("/administrador", function(req, res) {
   if(req.session.user != null) {
     res.render("mesa_ayuda_administrador", {title : "SIACC"});
@@ -17,6 +23,26 @@ router.get("/administrador", function(req, res) {
 
 router.get("/getServiciosSinSolucionar", function(req, res) {
   controller.getServiciosSinSolucionar(function(err, servicios) {
+    if(!err) {
+      res.send(servicios);
+    } else {
+      // TODO especificar el tipo de error
+    }
+  });
+});
+
+router.get("/getServiciosSinSolucionar/u/", function(req, res) {
+  controller.getServiciosSinSolucionarUsuario(req.session.user[0].id_usuario, function(err, servicios) {
+    if(!err) {
+      res.send(servicios);
+    } else {
+      // TODO especificar el tipo de error
+    }
+  });
+});
+
+router.get("/getServiciosSolucionados/u/", function(req, res) {
+  controller.getServiciosSolucionados(req.session.user[0].id_usuario, function(err, servicios) {
     if(!err) {
       res.send(servicios);
     } else {
