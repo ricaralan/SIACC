@@ -232,7 +232,6 @@
   mes_otro_tipo_servicio VARCHAR(50),
   mes_fecha_solicitado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   mes_fecha_limite DATE,
-  mes_fecha_solucionado TIMESTAMP,
   mes_estado TINYINT DEFAULT 1,
   mes_importancia TINYINT DEFAULT 3,
   mes_descripcion_problema VARCHAR(150),
@@ -254,6 +253,8 @@
   aam_observaciones VARCHAR(150),
   aam_asignacion BOOLEAN DEFAULT true,
   aam_soluciono BOOLEAN,
+  amm_fecha_fin TIMESTAMP,
+  aam_finalizo BOOLEAN DEFAULT false,
   FOREIGN KEY(aam_id_area) REFERENCES area(id_area),
   FOREIGN KEY(aam_id_mesa_ayuda) REFERENCES mesa_ayuda(id_mesa_ayuda)
   );

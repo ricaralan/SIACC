@@ -11,7 +11,8 @@ MesaAyudaController.prototype.getServiciosSinSolucionar = function(callback) {
   query = "SELECT id_area_atiende_mesa,id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
         + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM (((mesa_ayuda LEFT JOIN "
         + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion)"
-        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio;";
+        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
+        + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio WHERE area_atiende_mesa.aam_finalizo=0;";
   self.connection.query(query, callback);
 };
 
@@ -51,6 +52,14 @@ MesaAyudaController.prototype.eliminarUsuarioMesa = function(idUsuario, idAreaAt
     uam_id_area_atiende_mesa : idAreaAtiendeMesa,
     uam_id_usuario : idUsuario
   }, callback);
+};
+
+MesaAyudaController.prototype.concluirServicio = function(jsonServicio, id_area_atiende_mesa, callback) {
+  query = "UPDATE area_atiende_mesa SET aam_finalizo=true,aam_soluciono="+jsonServicio.aam_soluciono
+        + ",aam_observaciones='"+jsonServicio.aam_observaciones+"',aam_diagnostico='"
+        + jsonServicio.aam_diagnostico + "',aam_acciones_tomadas='"+jsonServicio.aam_acciones_tomadas
+        + "', amm_fecha_fin=CURRENT_TIMESTAMP WHERE id_area_atiende_mesa="+id_area_atiende_mesa;
+  self.connection.query(query, callback);
 };
 
 MesaAyudaController.prototype.create = function(jsonData, callback) {

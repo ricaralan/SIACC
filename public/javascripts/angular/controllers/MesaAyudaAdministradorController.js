@@ -5,6 +5,8 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
   $scope.servicio = {};
   $scope.usuarioAtiendenMesa = [];
   $scope.datosAsignarUsuariosMesa = {};
+  $scope.servicioConcluir = {};
+  $scope.formServicioSolucionado = {};
   $scope.socket = io();
 
   $http.get("/areas/getAreasAdministradorasMesaAyuda").success(function(areas) {
@@ -91,8 +93,28 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
     });
   };
 
-  $scope.doneService = function(id_area_atiende_mesa) {
+  $scope.doneService = function(id_mesa_ayuda,id_area_atiende_mesa) {
+    $scope.servicioConcluir = {
+      id_area_atiende_mesa : id_area_atiende_mesa
+    };
     $("#modalDoneService").openModal();
+  };
+
+  $scope.conluirServicio = function() {
+    checkbox = document.getElementById("servicioConcluido");
+    $scope.formServicioSolucionado.aam_soluciono = checkbox && checkbox.checked;
+    json = {
+      datosServicioSolucionado : $scope.formServicioSolucionado,
+      id_area_atiende_mesa : $scope.servicioConcluir.id_area_atiende_mesa
+    };
+    $http.post("/mesa_ayuda/concluirServicio", json).success(function(data) {
+      if(data.success) {
+        $scope.socket.emit("changeOnServiciosSinSolucionar", {});
+        $("#modalDoneService").closeModal();
+        Materialize.toast("Servicio concluído", 2000);
+        $scope.formServicioSolucionado = {};
+      }
+    });
   };
 
   $scope.socket.on("changeOnServiciosSinSolucionar", function(data) {

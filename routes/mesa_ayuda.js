@@ -79,4 +79,11 @@ router.put("/eliminarUsuarioMesa/:idUsuario/:idAreaAtiendeMesa", function(req, r
   });
 });
 
+router.post("/concluirServicio", function(req, res) {
+  json = req.body;
+  controller.concluirServicio(json.datosServicioSolucionado,json.id_area_atiende_mesa, function(err, data) {
+    res.send({success : !err && data.affectedRows == 1});
+  });
+});
+
 module.exports = router;
