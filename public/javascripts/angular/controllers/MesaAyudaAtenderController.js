@@ -73,7 +73,15 @@ SIACCApp.controller("MesaAyudaAtenderController", ["$scope", "$http", "util", fu
     });
   };
 
+  /**
+  * LISTEN SOCKETS
+  */
   $scope.socket.on("changeOnServiciosSinSolucionar", function(data) {
+    $scope.getServiciosSinSolucionarUsuario();
+    $scope.getServiciosSolucionadosUsuario();
+  });
+
+  $scope.socket.on("changeUsuariosAsignadosServicio", function(data) {
     $scope.getServiciosSinSolucionarUsuario();
     $scope.getServiciosSolucionadosUsuario();
   });

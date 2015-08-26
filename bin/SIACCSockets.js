@@ -91,6 +91,13 @@ module.exports = function(server){
       io.emit("changeOnServiciosSinSolucionar", mensaje);
     });
 
+    /**
+    * CHANGE ON USUARIOS ASIGNADOS SERVICIO SOCKETS
+    **/
+    socket.on("changeUsuariosAsignadosServicio", function(mensaje) {
+      io.emit("changeUsuariosAsignadosServicio", mensaje);
+    });
+
   });
 
 };

@@ -6,8 +6,7 @@ block content
   div(ng-app="SIACCApp", ng-controller="MesaAyudaAtenderController", ng-init="initDataUsuario()")
     app-for-users
       div(id="contentApp", hidden)
-        a(class="waves-effect waves-light btn right" ng-click="setDatosSolicitarServicio()") Solicitar servicio
-        h3 Solicitudes
+        h3 Atención de solicitudes
         div(ng-init="getServiciosSinSolucionarUsuario();getServiciosSolucionadosUsuario();")
           div(class="row")
             div(class="col s12")
