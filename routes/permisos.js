@@ -13,13 +13,12 @@ router.get("/getPermisos", function(req, res) {
 });
 
 router.get("/getPermisosUserLog", function(req, res) {
-  if(!req.session.user) {
+  if(!req.user) {
     res.send("No hay un usuario logueado");
   } else {
-    userSess = req.session.user[0];
-    controller.getPermisosTipoUsuario(userSess.usu_id_tipo_usuario, function(err, permisosTUsu) {
-      controller.getPermisosTipoArea(userSess.usu_id_area, function(err, permisosTAre) {
-        permisos : controller.getJsonPermisos(permisosTUsu, permisosTAre, userSess.usu_id_tipo_usuario, function(permisos) {
+    controller.getPermisosTipoUsuario(req.user.usu_id_tipo_usuario, function(err, permisosTUsu) {
+      controller.getPermisosTipoArea(req.user.usu_id_area, function(err, permisosTAre) {
+        permisos : controller.getJsonPermisos(permisosTUsu, permisosTAre, req.user.usu_id_tipo_usuario, function(permisos) {
           res.send(permisos);
         });
       });

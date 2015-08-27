@@ -4,19 +4,19 @@ var controller = require("../database/controllers/MesaAyudaController");
 var userController = require("../database/controllers/UsuariosController");
 
 router.get("/solicitante", function(req, res) {
-  if(req.session.user != null) {
+  if(req.user != null) {
     res.render("mesa_ayuda_solicitante", {title : "SIACC"});
   }
 });
 
 router.get("/atender", function(req, res) {
-  if(req.session.user != null) {
+  if(req.user != null) {
     res.render("mesa_ayuda_atender", {title : "SIACC"});
   }
 });
 
 router.get("/administrador", function(req, res) {
-  if(req.session.user != null) {
+  if(req.user != null) {
     res.render("mesa_ayuda_administrador", {title : "SIACC"});
   }
 });
@@ -32,7 +32,7 @@ router.get("/getServiciosSinSolucionar", function(req, res) {
 });
 
 router.get("/getServiciosSinSolucionar/u/", function(req, res) {
-  controller.getServiciosSinSolucionarUsuario(req.session.user[0].id_usuario, function(err, servicios) {
+  controller.getServiciosSinSolucionarUsuario(req.user.id_usuario, function(err, servicios) {
     if(!err) {
       res.send(servicios);
     } else {
@@ -42,7 +42,7 @@ router.get("/getServiciosSinSolucionar/u/", function(req, res) {
 });
 
 router.get("/getServiciosSolicitadosEnProceso/u/", function(req, res) {
-  controller.getServiciosSolicitadosEnProceso(req.session.user[0].id_usuario, function(err, servicios) {
+  controller.getServiciosSolicitadosEnProceso(req.user.id_usuario, function(err, servicios) {
     if(!err) {
       res.send(servicios);
     } else {
@@ -52,7 +52,7 @@ router.get("/getServiciosSolicitadosEnProceso/u/", function(req, res) {
 });
 
 router.get("/getServiciosSolicitadosSolucionados/u/", function(req, res) {
-  controller.getServiciosSolicitadosSolucionados(req.session.user[0].id_usuario, function(err, servicios) {
+  controller.getServiciosSolicitadosSolucionados(req.user.id_usuario, function(err, servicios) {
     if(!err) {
       res.send(servicios);
     } else {
@@ -62,7 +62,7 @@ router.get("/getServiciosSolicitadosSolucionados/u/", function(req, res) {
 });
 
 router.get("/getServiciosSolucionados/u/", function(req, res) {
-  controller.getServiciosSolucionados(req.session.user[0].id_usuario, function(err, servicios) {
+  controller.getServiciosSolucionados(req.user.id_usuario, function(err, servicios) {
     if(!err) {
       res.send(servicios);
     } else {

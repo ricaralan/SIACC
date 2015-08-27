@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
 });
 
 router.get("/getIdUsuarioLogueado", function(req, res) {
-  res.send(req.session.user[0].id_usuario);
+  res.send(req.user.id_usuario);
 });
 
 router.get("/getDataUsuario/:idUsuario", function(req, res) {
@@ -156,14 +156,6 @@ router.get("/getTypesUser", function(req, res) {
   ],{},function(err, data) {
     res.send(data);
   });
-});
-
-router.get("/createSession", function(req, res) {
-  req.session.user = {
-    user_id : "user_id1",
-    user_name : "Alan"
-  };
-  res.send(req.session.user);
 });
 
 router.get("/logout", function(req, res) {
