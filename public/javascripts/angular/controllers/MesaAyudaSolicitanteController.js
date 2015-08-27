@@ -4,12 +4,27 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
   $scope.servicios = [];
   $scope.formMesaAyuda = {};
   $scope.tipoServicio = {};
+  $scope.serviciosSolicitadosEnProceso = [];
+  $scope.serviciosSolicitadosSolucionados = [];
+  $scope.socket = io();
 
   $scope.initDataUsuario = function() {
     $http.get("/usuarios/getIdUsuarioLogueado").success(function(data) {
       $http.get("/usuarios/getDataUsuario/" + data).success(function(dataUsuario) {
         $scope.dataUsuario = dataUsuario;
       });
+    });
+  };
+
+  $scope.getServiciosSolicitadosEnProceso = function() {
+    $http.get("/mesa_ayuda/getServiciosSolicitadosEnProceso/u").success(function(servicios) {
+      $scope.serviciosSolicitadosEnProceso = servicios;
+    });
+  };
+
+  $scope.getServiciosSolicitadosSolucionados = function() {
+    $http.get("/mesa_ayuda/getServiciosSolicitadosSolucionados/u").success(function(servicios) {
+      $scope.serviciosSolicitadosSolucionados = servicios;
     });
   };
 
@@ -40,6 +55,7 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
           $scope.formMesaAyuda = {};
           Materialize.toast("Solicitud enviada", 2000);
           $("#modalOpcionesSolicitarServicio").closeModal();
+          $scope.socket.emit("changeOnServiciosSinSolucionar", {});
         } else {
           Materialize.toast("Ocurrio un error!", 2000);
         }
@@ -59,5 +75,20 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
     return valido && !util.empty($scope.formMesaAyuda.mes_descripcion_problema);
   };
 
+  $scope.getFormatDateTimeStamp = function(fechaTimeStamp) {
+    if(fechaTimeStamp){
+      return fechaTimeStamp.split("T")[0] + " " + fechaTimeStamp.split("T")[1].substr(0, 8);
+    }
+    return null;
+  };
+
+  /**
+  * LISTEN SOCKETS
+  */
+
+  $scope.socket.on("changeOnServiciosSinSolucionar", function() {
+    $scope.getServiciosSolicitadosEnProceso();
+    $scope.getServiciosSolicitadosSolucionados();
+  });
 
 }]);

@@ -168,6 +168,7 @@ router.get("/createSession", function(req, res) {
 
 router.get("/logout", function(req, res) {
   req.session.destroy(function (){
+    req.logout();
     res.redirect("/");
   });
 });

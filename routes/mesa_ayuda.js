@@ -41,6 +41,26 @@ router.get("/getServiciosSinSolucionar/u/", function(req, res) {
   });
 });
 
+router.get("/getServiciosSolicitadosEnProceso/u/", function(req, res) {
+  controller.getServiciosSolicitadosEnProceso(req.session.user[0].id_usuario, function(err, servicios) {
+    if(!err) {
+      res.send(servicios);
+    } else {
+      // TODO especificar el tipo de error
+    }
+  });
+});
+
+router.get("/getServiciosSolicitadosSolucionados/u/", function(req, res) {
+  controller.getServiciosSolicitadosSolucionados(req.session.user[0].id_usuario, function(err, servicios) {
+    if(!err) {
+      res.send(servicios);
+    } else {
+      // TODO especificar el tipo de error
+    }
+  });
+});
+
 router.get("/getServiciosSolucionados/u/", function(req, res) {
   controller.getServiciosSolucionados(req.session.user[0].id_usuario, function(err, servicios) {
     if(!err) {

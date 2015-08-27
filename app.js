@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var expressSession = require("express-session");
 var multer = require("multer");
 
+var passport = require('./auth');
 var routes = require('./routes/index');
 var usuarios = require('./routes/usuarios');
 var login = require('./routes/login');
@@ -40,6 +41,8 @@ app.use(multer({dest:"public/images/temp"}));
 
 app.use(cookieParser());
 app.use(expressSession({secret:'@1[[de+WEDLN23EOIEFSIACC_*-*[*]]]'}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
@@ -57,6 +60,11 @@ app.use('/inventarios', inventarios);
 app.use('/acceso_area', acceso_area);
 app.use('/tipo_servicio', tipo_servicio);
 app.use('/mesa_ayuda', mesa_ayuda);
+
+app.post("/auth/login", passport.authenticate("local",{
+  successRedirect : "/",
+  failureRedirect : "/"
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

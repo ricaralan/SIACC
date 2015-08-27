@@ -2,15 +2,16 @@ SIACCApp.controller("LoginController",["$scope", "$http", "$location", "util", f
 
   $scope.login = function() {
     if(!util.empty($scope.textUser) && !util.empty($scope.textPassword)){
-      $http.post("/login/verificarUsuario/"+$scope.textUser+"/"+$scope.textPassword)
-      .success(function(data) {
-        if(data) {
+      $http.post("/auth/login/",{
+        username : $scope.textUser,
+        password : $scope.textPassword
+      }).success(function(data) {
           window.location = "/";
-        } else {
-          Materialize.toast("Usuario o contraseña incorrectos", 3000);
-          $scope.textPassword = "";
-        }
       });
+      $scope.textPassword = "";
+      setTimeout(function(){
+          Materialize.toast("Usuario o contraseña incorrectos", 3000);
+      }, 800);
     } else {
       Materialize.toast("Debes completar los campos", 2000);
     }

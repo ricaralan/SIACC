@@ -5,9 +5,26 @@ block content
       div(class="indeterminate")
   div(ng-app="SIACCApp", ng-controller="MesaAyudaSolicitanteController", ng-init="initDataUsuario()")
     app-for-users
-      div(id="contentApp", hidden)
+      div(id="contentApp", hidden, ng-init="getServiciosSolicitadosEnProceso();getServiciosSolicitadosSolucionados();")
         a(class="waves-effect waves-light btn right" ng-click="setDatosSolicitarServicio()") Solicitar servicio
         h3 Solicitudes
+        table(class="bordered")
+          tr
+            th Fecha de solicitud
+            th Tipo de problema
+            th Problema
+            th Estado
+            th Info
+          tr(ng-repeat="servicio in serviciosSolicitadosEnProceso")
+            td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+            td {{servicio.tse_nombre}}
+            td {{servicio.mes_descripcion_problema}}
+            td {{!servicio.id_area_atiende_mesa?"Sin asignar":"En proceso"}}
+            td
+              p(class="opciones")
+                i(class="material-icons", ng-click="showInfoService(servicio)") info
+        //p en proceso: {{serviciosSolicitadosEnProceso}}
+        //p solucionados: {{serviciosSolicitadosSolucionados}}
 
       div(id="modalOpcionesSolicitarServicio" class="modal")
         div(class="modal-content")
@@ -47,6 +64,7 @@ block content
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
             button(ng-show="tipoServicio.tse_nombre",class=" waves-effect waves-green btn-flat", ng-click="solicitarServicio()", id="btnOpcionTipoAreas") Solicitar servicio
 
-
+  script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
   script(src="/javascripts/angular/controllers/MesaAyudaSolicitanteController.js")
+  link(rel='stylesheet', href='/stylesheets/mesa_ayuda.css')
