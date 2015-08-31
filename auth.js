@@ -4,9 +4,7 @@ var passport = require("passport"),
 
 passport.use(new LocalStrategy(function(username, password, done) {
   loginController.verificarUsuario(username, password, function(err, usuario) {
-    if(usuario.length == 1) {
-      done(null, usuario[0]);
-    }
+    done(null, (usuario.length==1) ? usuario[0] : {errLogin : true});
   });
 }));
 

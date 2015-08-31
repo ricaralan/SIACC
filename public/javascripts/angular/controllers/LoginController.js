@@ -5,13 +5,17 @@ SIACCApp.controller("LoginController",["$scope", "$http", "$location", "util", f
       $http.post("/auth/login/",{
         username : $scope.textUser,
         password : $scope.textPassword
-      }).success(function(data) {
+      }).success(function(login) {
+        console.log(login);
+        if(login.success) {
           window.location = "/";
+        } else {
+          $scope.textPassword = "";
+          setTimeout(function(){
+              Materialize.toast("Usuario o contraseña incorrectos", 3000);
+          }, 800);
+        }
       });
-      $scope.textPassword = "";
-      setTimeout(function(){
-          Materialize.toast("Usuario o contraseña incorrectos", 3000);
-      }, 800);
     } else {
       Materialize.toast("Debes completar los campos", 2000);
     }

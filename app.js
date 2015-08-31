@@ -61,10 +61,14 @@ app.use('/acceso_area', acceso_area);
 app.use('/tipo_servicio', tipo_servicio);
 app.use('/mesa_ayuda', mesa_ayuda);
 
-app.post("/auth/login", passport.authenticate("local",{
-  successRedirect : "/",
-  failureRedirect : "/"
-}));
+app.post("/auth/login", passport.authenticate("local"), function(req, res) {
+    loginSuccess = true;
+    if(req.user.errLogin) {
+      loginSuccess = false;
+      req.logout();
+    }
+    res.send({success : loginSuccess});
+  });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
