@@ -8,7 +8,7 @@ block content
       div(id="contentApp", hidden, style="min-height:600px;", ng-controller="MesaAyudaAdministradorController")
         h3 Administrador
 
-        div(class="container contenedorCatalogosTareas", ng-init="getServiciosSinSolucionar()")
+        div(class="container contenedorCatalogosTareas", ng-init="getServiciosSinFinalizar();getServiciosSinSolucionar();")
           section(class="list")
             article(class="contentTargetas", content-targetas, area="0")
               p Solicitudes sin asignar
@@ -25,7 +25,7 @@ block content
             article(class="contentTargetas", content-targetas, area="{{area.id_area}}")
               p {{area.are_nombre}}
               br
-              article(class="targeta",ng-repeat="servicio in serviciosSinSolucionar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="servicio.aam_id_area==area.id_area", draggable="true")
+              article(class="targeta",ng-repeat="servicio in serviciosSinFinalizar", servicio="{{servicio}}", targeta-mesa-ayuda, ng-show="servicio.aam_id_area==area.id_area", draggable="true")
                 img(src="{{servicio.usu_foto}}", width="50px")
                 p(class="header") Área: {{servicio.are_nombre}} Solicitante: {{servicio.usu_nombre}} {{servicio.usu_primer_apellido}} {{servicio.usu_segundo_apellido}}
                 p {{servicio.mes_descripcion_problema}}

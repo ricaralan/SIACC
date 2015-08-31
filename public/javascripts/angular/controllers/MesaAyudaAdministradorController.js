@@ -1,6 +1,7 @@
 SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "util", function($scope, $http, util) {
 
   $scope.serviciosSinSolucionar = [];
+  $scope.serviciosSinFinalizar = [];
   $scope.areas = [];
   $scope.servicio = {};
   $scope.usuarioAtiendenMesa = [];
@@ -12,6 +13,12 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
   $http.get("/areas/getAreasAdministradorasMesaAyuda").success(function(areas) {
     $scope.areas = areas;
   });
+
+  $scope.getServiciosSinFinalizar = function() {
+    $http.get("/mesa_ayuda/getServiciosSinFinalizar").success(function(serviciosSinFinalizar) {
+      $scope.serviciosSinFinalizar = serviciosSinFinalizar;
+    });
+  };
 
   $scope.getServiciosSinSolucionar = function() {
     $http.get("/mesa_ayuda/getServiciosSinSolucionar").success(function(serviciosSinSolucionar) {
@@ -121,6 +128,7 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
 
   $scope.socket.on("changeOnServiciosSinSolucionar", function(data) {
     $scope.getServiciosSinSolucionar();
+    $scope.getServiciosSinFinalizar();
   });
 
 }]);

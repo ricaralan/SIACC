@@ -7,10 +7,19 @@ var MesaAyudaController = function() {
 
 var self;
 
+MesaAyudaController.prototype.getServiciosSinFinalizar = function(callback) {
+  query = "SELECT id_area_atiende_mesa,id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
+        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM (((mesa_ayuda INNER JOIN "
+        + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion AND area_atiende_mesa.aam_finalizo=0)"
+        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
+        + "LEFT JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio;";
+  self.connection.query(query, callback);
+};
+
 MesaAyudaController.prototype.getServiciosSinSolucionar = function(callback) {
   query = "SELECT id_area_atiende_mesa,id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
         + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM (((mesa_ayuda LEFT JOIN "
-        + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion AND area_atiende_mesa.aam_finalizo=0)"
+        + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda)"
         + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
         + "LEFT JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio;";
   self.connection.query(query, callback);
@@ -32,7 +41,7 @@ MesaAyudaController.prototype.getServiciosSolucionados = function(idUsuario, cal
         + "aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
         + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM ((((mesa_ayuda LEFT JOIN "
         + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion)LEFT JOIN usuario_atiende_mesa ON uam_id_area_atiende_mesa=id_area_atiende_mesa)"
-        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
+        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=aam_id_area)"
         + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio AND area_atiende_mesa.aam_finalizo=1 "
         + "WHERE uam_id_usuario='"+idUsuario+"';";
   self.connection.query(query, callback);
@@ -44,8 +53,8 @@ MesaAyudaController.prototype.getServiciosSolicitadosEnProceso = function(idUsua
         + "aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
         + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM ((((mesa_ayuda LEFT JOIN "
         + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion)LEFT JOIN usuario_atiende_mesa ON uam_id_area_atiende_mesa=id_area_atiende_mesa)"
-        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
-        + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio WHERE "
+        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=aam_id_area)"
+        + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio AND (area_atiende_mesa.aam_finalizo=0 OR area_atiende_mesa.aam_finalizo IS NULL) WHERE "
         + "mes_id_usuario='"+idUsuario+"';";
         console.log("Query 1:\n"+query+"\n");
   self.connection.query(query, callback);

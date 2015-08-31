@@ -21,6 +21,16 @@ router.get("/administrador", function(req, res) {
   }
 });
 
+router.get("/getServiciosSinFinalizar", function(req, res) {
+  controller.getServiciosSinFinalizar(function(err, servicios) {
+    if(!err) {
+      res.send(servicios);
+    } else {
+      // TODO especificar el tipo de error
+    }
+  });
+});
+
 router.get("/getServiciosSinSolucionar", function(req, res) {
   controller.getServiciosSinSolucionar(function(err, servicios) {
     if(!err) {
