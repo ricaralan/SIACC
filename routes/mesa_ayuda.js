@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var controller = require("../database/controllers/MesaAyudaController");
 var userController = require("../database/controllers/UsuariosController");
+var generatedId = require("../util/generateId/");
 
 router.get("/solicitante", function(req, res) {
   if(req.user != null) {
@@ -82,10 +83,25 @@ router.get("/getServiciosSolucionados/u/", function(req, res) {
 });
 
 router.post("/solicitar_servicio", function(req, res) {
-  controller.create(req.body.jsonData, function(err, data) {
-    res.send({success : !err && data.affectedRows == 1});
+  getIdNewServicio(function(id) {
+    req.body.jsonData.id_mesa_ayuda = id;
+    controller.create(req.body.jsonData, function(err, data) {
+      res.send({success : !err && data.affectedRows == 1, generatedId : id});
+    });
   });
 });
+
+function getIdNewServicio(done) {
+  id = generatedId.generate(10);
+  controller.existMesaAyudaById(id, function(existeMesa) {
+    if(existeMesa) {
+      // Aplicar recursibidad hasta encontrar una clave disponible
+      getIdNewServicio(done);
+    } else{
+      done(id);
+    }
+  });
+}
 
 router.post("/cambiar_area_atencion", function(req, res) {
   controller.cambiarAreaAtencion({

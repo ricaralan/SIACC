@@ -10,15 +10,17 @@ block content
         h3 Solicitudes
         table(class="bordered")
           tr
+            th Identificador
             th Fecha de solicitud
-            th Tipo de problema
             th Problema
             th Estado
             th Area atendiendo
             th Info
+          tr(ng-show="serviciosSolicitadosEnProceso.length == 0")
+            td(colspan="6") No tienes solicitudes pendientes
           tr(ng-repeat="servicio in serviciosSolicitadosEnProceso")
+            td {{servicio.id_mesa_ayuda}}
             td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
-            td {{servicio.tse_nombre}}
             td {{servicio.mes_descripcion_problema}}
             td {{!servicio.id_area_atiende_mesa?"Sin asignar":"En proceso"}}
             td {{servicio.are_nombre}}

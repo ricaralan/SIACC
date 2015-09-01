@@ -51,7 +51,7 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
       $scope.formMesaAyuda.mes_id_usuario = $scope.dataUsuario.id_usuario;
       $scope.formMesaAyuda.mes_id_area = $scope.dataUsuario.usu_id_area;
       $http.post("/mesa_ayuda/solicitar_servicio",{jsonData : $scope.formMesaAyuda}).success(function(data) {
-        if (data.success) {
+        if(data.success) {
           $scope.formMesaAyuda = {};
           Materialize.toast("Solicitud enviada", 2000);
           $("#modalOpcionesSolicitarServicio").closeModal();

@@ -34,7 +34,7 @@ var generateId =  function () {
     return Math.floor(Math.random() * (max - min) + min);
   };
 
-  generate = function(requiredLength) {
+  this.generate = function(requiredLength) {
     var letters = [];
     addToArrayAlphabetUpperCase(letters)
     addToArrayNaturalNumbers(letters)
