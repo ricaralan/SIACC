@@ -225,7 +225,7 @@
   * Peticiones de las áreas
   **/
   CREATE TABLE mesa_ayuda(
-  id_mesa_ayuda INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_mesa_ayuda VARCHAR(10) NOT NULL PRIMARY KEY,
   mes_id_area INT,/* En que área se solicitó */
   mes_id_usuario VARCHAR(10) NOT NULL,/* Quien lo solicitó */
   mes_id_tipo_servicio INT,/* Que tipo de servicio requiren */
@@ -246,7 +246,7 @@
   CREATE TABLE area_atiende_mesa(
   id_area_atiende_mesa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   aam_id_area INT NOT NULL,
-  aam_id_mesa_ayuda INT NOT NULL,
+  aam_id_mesa_ayuda VARCHAR(10),
   aam_fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   aam_diagnostico VARCHAR(150),
   aam_acciones_tomadas VARCHAR(150),
