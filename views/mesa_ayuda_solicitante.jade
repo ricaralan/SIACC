@@ -8,27 +8,58 @@ block content
       div(id="contentApp", hidden, ng-init="getServiciosSolicitadosEnProceso();getServiciosSolicitadosSolucionados();")
         a(class="waves-effect waves-light btn right" ng-click="setDatosSolicitarServicio()") Solicitar servicio
         h3 Solicitudes
-        table(class="bordered")
-          tr
-            th Identificador
-            th Fecha de solicitud
-            th Problema
-            th Estado
-            th Area atendiendo
-            th Info
-          tr(ng-show="serviciosSolicitadosEnProceso.length == 0")
-            td(colspan="6") No tienes solicitudes pendientes
-          tr(ng-repeat="servicio in serviciosSolicitadosEnProceso")
-            td {{servicio.id_mesa_ayuda}}
-            td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
-            td {{servicio.mes_descripcion_problema}}
-            td {{!servicio.id_area_atiende_mesa?"Sin asignar":"En proceso"}}
-            td {{servicio.are_nombre}}
-            td
-              p(class="opciones")
-                i(class="material-icons", ng-click="showInfoService(servicio)") info
-        // p en proceso: {{serviciosSolicitadosEnProceso}}
-        // p solucionados: {{serviciosSolicitadosSolucionados}}
+        div(class="row")
+          div(class="col s12")
+            ul(class="tabs")
+              li(class="tab col s3")
+                a(href="#test1", class="active") Pendientes
+              li(class="tab col s3")
+                a(href="#test2", ng-click="initTabs()") Finalizadas
+          div(id="test1" class="col s12")
+            table(class="bordered")
+              tr
+                th Identificador
+                th Fecha de solicitud
+                th Problema
+                th Estado
+                th Area atendiendo
+                th Info
+              tr(ng-show="serviciosSolicitadosEnProceso.length == 0")
+                td(colspan="6") No tienes solicitudes pendientes
+              tr(ng-repeat="servicio in serviciosSolicitadosEnProceso")
+                td {{servicio.id_mesa_ayuda}}
+                td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                td {{servicio.mes_descripcion_problema}}
+                td {{!servicio.id_area_atiende_mesa?"Sin asignar":"En proceso"}}
+                td {{servicio.are_nombre}}
+                td
+                  p(class="opciones")
+                    i(class="material-icons", ng-click="showInfoService(servicio)") info
+            // p en proceso: {{serviciosSolicitadosEnProceso}}
+            // p solucionados: {{serviciosSolicitadosSolucionados}}
+
+          div(id="test2" class="col s12")
+            table(class="bordered")
+              tr
+                th Identificador
+                th Fecha de solicitud
+                th Problema
+                th Estado
+                th Area atendiendo
+                th Info
+              tr(ng-show="serviciosSolicitadosSolucionados.length == 0")
+                td(colspan="6") No tienes solicitudes finalizadas
+              tr(ng-repeat="servicio in serviciosSolicitadosSolucionados")
+                td {{servicio.id_mesa_ayuda}}
+                td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+                td {{servicio.mes_descripcion_problema}}
+                td {{getFormatDateTimeStamp(servicio.amm_fecha_fin)}}
+                td {{servicio.are_nombre}}
+                td
+                  p(class="opciones")
+                    i(class="material-icons", ng-click="showInfoService(servicio)") info
+            // p en proceso: {{serviciosSolicitadosEnProceso}}
+            // p solucionados: {{serviciosSolicitadosSolucionados}}
 
       div(id="modalOpcionesSolicitarServicio" class="modal")
         div(class="modal-content")

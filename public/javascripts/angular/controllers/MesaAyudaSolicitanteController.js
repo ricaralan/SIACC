@@ -8,6 +8,10 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
   $scope.serviciosSolicitadosSolucionados = [];
   $scope.socket = io();
 
+  $scope.initTabs = function() {
+    $('ul.tabs').tabs();
+  };
+
   $scope.initDataUsuario = function() {
     $http.get("/usuarios/getIdUsuarioLogueado").success(function(data) {
       $http.get("/usuarios/getDataUsuario/" + data).success(function(dataUsuario) {
@@ -77,7 +81,9 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
 
   $scope.getFormatDateTimeStamp = function(fechaTimeStamp) {
     if(fechaTimeStamp){
-      return fechaTimeStamp.split("T")[0] + " " + fechaTimeStamp.split("T")[1].substr(0, 8);
+      fecha = new Date(fechaTimeStamp);
+      hora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+      return fechaTimeStamp.split("T")[0] + " " + hora;
     }
     return null;
   };
