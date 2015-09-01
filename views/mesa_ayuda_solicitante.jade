@@ -12,10 +12,10 @@ block content
           div(class="col s12")
             ul(class="tabs")
               li(class="tab col s3")
-                a(href="#test1", class="active") Pendientes
+                a(href="#pendientes", class="active") Pendientes
               li(class="tab col s3")
-                a(href="#test2", ng-click="initTabs()") Finalizadas
-          div(id="test1" class="col s12")
+                a(href="#finalizadas", ng-click="initTabs()") Finalizadas
+          div(id="pendientes" class="col s12")
             table(class="bordered")
               tr
                 th Identificador
@@ -38,14 +38,14 @@ block content
             // p en proceso: {{serviciosSolicitadosEnProceso}}
             // p solucionados: {{serviciosSolicitadosSolucionados}}
 
-          div(id="test2" class="col s12")
+          div(id="finalizadas" class="col s12")
             table(class="bordered")
               tr
                 th Identificador
                 th Fecha de solicitud
                 th Problema
                 th Estado
-                th Area atendiendo
+                th Area que atendió
                 th Info
               tr(ng-show="serviciosSolicitadosSolucionados.length == 0")
                 td(colspan="6") No tienes solicitudes finalizadas
@@ -98,6 +98,50 @@ block content
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
             button(ng-show="tipoServicio.tse_nombre",class=" waves-effect waves-green btn-flat", ng-click="solicitarServicio()", id="btnOpcionTipoAreas") Solicitar servicio
+
+      div(id="modalInfoServicio" class="modal")
+        div(class="modal-content")
+          h4 Información del servicio
+          table(class="bordered")
+            tr
+              th Datos servicio
+              th Descripción
+            tr
+              th Identificador
+              td {{servicioInfo.id_mesa_ayuda}}
+            tr
+              th Estado
+              td(ng-show="!servicioInfo.aam_finalizo") {{!servicio.id_area_atiende_mesa?"Sin asignar":"En proceso"}}
+              td(ng-show="servicioInfo.aam_finalizo") {{servicioInfo.aam_soluciono==1?"Solucionado":"No solucionado"}}
+            tr
+              th Fecha solicitud
+              td {{getFormatDateTimeStamp(servicioInfo.mes_fecha_solicitado)}}
+            tr
+              th Tipo de problema
+              td {{servicioInfo.tse_nombre}}
+            tr(ng-show="servicioInfo.tse_otro==1")
+              td Descripción usuario
+              td {{servicioInfo.mes_otro_tipo_servicio}}
+            tr
+              th  Descripción problema
+              td  {{servicioInfo.mes_descripcion_problema}}
+            tr(ng-show="servicio.id_area_atiende_mesa")
+              tr
+                th Área de atención
+                td {{servicioInfo.are_nombre}}
+            tr(ng-show="servicioInfo.aam_finalizo == 1")
+              th Fecha de termino
+              td {{getFormatDateTimeStamp(servicioInfo.amm_fecha_fin)}}
+            tr(ng-show="servicioInfo.aam_diagnostico")
+              th Diagnostico
+              td {{servicioInfo.aam_diagnostico}}
+            tr(ng-show="servicioInfo.aam_acciones_tomadas")
+              th Acciones tomadas
+              td {{servicioInfo.aam_acciones_tomadas}}
+            tr(ng-show="servicioInfo.aam_observaciones")
+              th Observaciones
+              td {{servicioInfo.aam_observaciones}}
+
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")

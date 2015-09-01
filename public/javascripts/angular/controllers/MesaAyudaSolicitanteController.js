@@ -6,6 +6,7 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
   $scope.tipoServicio = {};
   $scope.serviciosSolicitadosEnProceso = [];
   $scope.serviciosSolicitadosSolucionados = [];
+  $scope.servicioInfo = {};
   $scope.socket = io();
 
   $scope.initTabs = function() {
@@ -48,6 +49,11 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
           $scope.tipoServicio = $scope.servicios[i];
       }
     }
+  };
+
+  $scope.showInfoService = function(servicio) {
+    $scope.servicioInfo = servicio;
+    $("#modalInfoServicio").openModal();
   };
 
   $scope.solicitarServicio = function() {
