@@ -91,8 +91,8 @@
     usu_sexo VARCHAR(1),
     usu_email VARCHAR(32),
     usu_foto VARCHAR(250),
-    usu_usuario VARCHAR(20) UNIQUE,
-    usu_contrasena VARCHAR(30),
+    usu_usuario VARCHAR(120) UNIQUE,
+    usu_contrasena VARCHAR(120),
     FOREIGN KEY(usu_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario),
     FOREIGN KEY(usu_id_area) REFERENCES area(id_area),
     FOREIGN KEY(usu_id_carrera) REFERENCES carrera(id_carrera)
@@ -336,4 +336,5 @@
   * INSERT USUARIO DE PRUEBA
   *****************************************************************************/
   INSERT INTO usuario(id_usuario, usu_id_tipo_usuario, usu_usuario, usu_contrasena, usu_foto)
-  VALUES ("S11014636", 1, "usuario", "secreto", "/images/system/icon-user.png");
+  /* { u : usuario, c : secreto } */
+  VALUES ("S11014636", 1, "588449cfc5d68d", "5e925fdcd2cb8d", "/images/system/icon-user.png");

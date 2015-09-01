@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var controller = require("../database/controllers/UsuariosController");
 var fs = require("fs");
+var encriptacion = require("../util/encriptation");
 
 router.get('/', function(req, res) {
   res.render('usuarios', { title: 'SIACC'});
@@ -15,6 +16,7 @@ router.get("/getDataUsuario/:idUsuario", function(req, res) {
   var idUsuario = req.params.idUsuario;
   controller.getDataUsuario(idUsuario, function(err, usuario) {
     if(!err) {
+      usersPasswordsDecipher(usuario);
       res.send(usuario[0]);
     } else {
       res.send( { error : "No se pudo encontrar el usuario" } );
@@ -34,6 +36,7 @@ router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:rows", function(req, r
   var rows = req.params.rows;
   controller.getUsuariosTipoLimit(idTipoUsuario, inicio, rows, function(err, usuarios) {
     if(!err) {
+      usersPasswordsDecipher(usuarios);
       res.send(usuarios);
     } else {
       res.send(null);
@@ -47,6 +50,7 @@ router.get("/getUsuariosByTextLimit/:text/:inicio/:rows", function(req, res) {
   var rows = req.params.rows;
   controller.getUsuariosByTextLimit(text, inicio, rows, function(err, usuarios) {
     if(!err) {
+      usersPasswordsDecipher(usuarios);
       res.send(usuarios);
     } else {
       res.send(null);
@@ -60,6 +64,7 @@ router.get("/findUsuariosTipoLimit/:word/:idTipoUsuario/", function(req, res) {
   var inicio = req.params.inicio;
   controller.findUsuariosTipoLimit(word, idTipoUsuario, function(err, usuarios) {
     if(!err) {
+      usersPasswordsDecipher(usuarios);
       res.send(usuarios);
     } else {
       res.send(null);
@@ -88,11 +93,18 @@ router.post("/create", function(req, res) {
   }
   jsonData = req.body;
   jsonData.usu_foto = nombreNuevaImagen;
+  if(jsonData.usu_usuario && jsonData.usu_usuario.length > 0) {
+    jsonData.usu_usuario = encriptacion.cipher(jsonData.usu_usuario);
+    jsonData.usu_contrasena = encriptacion.cipher(jsonData.usu_contrasena);
+  }
+  console.log("inicio");
   controller.create(jsonData, function(err, data) {
+    console.log(err);
     if(!err) {
       if(file != undefined){
         renameSync(file, targetPath);
       }
+    console.log("fin");
       res.send( { success : true } );
     } else {
       res.send( { success : false } );
@@ -117,7 +129,9 @@ router.put("/updateUser", function(req, res) {
     usu_id_tipo_usuario : req.body.usu_id_tipo_usuario,
     usu_email : req.body.usu_email,
     usu_foto : nombreNuevaImagen,
-    usu_sexo : req.body.usu_sexo
+    usu_sexo : req.body.usu_sexo,
+    usu_usuario : encriptacion.cipher(req.body.usu_usuario),
+    usu_contrasena : encriptacion.cipher(req.body.usu_contrasena)
   }, idUsuario, function(err, data) {
     if(file != undefined){
       renameSync(file, targetPath);
@@ -150,6 +164,20 @@ function renameSync(file, targetPath) {
   });
 }
 
+router.get("/existUsername/:idUsuario/:username", function(req, res) {
+  try {
+    idUsuario = req.params.idUsuario;
+    username = req.params.username;
+    controller.existUsername(idUsuario, encriptacion.cipher(username), function(err, users) {
+      if(!err) {
+        res.send({exist : users.length > 0});
+      }
+    });
+  } catch(e) {
+    console.log("ERROR: " + e);
+  }
+});
+
 router.get("/getTypesUser", function(req, res) {
   abstractModel.select("tipo_usuario",[
     "tipo_id", "tipo_nombre", "tipo_descripcion"
@@ -157,6 +185,14 @@ router.get("/getTypesUser", function(req, res) {
     res.send(data);
   });
 });
+
+
+function usersPasswordsDecipher(usuarios) {
+  for(var i = 0; i < usuarios.length; i++) {
+    usuarios[i].usu_usuario = encriptacion.decipher(usuarios[i].usu_usuario);
+    usuarios[i].usu_contrasena = encriptacion.decipher(usuarios[i].usu_contrasena);
+  }
+};
 
 router.get("/logout", function(req, res) {
   req.session.destroy(function (){

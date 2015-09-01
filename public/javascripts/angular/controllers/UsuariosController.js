@@ -14,6 +14,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
   $scope.usuarioDetalle = {};
   $scope.idUsuarioEditar;
   $scope.accionUsuario = "Crear";
+  $scope.definirUsuario = false;
   $scope.typeUserPagination = {};
   $scope.usuarioId = 0;
   $scope.socket = io();
@@ -23,6 +24,21 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
       $('ul.tabs').tabs();
       document.getElementById("contentTabs").removeAttribute("hidden");
     }, 100);
+  };
+
+  $scope.existUsername = function(inputId, idUsuario, username) {
+    input = document.getElementById(inputId);
+    if(!util.empty(username)) {
+      $http.get("/usuarios/existUsername/"+idUsuario+"/"+username).success(function(data) {
+        if(data.exist) {
+          input.style.border = "solid 1px red";
+        } else {
+          input.style.border = "none";
+        }
+      });
+    } else {
+      input.style.border = "none";
+    }
   };
 
   $scope.selectionTipoUsuario = function(tipo) {
@@ -93,6 +109,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
     $("#modalOpcionesUsuario").openModal();
     $scope.formUsuario = $scope.usuarioDetalle;
     $scope.crearUsuario = false;
+    $scope.definirUsuario = false;
     $scope.formUsuarioExtra = {
       usu_id_carrera : $scope.usuarioDetalle.usu_id_carrera,
       usu_id_area : $scope.usuarioDetalle.usu_id_area
@@ -135,6 +152,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
     $("#modalOpcionesUsuario").openModal();
     $scope.cleanFormUsuario();
     $scope.crearUsuario = true;
+    $scope.definirUsuario = false;
     $scope.accionUsuario = "Crear";
   };
 

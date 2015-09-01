@@ -104,18 +104,18 @@ block content
                   form(id="formFileUsuario")
                     input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
             p(class="divider")
-            //input(type="checkbox", id="check", ng-model="formUsuario.definirUsuario")
-            //label(for="check") Definir usuario
-            //table(class="bordered", ng-show="formUsuario.definirUsuario")
-            //  tr
-            //    td
-            //      div(class="input-field col s6")
-            //        input(id="usuario_usuario", type="text", class="validate", ng-model="formUsuario.usu_usuario")
-            //        label(for="usuario_usuario") Usuario
-            //    td
-            //      div(class="input-field col s6")
-            //        input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
-            //        label(for="usuario_contra") Contraseña
+            input(type="checkbox", id="check", ng-model="definirUsuario")
+            label(for="check") Definir usuario
+            table(class="bordered", ng-show="definirUsuario")
+              tr
+                td
+                  div(class="input-field col s6")
+                    input(id="usuario_usuario", type="text", class="validate", ng-model="formUsuario.usu_usuario", ng-keyup="existUsername('usuario_usuario', formUsuario.id_usuario,formUsuario.usu_usuario)")
+                    label(for="usuario_usuario") Usuario
+                td
+                  div(class="input-field col s6")
+                    input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
+                    label(for="usuario_contra") Contraseña
 
             div(class="modal-footer")
               a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
