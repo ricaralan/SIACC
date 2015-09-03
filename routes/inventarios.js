@@ -16,6 +16,18 @@ router.get('/getInventarioTipoArea/:idArea/:idTipoInventario', function(req, res
   });
 });
 
+router.get('/getInventarioArea/:idArea/', function(req, res) {
+  controller.getInventarioArea(req.params.idArea, function(err, inventarios) {
+    res.send(inventarios);
+  });
+});
+
+router.get("/u/getInventarioArea", function(req, res) {
+  controller.getInventarioArea(req.user.usu_id_area, function(err, inventarios) {
+    res.send(inventarios);
+  });
+});
+
 router.get("/getDataResguardo/:idResguardo", function(req, res) {
   resguardoController.getDataResguardo(req.params.idResguardo, function(err, data) {
     res.send(data[0]);

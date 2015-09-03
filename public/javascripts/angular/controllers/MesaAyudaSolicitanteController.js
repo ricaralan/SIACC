@@ -7,6 +7,8 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
   $scope.serviciosSolicitadosEnProceso = [];
   $scope.serviciosSolicitadosSolucionados = [];
   $scope.servicioInfo = {};
+  $scope.inventarios = [];
+  $scope.checkAddInventario = false;
   $scope.socket = io();
 
   $scope.initTabs = function() {
@@ -18,6 +20,12 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
       $http.get("/usuarios/getDataUsuario/" + data).success(function(dataUsuario) {
         $scope.dataUsuario = dataUsuario;
       });
+    });
+  };
+
+  $scope.getInventarioArea = function() {
+    $http.get("/inventarios/u/getInventarioArea/").success(function(inventarios) {
+      $scope.inventarios = inventarios;
     });
   };
 
@@ -57,12 +65,16 @@ SIACCApp.controller("MesaAyudaSolicitanteController", ["$scope", "$http", "util"
   };
 
   $scope.solicitarServicio = function() {
+    check = document.getElementById("checkAddInventario");
+    $scope.checkAddInventario = check.checked;
     if($scope.formularioValido()) {
       $scope.formMesaAyuda.mes_id_usuario = $scope.dataUsuario.id_usuario;
       $scope.formMesaAyuda.mes_id_area = $scope.dataUsuario.usu_id_area;
+      $scope.formMesaAyuda.mes_id_inventario = ($scope.checkAddInventario)?$scope.formMesaAyuda.mes_id_inventario:null;
       $http.post("/mesa_ayuda/solicitar_servicio",{jsonData : $scope.formMesaAyuda}).success(function(data) {
         if(data.success) {
           $scope.formMesaAyuda = {};
+          $scope.checkAddInventario = false;
           Materialize.toast("Solicitud enviada", 2000);
           $("#modalOpcionesSolicitarServicio").closeModal();
           $scope.socket.emit("changeOnServiciosSinSolucionar", {});

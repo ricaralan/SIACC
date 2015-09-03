@@ -5,7 +5,7 @@ block content
       div(class="indeterminate")
   div(ng-app="SIACCApp", ng-controller="MesaAyudaSolicitanteController", ng-init="initDataUsuario()")
     app-for-users
-      div(id="contentApp", hidden, ng-init="getServiciosSolicitadosEnProceso();getServiciosSolicitadosSolucionados();")
+      div(id="contentApp", hidden, ng-init="getServiciosSolicitadosEnProceso();getServiciosSolicitadosSolucionados();getInventarioArea();")
         a(class="waves-effect waves-light btn right" ng-click="setDatosSolicitarServicio()") Solicitar servicio
         h3 Solicitudes
         div(class="row")
@@ -85,6 +85,15 @@ block content
             option(value="" disabled selected) Selecciona el tipo de servicio
             option(ng-repeat="servicio in servicios", value="{{servicio.id_tipo_servicio}}") {{servicio.tse_nombre}}
           table
+            tr(ng-show="inventarios.length>0")
+              td
+                input(type="checkbox", id="checkAddInventario", ng-model="checkAddInventario")
+                label(for="checkAddInventario") Adjuntar inventario a la solicitud
+            tr(ng-show="checkAddInventario")
+              td
+                select(class="browser-default", ng-model="formMesaAyuda.mes_id_inventario")
+                  option(value="") Seleciona el número de inventario
+                  option(value="{{inventario.num_inventario}}", ng-repeat="inventario in inventarios") {{inventario.num_inventario}}
             tr(ng-show="tipoServicio.tse_otro != 0 && tipoServicio.tse_otro")
               td
                 div(class="input-field col s6")

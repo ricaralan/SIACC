@@ -85,6 +85,7 @@ router.get("/getServiciosSolucionados/u/", function(req, res) {
 router.post("/solicitar_servicio", function(req, res) {
   getIdNewServicio(function(id) {
     req.body.jsonData.id_mesa_ayuda = id;
+    console.log(req.body.jsonData);
     controller.create(req.body.jsonData, function(err, data) {
       res.send({success : !err && data.affectedRows == 1, generatedId : id});
     });

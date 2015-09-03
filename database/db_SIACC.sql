@@ -228,6 +228,7 @@
   id_mesa_ayuda VARCHAR(10) NOT NULL PRIMARY KEY,
   mes_id_area INT,/* En que área se solicitó */
   mes_id_usuario VARCHAR(10) NOT NULL,/* Quien lo solicitó */
+  mes_id_inventario VARCHAR(20),/*num_inventario asignado*/
   mes_id_tipo_servicio INT,/* Que tipo de servicio requiren */
   mes_otro_tipo_servicio VARCHAR(50),
   mes_fecha_solicitado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -237,6 +238,7 @@
   mes_descripcion_problema VARCHAR(150),
   FOREIGN KEY(mes_id_area) REFERENCES area(id_area),
   FOREIGN KEY(mes_id_usuario) REFERENCES usuario(id_usuario),
+  FOREIGN KEY(mes_id_inventario) REFERENCES inventario(num_inventario),
   FOREIGN KEY(mes_id_tipo_servicio) REFERENCES tipo_servicio(id_tipo_servicio)
   );
 

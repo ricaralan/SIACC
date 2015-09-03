@@ -4,6 +4,7 @@ SIACCApp.controller("MesaAyudaAtenderController", ["$scope", "$http", "util", fu
   $scope.serviciosSolucionados = [];
   $scope.usuarioAtiendenMesa = [];
   $scope.formServicioSolucionado = {};
+  $scope.servicePrint = [];
   $scope.socket = io();
 
   $scope.initTabs = function() {
@@ -73,6 +74,15 @@ SIACCApp.controller("MesaAyudaAtenderController", ["$scope", "$http", "util", fu
         $scope.formServicioSolucionado = {};
       }
     });
+  };
+
+  $scope.showFormatServicePrint = function(servicio) {
+    $scope.servicePrint = servicio;
+    document.getElementById("contentFormatServicePrint").style.display = "block";
+  };
+
+  $scope.hideFormatService = function() {
+    document.getElementById("contentFormatServicePrint").style.display = "none";
   };
 
   /**
