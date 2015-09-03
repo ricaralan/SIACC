@@ -120,6 +120,7 @@ router.put("/update", function(req, res) {
 
 router.get("/getUsuariosAtiendenMesa/:mesaAyuda/", function(req, res) {
   userController.getUsuariosAtiendenMesa(req.params.mesaAyuda, function(err, data) {
+    console.log(err);
     if(!err) {
       res.send(data);
     }
@@ -128,7 +129,6 @@ router.get("/getUsuariosAtiendenMesa/:mesaAyuda/", function(req, res) {
 
 router.get("/getUsuariosAtencionMesaAyudaByText/:palabra/:idArea", function(req, res) {
   userController.getUsuariosAtencionMesaAyudaByText(req.params.palabra,req.params.idArea, function(err, data) {
-    console.log(err);
     if(!err) {
       res.send(data);
     }

@@ -56,7 +56,7 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
   };
 
   $scope.getUsuarioPuedenAtenderMesa = function(palabra) {
-    if(!palabra) {
+    if(!palabra || palabra.length == 0) {
       $http.get("/mesa_ayuda/getUsuariosAtiendenMesa/"+$scope.datosAsignarUsuariosMesa.id_mesa_ayuda).success(function(usuarios) {
         $scope.usuarioAtiendenMesa = usuarios;
       });
@@ -68,11 +68,12 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
   };
 
   $scope.agregarUsuarioMesa = function(idUsuario) {
-    $http.post("/mesa_ayuda/asignarUsuarioMesa/"+idUsuario+"/"+$scope.datosAsignarUsuariosMesa.uam_id_area_atiende_mesa).success(function(data) {
+    URL = "/mesa_ayuda/asignarUsuarioMesa/"+idUsuario+"/"+$scope.datosAsignarUsuariosMesa.uam_id_area_atiende_mesa;
+    $http.post(URL).then(function(data) {
       $http.get("/mesa_ayuda/getUsuariosAtiendenMesa/"+$scope.datosAsignarUsuariosMesa.id_mesa_ayuda).success(function(usuarios) {
         $scope.usuarioAtiendenMesa = usuarios;
         $scope.socket.emit("changeUsuariosAsignadosServicio", {});
-      });
+      },function(err) {console.log(err)});
     });
   };
 

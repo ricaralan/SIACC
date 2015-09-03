@@ -90,9 +90,9 @@ block content
                 td(colspan="2") No hay usuarios para mostrar
               tr(ng-repeat="usuario in usuarioAtiendenMesa")
                 td {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
-                td(ng-show="usuario.aam_id_mesa_ayuda", ng-click="eliminarUsuarioMesa(usuario.id_usuario)")
+                td(ng-show="usuario.uam_id_area_atiende_mesa", ng-click="eliminarUsuarioMesa(usuario.id_usuario)")
                   i(class="material-icons",style="cursor:pointer") close
-                td(ng-show="!usuario.aam_id_mesa_ayuda", ng-click="agregarUsuarioMesa(usuario.id_usuario)")
+                td(ng-show="!usuario.uam_id_area_atiende_mesa", ng-click="agregarUsuarioMesa(usuario.id_usuario)")
                   i(class="material-icons",style="cursor:pointer") add
 
 

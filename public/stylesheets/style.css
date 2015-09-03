@@ -27,3 +27,5 @@ a {
 .indicator {
   background-color: #999 !important;
 }
+
+@media print { .hidden-print { display:none; } }

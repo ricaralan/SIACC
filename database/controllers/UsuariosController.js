@@ -50,7 +50,7 @@ UsuariosController.prototype.getUsuariosAtencionMesaAyudaByText = function(word,
         + "(((usuario INNER JOIN permiso_asignado ON usu_id_tipo_usuario=moa_id_tipo_usuario"
         + " AND moa_id_permiso='mesa_ayuda_atencion' AND moa_ver))LEFT JOIN usuario_atiende_mesa "
         + "ON id_usuario=uam_id_usuario)LEFT JOIN area_atiende_mesa ON uam_id_area_atiende_mesa="
-        + "id_area_atiende_mesa AND aam_id_mesa_ayuda="+idMesaAyuda+" WHERE "
+        + "id_area_atiende_mesa AND aam_id_mesa_ayuda='"+idMesaAyuda+"' WHERE "
         + " (id_usuario LIKE '%" + word + "%' OR CONCAT_WS(' ',usu_nombre,"
         + "usu_primer_apellido,usu_segundo_apellido) like '%"+word+"%') limit 0,10;";
   self.connection.query(query, done);
@@ -62,7 +62,7 @@ UsuariosController.prototype.getUsuariosAtiendenMesa = function(idMesaAyuda, don
         + "(((usuario INNER JOIN permiso_asignado ON usu_id_tipo_usuario=moa_id_tipo_usuario"
         + " AND moa_id_permiso='mesa_ayuda_atencion' AND moa_ver))LEFT JOIN usuario_atiende_mesa "
         + "ON id_usuario=uam_id_usuario)LEFT JOIN area_atiende_mesa ON uam_id_area_atiende_mesa="
-        + "id_area_atiende_mesa AND aam_id_mesa_ayuda="+idMesaAyuda+" WHERE aam_id_mesa_ayuda IS NOT NULL";
+        + "id_area_atiende_mesa AND aam_id_mesa_ayuda='"+idMesaAyuda+"' WHERE aam_id_mesa_ayuda IS NOT NULL";
   self.connection.query(query, done);
 };
 

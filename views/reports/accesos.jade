@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+  div(class="progress", id="loadPage", style="margin:0")
+    div(class="indeterminate")
+  div(ng-app="SIACCApp",ng-controller="ReportsController")
+    div(id="contentReport", style="position:absolute;z-index:9999;background-color:#fff;width:100%;height:100%;")
+      i(ng-click="hideReport()", class="hidden-print", style="right:0;top:0;padding:5px 10px 5px 10px;background-color:red;color:#fff !important;border-radius:50%;cursor:pointer;position:absolute") x
+      div(class="container")
+        h5(style="text-align:center") Reporte de acceso en "{{areaSeleccionada.are_nombre}}" de {{dataReport.fechaInicio}} a {{dataReport.fechaFin}}
+
+        table(class="bordered")
+          tr
+            th Fecha
+            th Identificador
+            th Usuario
+            th(ng-show="dataReport.tipoAcceso==2") Equipo de computo
+            th Inicio
+            th Fin
+          tr(ng-repeat="acceso in accesos")
+            td {{getFormatDate(acceso.acc_fecha_registro)}}
+            td {{acceso.id_usuario}}
+            td {{acceso.usu_nombre}} {{acceso.usu_primer_apellido}} {{acceso.usu_segundo_apellido}}
+            td(ng-show="dataReport.tipoAcceso==2") {{acceso.num_inventario}}
+            td {{acceso.acc_hora_inicio}}
+            td {{acceso.acc_hora_fin}}
+
+    app-for-users
+      div(id="contentApp", hidden, ng-init="getAreas()")
+        h3 Reportes de acceso
+
+
+        select(class="browser-default", ng-model="dataReport.area", ng-change="changeArea(dataReport.area)")
+          option(value="" disabled selected) Elija el área
+          option(value="{{area.id_area}}", ng-repeat="area in areas") {{area.are_nombre}}
+
+        select(class="browser-default", ng-model="dataReport.tipoAcceso")
+          option(value="" disabled selected) Elija el tipo de acceso
+          option(value="1") Acceso simple
+          option(value="2") Acceso y uso de equipo de computo
+        input(type="data", class="datepicker", ng-model="dataReport.fechaInicio", placeholder="Fecha inicio")
+        input(type="data", class="datepicker", ng-model="dataReport.fechaFin", placeholder="Fecha fin")
+        button(class="btn-flat waves-effect", ng-click="showReport()") Ver reporte
+
+  script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/controllers/reports/ReporteAccesosController.js")

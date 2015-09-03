@@ -97,14 +97,11 @@ router.post("/create", function(req, res) {
     jsonData.usu_usuario = encriptacion.cipher(jsonData.usu_usuario);
     jsonData.usu_contrasena = encriptacion.cipher(jsonData.usu_contrasena);
   }
-  console.log("inicio");
   controller.create(jsonData, function(err, data) {
-    console.log(err);
     if(!err) {
       if(file != undefined){
         renameSync(file, targetPath);
       }
-    console.log("fin");
       res.send( { success : true } );
     } else {
       res.send( { success : false } );

@@ -18,6 +18,12 @@ router.get("/getAreasAdministradorasMesaAyuda", function(req, res) {
   });
 });
 
+router.get("/getAreasConPermisoAccesos", function(req, res) {
+  areasController.getAreasConPermisoAccesos(function(err, data) {
+    res.send(data);
+  });
+});
+
 router.get("/getArea/:idArea", function(req, res) {
   areasController.getArea(req.params.idArea, function(err, data) {
     res.send(data[0]);
