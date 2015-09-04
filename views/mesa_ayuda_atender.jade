@@ -56,7 +56,7 @@ block content
                   td {{getFormatDateTimeStamp(servicio.mes_fecha_limite)}}
                   td
                     p(class="opciones")
-                      i(class="material-icons right", ng-click="showFormatServicePrint(servicio)") print
+                      i(class="material-icons right", ng-click="showFormatServicePrint(servicio)") receipt
                       i(class="material-icons right", ng-click="showUsuarioService(area.id_area, servicio.id_mesa_ayuda, servicio.id_area_atiende_mesa)") supervisor_account
                       i(class="material-icons right", ng-click="showInfoService(servicio)") info
 
@@ -78,6 +78,21 @@ block content
               tr
                 td Fecha solicitud
                 td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+              tr(ng-show="servicio.num_inventario")
+                td Tipo de inventario asignado
+                td {{servicio.tin_nombre}}
+              tr(ng-show="servicio.num_inventario")
+                td No. Inventario
+                td {{servicio.num_inventario}}
+              tr(ng-show="servicio.num_inventario")
+                td Marca
+                td {{servicio.inv_marca}}
+              tr(ng-show="servicio.num_inventario && servicio.tin_es_computadora==1")
+                td RAM
+                td {{servicio.inv_ram}}
+              tr(ng-show="servicio.num_inventario && servicio.tin_es_computadora==1")
+                td Capacidad(GB)
+                td {{servicio.inv_capacidad}}
               tr
                 td Tipo de problema
                 td {{servicio.tse_nombre}}
@@ -163,8 +178,47 @@ block content
             button(class="waves-effect waves-green btn-flat", ng-click="concluirServicio()", id="btnConcliurServicio") Concluír
     div(style="background-color:#fff;position:absolute;width:100%;height:100%;top:0;display:none;z-index:9999", id="contentFormatServicePrint")
       i(ng-click="hideFormatService()", class="hidden-print", style="right:0;top:0;padding:5px 10px 5px 10px;background-color:red;color:#fff !important;border-radius:50%;cursor:pointer;position:absolute") x
+      div(class="hidden-print")
+        a(class="hidden-print btn", style="magin-right:100px",onclick="window.print()", href="#!")
+          i(class="hidden-print material-icons", style="color:#fff !important;border-radius:50%;") print
       div(class="container")
-        p {{serviciosSolucionados}}
+        h4(style="text-align:center") Bitacora de mesa de ayuda
+        p Área: {{servicePrint.are_nombre}}
+        p Solicitante del servicio: {{servicePrint.usu_nombre}} {{servicePrint.usu_primer_apellido}} {{servicePrint.usu_segundo_apellido}}
+        p Diagnostico:
+        div(style="min-height:120px;border:solid 1px rgba(0, 0, 0, .3)")
+          p {{servicePrint.aam_diagnostico}}
+        div(ng-show="servicePrint.num_inventario")
+          p Información del equipo diagnosticado
+            table(class="bordered")
+              tr
+                th No. Inventario
+                th Nombre/No. Computadora
+                th Marca
+                th RAM
+              tr
+                td {{servicePrint.num_inventario}}
+                td {{servicePrint.inv_num_maq}}
+                td {{servicePrint.inv_marca}}
+                td {{servicePrint.inv_ram}}
+        p Acciones tomadas:
+        div(style="min-height:120px;border:solid 1px rgba(0, 0, 0, .3)")
+          p {{servicePrint.aam_acciones_tomadas}}
+        p Observaciones:
+        div(style="min-height:80px;border:solid 1px rgba(0, 0, 0, .3)")
+          p {{servicePrint.aam_observaciones}}
+
+        div
+          br
+          br
+          br
+          table(class="bordered")
+            tr
+              td(colspan="7")
+            tr
+              th(colspan="3") Firma del servicio social
+              th(colspan="3") Firma del solicitante
+              th(colspan="1") Firma del responsable de centro de computo
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")

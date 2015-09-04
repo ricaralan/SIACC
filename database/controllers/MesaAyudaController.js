@@ -18,11 +18,14 @@ MesaAyudaController.prototype.existMesaAyudaById = function(idMesaAyuda, done) {
 };
 
 MesaAyudaController.prototype.getServiciosSinFinalizar = function(done) {
-  query = "SELECT id_area_atiende_mesa,id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
-        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM (((mesa_ayuda INNER JOIN "
+  query = "SELECT id_area_atiende_mesa,id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,"
+        + "usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
+        + "num_inventario,inv_ram,inv_capacidad,inv_marca,inv_status,inv_no_serie,tin_es_computadora,tin_nombre,"
+        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM (((((mesa_ayuda INNER JOIN "
         + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion AND area_atiende_mesa.aam_finalizo=0)"
         + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
-        + "LEFT JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio;";
+        + "LEFT JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio)LEFT JOIN inventario ON "
+        + "num_inventario=mes_id_inventario)LEFT JOIN tipo_inventario ON inv_tipo=id_tipo_inventario;";
   self.connection.query(query, done);
 };
 
@@ -36,11 +39,14 @@ MesaAyudaController.prototype.getServiciosSinSolucionar = function(done) {
 };
 
 MesaAyudaController.prototype.getServiciosSinSolucionarUsuario = function(idUsuario, done) {
-  query = "SELECT id_area_atiende_mesa,id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
-        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM ((((mesa_ayuda LEFT JOIN "
-        + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion AND area_atiende_mesa.aam_finalizo=0 )LEFT JOIN usuario_atiende_mesa ON uam_id_area_atiende_mesa=id_area_atiende_mesa)"
+  query = "SELECT id_area_atiende_mesa,id_mesa_ayuda,mes_id_area,aam_id_area,usu_nombre,"
+        + "usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
+        + "num_inventario,inv_ram,inv_capacidad,inv_marca,inv_status,inv_no_serie,tin_es_computadora,tin_nombre,"
+        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM (((((mesa_ayuda INNER JOIN "
+        + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion AND area_atiende_mesa.aam_finalizo=0)"
         + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
-        + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio "
+        + "LEFT JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio)LEFT JOIN inventario ON "
+        + "num_inventario=mes_id_inventario)LEFT JOIN tipo_inventario ON inv_tipo=id_tipo_inventario ";
         + "WHERE uam_id_usuario='"+idUsuario+"';";
   self.connection.query(query, done);
 };
@@ -48,11 +54,14 @@ MesaAyudaController.prototype.getServiciosSinSolucionarUsuario = function(idUsua
 MesaAyudaController.prototype.getServiciosSolucionados = function(idUsuario, done) {
   query = "SELECT id_area_atiende_mesa,amm_fecha_fin,aam_fecha_asignacion,aam_diagnostico,"
         + "aam_acciones_tomadas,aam_observaciones,aam_soluciono,id_mesa_ayuda,mes_id_area,area_atiende_mesa.aam_finalizo,"
+        + "num_inventario,inv_ram,inv_capacidad,inv_marca,inv_status,inv_no_serie,tin_es_computadora,tin_nombre,"
         + "aam_id_area,usu_nombre,usu_primer_apellido,tse_nombre,tse_descripcion,tse_otro,mes_importancia,mes_otro_tipo_servicio,mes_fecha_limite,"
-        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM ((((mesa_ayuda LEFT JOIN "
-        + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion)LEFT JOIN usuario_atiende_mesa ON uam_id_area_atiende_mesa=id_area_atiende_mesa)"
-        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=aam_id_area)"
-        + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio AND area_atiende_mesa.aam_finalizo=1 "
+        + "usu_segundo_apellido,usu_foto,are_nombre,mes_fecha_solicitado,mes_descripcion_problema FROM ((((((mesa_ayuda LEFT JOIN "
+        + "area_atiende_mesa ON aam_id_mesa_ayuda=id_mesa_ayuda AND aam_asignacion AND area_atiende_mesa.aam_finalizo=1)"
+        + "LEFT JOIN usuario_atiende_mesa ON uam_id_area_atiende_mesa=id_area_atiende_mesa)"
+        + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
+        + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio) LEFT JOIN "
+        + "inventario on num_inventario=mes_id_inventario)LEFT JOIN tipo_inventario ON inv_tipo=id_tipo_inventario "
         + "WHERE uam_id_usuario='"+idUsuario+"';";
   self.connection.query(query, done);
 };

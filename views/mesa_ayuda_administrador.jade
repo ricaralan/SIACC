@@ -54,6 +54,21 @@ block content
               tr
                 td Fecha solicitud
                 td {{getFormatDateTimeStamp(servicio.mes_fecha_solicitado)}}
+              tr(ng-show="servicio.num_inventario")
+                td Tipo de inventario asignado
+                td {{servicio.tin_nombre}}
+              tr(ng-show="servicio.num_inventario")
+                td No. Inventario
+                td {{servicio.num_inventario}}
+              tr(ng-show="servicio.num_inventario")
+                td Marca
+                td {{servicio.inv_marca}}
+              tr(ng-show="servicio.num_inventario && servicio.tin_es_computadora==1")
+                td RAM
+                td {{servicio.inv_ram}}
+              tr(ng-show="servicio.num_inventario && servicio.tin_es_computadora==1")
+                td Capacidad(GB)
+                td {{servicio.inv_capacidad}}
               tr
                 td Tipo de problema
                 td {{servicio.tse_nombre}}

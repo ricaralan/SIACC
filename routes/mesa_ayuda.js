@@ -27,7 +27,8 @@ router.get("/getServiciosSinFinalizar", function(req, res) {
     if(!err) {
       res.send(servicios);
     } else {
-      // TODO especificar el tipo de error
+      console.log(err);
+      res.send(err);
     }
   });
 });
