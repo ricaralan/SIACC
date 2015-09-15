@@ -4,9 +4,9 @@ block content
   div(class="progress", id="loadPage")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
-    app-for-users
+    app-for-users(ng-show="permisos.system_config.ver == 1")
       div(id="contentApp", hidden, ng-controller="TiposInventariosController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoInventario()") Crear nuevo
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoInventario()",ng-show="permisos.system_config.crear==1") Crear nuevo
         h3 Tipos de inventario
         // MODAL OPCION TIPOS DE INVENTARIO
         div(id="modalOpcionesTipoInventario" class="modal")
@@ -51,8 +51,8 @@ block content
               p(class="red-text") ACCIONES
                 br
                 br
-                button(class="btn white-text waves-effect blue", ng-click="setDatosEditarTipoInventario(tipo)") EDITAR
-                button(class="btn white-text red waves-effect", ng-click="eliminarTipoInvetario(tipo.id_tipo_inventario)") ELIMINAR
+                button(class="btn white-text waves-effect blue", ng-click="setDatosEditarTipoInventario(tipo)", ng-show="permisos.system_config.editar == 1") EDITAR
+                button(class="btn white-text red waves-effect", ng-click="eliminarTipoInvetario(tipo.id_tipo_inventario)", ng-show="permisos.system_config.eliminar == 1") ELIMINAR
 
 
 
