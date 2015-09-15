@@ -4,9 +4,9 @@ block content
   div(class="progress", id="loadPage", style="margin:0;")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
-    app-for-users
+    app-for-users(ng-show="permisos.system_config.ver == 1")
       div(id="contentApp", hidden, ng-controller="TiposUsuarioController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoUsuario()") Crear nuevo
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoUsuario()",ng-show="permisos.system_config.crear == 1") Crear nuevo
         h3 Tipos de usuario
         table(class="bordered")
           tr
@@ -17,8 +17,8 @@ block content
             td {{tipo.tipo_nombre}}
             td {{tipo.tipo_descripcion}}
             td
-              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoUsuario(tipo.id_tipo_usuario)") Eliminar
-              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarTipoUsuario(tipo)") Editar
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoUsuario(tipo.id_tipo_usuario)",ng-show="permisos.system_config.eliminar == 1") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarTipoUsuario(tipo)",ng-show="permisos.system_config.editar == 1") Editar
 
         // MODAL OPCION TIPO USUARIO
         div(id="modalOpcionesTipoUsuario" class="modal")
