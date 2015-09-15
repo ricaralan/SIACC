@@ -4,9 +4,9 @@ block content
   div(class="progress", id="loadPage")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
-    app-for-users
+    app-for-users(ng-show="permisos.system_config.ver == 1")
       div(id="contentApp", hidden, ng-controller="TiposAreasController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoArea()") Crear nueva
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoArea()",ng-show="permisos.system_config.crear == 1") Crear nueva
         h3 Tipos de áreas
 
         // MODAL OPCION TIPO AREA
@@ -53,8 +53,8 @@ block content
               div(class="card-content")
                 p {{tipo.tipo_descripcion}}
               div(class="card-action")
-                button(class="btn-flat green white-text waves-effect", ng-click="setDatosEditarTipoArea(tipo)") EDITAR
-                button(class="btn-flat red white-text right waves-effect", ng-click="eliminarTipoArea(tipo.id_tipo_area)") ELIMINAR
+                button(class="btn-flat green white-text waves-effect", ng-click="setDatosEditarTipoArea(tipo)",ng-show="permisos.system_config.editar == 1") EDITAR
+                button(class="btn-flat red white-text right waves-effect", ng-click="eliminarTipoArea(tipo.id_tipo_area)",ng-show="permisos.system_config.eliminar == 1") ELIMINAR
 
 
   script(src="/socket.io/socket.io.js")
