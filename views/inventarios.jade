@@ -4,7 +4,7 @@ block content
   div(class="progress", id="loadPage")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
-    app-for-users
+    app-for-users(ng-show="permisos.inventarios.ver==1")
       div(id="contentApp", hidden, ng-controller="InventariosController", ng-init="getAreas()")
         h3(ng-show="!area.are_nombre") Elije un área para ver inventario
         h3(ng-show="area.are_nombre") Inventarios de {{area.are_nombre}}
@@ -22,7 +22,7 @@ block content
               i(class="material-icons prefix") search
               input(type="text", ng-model="searchInventario")
               label(for="icon_prefix") Buscar...
-            button(class="btn waves-effect white-text right", ng-click="setDatosCrearInventario()") crear
+            button(class="btn waves-effect white-text right", ng-click="setDatosCrearInventario()",ng-show="permisos.inventarios.crear==1") crear
           h4(ng-show="inventarios.length==0", style="text-align:center;") No hay inventario registrado
           div(class="row")
             div(class="card small col s12 m6 l4", ng-repeat="inventario in inventarios | filter:searchInventario")
@@ -65,11 +65,11 @@ block content
                     td {{inventario.inv_marca}}
                 p(class="green-text") RESGUARDO DE INVENTARIO
                   button(class="btn white-text waves-effect", ng-click="opcResguardo(inventario.num_inventario,inventario.id_resguardo)") {{inventario.id_resguardo != null?"FINALIZAR RESGUARDO":"INICIAR RESGUARDO"}}
-                p(class="red-text") ZONA DE PELIGRO
+                p(class="red-text",ng-show="permisos.inventarios.editar==1 || permisos.inventarios.eliminar==1") ZONA DE PELIGRO
                   br
-                  button(class="btn white-text waves-effect blue", ng-click="setDatosEditarInventario(inventario)") EDITAR
-                  button(class="btn white-text red waves-effect", ng-click="eliminarInventario(inventario.num_inventario)") ELIMINAR
-                  button(class="btn waves-effect yellow", ng-click="setInventario(area.id_area)") Dar de baja
+                  button(class="btn white-text waves-effect blue", ng-click="setDatosEditarInventario(inventario)",ng-show="permisos.inventarios.editar==1") EDITAR
+                  button(class="btn white-text red waves-effect", ng-click="eliminarInventario(inventario.num_inventario)",ng-show="permisos.inventarios.eliminar==1") ELIMINAR
+                  button(class="btn waves-effect yellow", ng-click="setInventario(area.id_area)",ng-show="permisos.inventarios.editar==1") Dar de baja
         // MODAL INVENTARIO
         div(id="modalOpcionesInventarios" class="modal", style="z-index:9999;")
           div(class="modal-content", style="z-index:9999;")

@@ -2,9 +2,22 @@ var express = require('express');
 var router = express.Router();
 var controller = require("../database/controllers/InventariosController");
 var resguardoController = require("../database/controllers/ResguardoInventarioController");
+var permisoController = require("../database/controllers/PermisosController");
 
 router.get("/", function(req, res) {
-  res.render("inventarios", {title : "SIACC"});
+  if(req.user) {
+    permisoController.getPermisoTipoUsuario(req.user.usu_id_tipo_usuario,
+      "inventarios", function(err, permiso) {
+        if(!err && permiso && permiso[0].moa_ver==1) {
+          res.render("inventarios", {title : "SIACC"});
+        } else {
+          console.log(err);
+          res.render("sin_permiso_vista", {title:"No tienes permisos para ver esto - SIACC"});
+        }
+    });
+  } else {
+    res.render("login", {title:"login"});
+  }
 });
 
 /**
