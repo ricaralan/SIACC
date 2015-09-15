@@ -4,9 +4,9 @@ block content
   div(class="progress", id="loadPage")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
-    app-for-users
+    app-for-users(ng-show="permisos.areas.ver == 1")
       div(id="contentApp", hidden, ng-controller="AreasController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearArea()") Crear nueva
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearArea()",ng-show="permisos.areas.crear == 1") Crear nueva
         h3 Áreas
         // MODAL OPCION AREA
         div(id="modalOpcionesArea" class="modal")
@@ -45,13 +45,13 @@ block content
               span(class="card-title grey-text text-darken-4") {{area.are_nombre}}
                 i(class="material-icons right") close
               P
-                button(class="btn waves-effect white-text", ng-click="setInventario(area.id_area)") Inventarios
+                button(class="btn waves-effect white-text", ng-click="setInventario(area.id_area)", ng-show="permisos.inventarios.ver==1") Inventarios
               p
-                button(class="btn waves-effect white-text", ng-click="setControlAcceso(area.id_area)") Control de acceso
-              p(class="red-text") ZONA DE PELIGRO
+                button(class="btn waves-effect white-text", ng-click="setControlAcceso(area.id_area)", ng-show="permisos.acceso_equipo_computo.ver==1 || permisos.acceso_simple.ver==1") Control de acceso
+              p(class="red-text",ng-show="permisos.areas.editar==1 || permisos.areas.eliminar==1") ZONA DE PELIGRO
                 br
-                button(class="btn white-text waves-effect blue", ng-click="setDatosEditarArea(area.id_area)") EDITAR
-                button(class="btn white-text red waves-effect", ng-click="eliminarArea(area.id_area)") ELIMINAR
+                button(class="btn white-text waves-effect blue", ng-click="setDatosEditarArea(area.id_area)",ng-show="permisos.areas.editar == 1") EDITAR
+                button(class="btn white-text red waves-effect", ng-click="eliminarArea(area.id_area)",ng-show="permisos.areas.eliminar == 1") ELIMINAR
 
 
 
@@ -225,9 +225,9 @@ block content
         div(class="row")
             div(class="col s12")
               ul(class="tabs card", ng-init="initTabsAcceso('#tabsAcceso')", id="tabsAcceso")
-                li(class="tab col s2")
+                li(class="tab col s2", ng-show="permisos.acceso_simple.ver==1")
                   a(href="#a1", class="waves-effect", ng-click="getAccesos(1)") Acceso simple
-                li(class="tab col s2")
+                li(class="tab col s2", ng-show="permisos.acceso_equipo_computo.ver==1")
                   a(href="#a2", class="waves-effect", ng-click="getAccesos(2)") Acceso a equipo de cómputo
         div(class="input-field col s5", style="margin:0;padding:0", ng-show="accesos.length>0")
           i(class="material-icons prefix") search
