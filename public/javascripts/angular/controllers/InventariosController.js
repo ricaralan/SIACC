@@ -98,7 +98,11 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
             Materialize.toast("Creación exitosa!", 2000);
             $("#modalOpcionesInventarios").closeModal();
           } else {
-            Materialize.toast("Ocurrio un error", 2000);
+            if(data.existInv) {
+              Materialize.toast("El número de inventario ya existe", 2000);
+            } else {
+              Materialize.toast("Ocurrio un error desconocido...", 2000);
+            }
           }
         });
       } else {

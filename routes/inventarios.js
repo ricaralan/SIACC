@@ -63,9 +63,15 @@ router.post("/createResguardo/:idInventario/:idUsuario", function(req, res) {
 });
 
 router.post("/create", function(req, res) {
-  controller.create(req.body.jsonInventario, function(err, data) {
-    res.send( { success : !err && data.affectedRows == 1 } );
-  });
+  if(req.body.jsonInventario && req.body.jsonInventario.num_inventario) {
+    controller.getInventario(req.body.jsonInventario.num_inventario, function(err, inventario) {
+      controller.create(req.body.jsonInventario, function(err, data) {
+        res.send( { success : !err && data.affectedRows == 1 , existInv : inventario.length>0} );
+      });
+    });
+  } else {
+    res.send({success:false});
+  }
 });
 
 router.put("/update", function(req, res) {

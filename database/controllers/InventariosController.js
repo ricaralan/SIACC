@@ -20,7 +20,13 @@ InventariosController.prototype.getInventarioArea = function(idArea, done) {
         + "inv_ram,inv_procesador,inv_vel_procesador,inv_capacidad,inv_no_serie,"
         + "inv_marca,inv_status,inv_disponibilidad,inv_descripcion FROM inventario "
         + "WHERE inv_id_area="+idArea;
-  console.log(query);
+  self.connection.query(query, done);
+};
+InventariosController.prototype.getInventario = function(idInventario, done) {
+  query = "SELECT inv_usar_control_acceso,num_inventario,inv_id_area,inv_tipo,inv_num_maq,"
+        + "inv_ram,inv_procesador,inv_vel_procesador,inv_capacidad,inv_no_serie,"
+        + "inv_marca,inv_status,inv_disponibilidad,inv_descripcion FROM inventario "
+        + "WHERE num_inventario='"+idInventario+"'";
   self.connection.query(query, done);
 };
 
