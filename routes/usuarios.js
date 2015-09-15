@@ -1,11 +1,24 @@
 var express = require('express');
 var router = express.Router();
 var controller = require("../database/controllers/UsuariosController");
-var fs = require("fs");
+var permisoController = require("../database/controllers/PermisosController");
 var encriptacion = require("../util/encriptation");
+var fs = require("fs");
 
 router.get('/', function(req, res) {
-  res.render('usuarios', { title: 'SIACC'});
+  if(req.user) {
+    permisoController.getPermisoTipoUsuario(req.user.usu_id_tipo_usuario,
+      "usuarios", function(err, permiso) {
+        if(!err && permiso && permiso[0].moa_ver==1) {
+          res.render('usuarios', { title: 'SIACC'});
+        } else {
+          console.log(err);
+          res.render("sin_permiso_vista", {title:"No tienes permisos para ver esto - SIACC"});
+        }
+    });
+  } else {
+    res.render("login", {title:"login"});
+  }
 });
 
 router.get("/getIdUsuarioLogueado", function(req, res) {

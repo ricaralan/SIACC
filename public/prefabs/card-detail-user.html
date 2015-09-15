@@ -21,8 +21,8 @@
 				{{userCardDetail.usu_nombre}} {{userCardDetail.usu_primer_apellido}} {{userCardDetail.usu_segundo_apellido}}
 			</p>
 			<div class="">
-				<button type="button" class="btn waves-effect blue white-text" ng-click="setDatosEditar()">Editar</button>
-				<button type="button" class="btn waves-effect red white-text" ng-click="eliminarUsuario(userCardDetail.id_usuario)">Eliminar</button>
+				<button type="button" class="btn waves-effect blue white-text" ng-click="setDatosEditar()", ng-show="permisos.usuarios.editar==1">Editar</button>
+				<button type="button" class="btn waves-effect red white-text" ng-click="eliminarUsuario(userCardDetail.id_usuario)", ng-show="permisos.usuarios.eliminar==1">Eliminar</button>
 			</div>
 		</div>
 	</div>

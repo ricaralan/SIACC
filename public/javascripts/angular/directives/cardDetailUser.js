@@ -6,8 +6,8 @@ SIACCApp.directive("cardDetailUser", ["$http", "scopes", "util", function($http,
       attributes.$observe("user", function() {
         scope.userCardDetail = JSON.parse(attributes.user);
         $http.get("/usuarios/getPermisosUsuario/"+scope.userCardDetail.usu_id_tipo_usuario)
-        .success(function(permisos) {
-          scope.permisos = permisos;
+        .success(function(permisosUsuario) {
+          scope.permisosUsuario = permisosUsuario;
         });
       });
 
@@ -42,10 +42,10 @@ SIACCApp.directive("cardDetailUser", ["$http", "scopes", "util", function($http,
       };
 
       scope.getPermisoById = function(idPermiso) {
-        if(scope.permisos && !util.empty(idPermiso)){
-          for(var i = 0; i < scope.permisos.length; i++) {
-            if(scope.permisos[i].permiso == idPermiso) {
-              return scope.permisos[i];
+        if(scope.permisosUsuario && !util.empty(idPermiso)){
+          for(var i = 0; i < scope.permisosUsuario.length; i++) {
+            if(scope.permisosUsuario[i].permiso == idPermiso) {
+              return scope.permisosUsuario[i];
             }
           }
         }

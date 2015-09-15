@@ -6,7 +6,7 @@ block content
   div(ng-app="SIACCApp")
     app-for-users
       div(id="contentApp", hidden, ng-controller="UsuariosController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearUsuario()") Crear nuevo
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearUsuario()",ng-show="permisos.usuarios.crear==1") Crear nuevo
         h3 Usuarios
 
         div(class="row", id="contentTabs", hidden)
@@ -136,7 +136,7 @@ block content
           a(class="btn-floating btn-large waves-effect waves-light white-text", ng-click="createHorario()")
             i {{horarios.length}} +
         div(class="modal", id="modalHorarioAula")
-          div(class="modal-content")
+          div(class="modal-content", style="min-height:500px !important")
             h4 {{titleOpcHorario}}
             div
               table(class="bordered")
@@ -150,13 +150,13 @@ block content
                   td(ng-show="!isEmpty(fecha_inicio) && !isEmpty(fecha_fin)")
                     button(class="btn waves-effect white-text", ng-click="getHorario()") Recargar
                 //tr(ng-show="tipoHorario==2 && registrarHorarioClases")
-                  //td(colspan="1")
-                    //p Selecciona el usuario
-                  //td(colspan="4")
-                    //div(class="input-field col s12")
-                      //select(class="browser-default", ng-model="idUsuario",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
-                        //option(value="0" disabled selected) Selecciona el usuario
-                        //option(ng-repeat="usuario in usuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+                  td(colspan="1")
+                    p Selecciona el usuario
+                  td(colspan="4")
+                    div(class="input-field col s12")
+                      select(class="browser-default", ng-model="idUsuario",ng-init="getUsuariosPermisoMaterias()", ng-change="getMateriasUsuario()")
+                        option(value="0" disabled selected) Selecciona el usuario
+                        option(ng-repeat="usuario in usuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
                 tr(ng-show="idUsuario!=0 && tipoHorario==2 && registrarHorarioClases")
                   td(colspan="1")
                     div(class="input-field col s6")
