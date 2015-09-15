@@ -4,9 +4,9 @@ block content
   div(class="progress", id="loadPage")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
-    app-for-users
+    app-for-users(ng-show="permisos.system_config.ver == 1")
       div(id="contentApp", hidden, ng-controller="TiposServiciosController")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoServicio()") Crear nuevo
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearTipoServicio()",ng-show="permisos.system_config.crear == 1") Crear nuevo
         h3 Tipos de servicio - mesa de ayuda
         // MODAL OPCIONES TIPOS SERVICIOS
         div(id="modalOpcionesTipoServicio" class="modal")
@@ -32,7 +32,7 @@ block content
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
             button(class=" waves-effect waves-green btn-flat", ng-click="opcionTipoServicio()", id="btnOpcionCarrera") {{opcAccion}}
 
-        table(class="bordered", ng-init="getTiposServicios()")
+        table(class="bordered", ng-init="getTiposServicios()", ng-show="permisos.system_config.ver == 1")
           tr
             th  Nombre
             th  Descripción
@@ -41,8 +41,8 @@ block content
             td {{tipo.tse_nombre}}
             td {{tipo.tse_descripcion}}
             td
-              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoServicio(tipo.id_tipo_servicio)") Eliminar
-              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarTipoServicio(tipo)") Editar
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteTipoServicio(tipo.id_tipo_servicio)", ng-show="permisos.system_config.eliminar == 1") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarTipoServicio(tipo)", ng-show="permisos.system_config.editar == 1") Editar
 
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
