@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp")
+    app-for-users
+      div(id="contentApp", hidden)
+        h3(class="center")
+          i(class="material-icons",style="font-size:90px") visibility_off
+          p No tienes permisos para ver esto
+
+
+  script(src="/javascripts/angular/directives/appForUsers.js")

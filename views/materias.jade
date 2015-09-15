@@ -4,9 +4,9 @@ block content
   div(class="progress", id="loadPage")
       div(class="indeterminate")
   div(ng-app="SIACCApp")
-    app-for-users
+    app-for-users(ng-show="permisos.asignacion_materias.ver==1")
       div(id="contentApp", hidden, ng-controller="MateriasController", ng-init="getMaterias()")
-        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearMateria()") Crear nueva
+        a(class="waves-effect waves-light btn right" ng-click="setDatosCrearMateria()", ng-show="permisos.asignacion_materias.crear==1") Crear nueva
         h3 Materias
         // MODAL OPCION MATERIAS
         div(id="modalOpcionesMaterias" class="modal")
@@ -33,25 +33,25 @@ block content
             button(class=" waves-effect waves-green btn-flat", ng-click="opcionAccionMateria()", id="btnOpcionAreas") {{opcionMateria}}
 
         // SHOW MATERIAS
-        div(class="input-field col s6")
+        div(class="input-field col s6",ng-show="permisos.asignacion_materias.ver==1")
           i(class="material-icons prefix") search
           input(type="text", ng-model="x", ng-change="getMateriasByText(x)")
           label(for="icon_prefix") Buscar materia
-        table(class="bordered")
+        table(class="bordered",ng-show="permisos.asignacion_materias.ver==1")
           tr
             th NRC
             th Nombre
             th Descripción
             th
-          tr(ng-show="materiasUsuario.length == 0")
+          tr(ng-show="materiasUsuario.length==0")
             td(colspan="4") No hay materias asignadas
           tr(ng-repeat="materia in materias")
             td {{materia.id_materia}}
             td {{materia.mat_nombre}}
             td {{materia.mat_descripcion}}
             td
-              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteMateria(materia)") Eliminar
-              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarMateria(materia)") Editar
+              a(href="#!", class="btn white-text waves-effect red right", ng-click="deleteMateria(materia)",ng-show="permisos.asignacion_materias.eliminar==1") Eliminar
+              a(href="#!", class="btn white-text waves-effect blue right", ng-click="setDatosEditarMateria(materia)",ng-show="permisos.asignacion_materias.editar==1") Editar
         ul(class="pagination")
           li(class="{{pag.selected?'active':'waves-effect'}}", ng-repeat="pag in pagination", ng-click="pag.paginate()")
             a(href="#!") {{pag.number}}

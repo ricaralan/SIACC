@@ -12,7 +12,18 @@ PermisosController.prototype.getAllPermisos = function(callback) {
 };
 
 PermisosController.prototype.getPermisosTipoUsuario = function(idTipoUsuario, callback) {
-  query = "SELECT id_permiso_asignado,per_url,per_nombre_corto,moa_id_permiso,moa_id_tipo_usuario,moa_ver,moa_crear,moa_editar,moa_eliminar FROM permiso_asignado LEFT JOIN permiso ON id_permiso=moa_id_permiso WHERE moa_id_tipo_area IS NULL AND moa_id_tipo_usuario=" + idTipoUsuario;
+  query = "SELECT id_permiso_asignado,per_url,per_nombre_corto,moa_id_permiso,"
+        + "moa_id_tipo_usuario,moa_ver,moa_crear,moa_editar,moa_eliminar FROM "
+        + "permiso_asignado LEFT JOIN permiso ON id_permiso=moa_id_permiso WHERE "
+        + "moa_id_tipo_area IS NULL AND moa_id_tipo_usuario=" + idTipoUsuario;
+  self.connection.query(query, callback);
+};
+
+PermisosController.prototype.getPermisoTipoUsuario = function(idTipoUsuario, id_permiso, callback) {
+  query = "SELECT id_permiso_asignado,per_url,per_nombre_corto,moa_id_permiso,"
+        + "moa_id_tipo_usuario,moa_ver,moa_crear,moa_editar,moa_eliminar FROM "
+        + "permiso_asignado LEFT JOIN permiso ON id_permiso=moa_id_permiso WHERE "
+        + "moa_id_tipo_area IS NULL AND moa_id_tipo_usuario=" + idTipoUsuario+" AND id_permiso='"+id_permiso+"'";
   self.connection.query(query, callback);
 };
 

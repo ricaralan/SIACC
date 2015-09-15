@@ -21,7 +21,9 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
   $scope.getMaterias = function() {
     $http.get("/materias/getMaterias/"+$scope.inicioMaterias+"/"+$scope.numRowsMaterias)
       .success(function(dataMaterias) {
-      $scope.materias = dataMaterias.materias;
+      $timeout(function(){
+        $scope.materias = dataMaterias.materias;
+      }, 0);
       $scope.initPaginationMaterias(dataMaterias.countMaterias, $scope.getMaterias);
     });
   };
@@ -41,8 +43,8 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
     if(!util.empty(text)){
       $http.get("/materias/getMateriasByText/"+text+"/0/10")
         .success(function(dataMaterias) {
-        $scope.materias = dataMaterias.materias;
         $timeout(function() {
+          $scope.materias = dataMaterias.materias;
           $scope.pagination = [];
         }, 0);
       });
