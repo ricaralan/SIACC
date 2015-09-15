@@ -40,13 +40,13 @@
         <li ng-show="permisos.inventarios.ver == 1"><a href="{{permisos.inventarios.url}}">Inventarios</a></li>
         <li ng-show="permisos.asignacion_materias.ver == 1"><a href="{{permisos.asignacion_materias.url}}">Materias</a></li>
 
-        <li><a class='dropdown-button' href='#' data-activates='menu_mesa_ayuda_1'>Mesa de ayuda</a>
+        <li><a class='dropdown-button' href='#' data-activates='menu_mesa_ayuda_1'  ng-show="permisos.mesa_ayuda_administrador.ver==1 || permisos.mesa_ayuda_atencion.ver==1 || permisos.mesa_ayuda_solicitante.ver==1">Mesa de ayuda</a>
           <ul id='menu_mesa_ayuda_1' class='dropdown-content'>
-            <li><a href="/mesa_ayuda/solicitante">Solicitante</a></li>
-            <li class="divider"></li>
-            <li><a href="/mesa_ayuda/atender">Atender solicitudes</a></li>
-            <li class="divider"></li>
-            <li><a href="/mesa_ayuda/administrador">Administrador</a></li>
+            <li ng-show="permisos.mesa_ayuda_solicitante.ver==1"><a href="/mesa_ayuda/solicitante">Solicitante</a></li>
+            <li class="divider" ng-show="permisos.mesa_ayuda_solicitante.ver==1"></li>
+            <li  ng-show="permisos.mesa_ayuda_atencion.ver==1"><a href="/mesa_ayuda/atender">Atender solicitudes</a></li>
+            <li class="divider" ng-show="permisos.mesa_ayuda_atencion.ver==1"></li>
+            <li><a href="/mesa_ayuda/administrador"  ng-show="permisos.mesa_ayuda_administrador.ver==1">Administrador</a></li>
           </ul>
         </li>
         <li ng-show="permisos.system_config.ver == 1"><a class='dropdown-button' href='#' data-activates='configuracion_1'>Configuraciones</a>
@@ -75,23 +75,23 @@
         <li ng-show="permisos.usuarios.ver == 1"><a href="{{permisos.usuarios.url}}">Usuarios</a></li>
         <li ng-show="permisos.inventarios.ver == 1"><a href="{{permisos.inventarios.url}}">Inventarios</a></li>
         <li ng-show="permisos.asignacion_materias.ver == 1"><a href="{{permisos.asignacion_materias.url}}">Materias</a></li>
-        <li>
+        <li ng-show="permisos.mesa_ayuda_administrador.ver==1 || permisos.mesa_ayuda_atencion.ver==1 || permisos.mesa_ayuda_solicitante.ver==1">
           <ul class="collapsible" data-collapsible="accordion">
             <li class="bold">
               <div class="collapsible-header"><i class="material-icons">settings</i>Mesa de ayuda</div>
               <div class="collapsible-body">
                 <ul>
-                  <li><a href="/mesa_ayuda/solicitante">Solicitante</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/mesa_ayuda/atender">Atender solicitudes</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/mesa_ayuda/administrador">Administrador</a></li>
+                  <li ng-show="permisos.mesa_ayuda_solicitante.ver==1"><a href="/mesa_ayuda/solicitante">Solicitante</a></li>
+                  <li class="divider" ng-show="permisos.mesa_ayuda_solicitante.ver==1"></li>
+                  <li  ng-show="permisos.mesa_ayuda_atencion.ver==1"><a href="/mesa_ayuda/atender">Atender solicitudes</a></li>
+                  <li class="divider" ng-show="permisos.mesa_ayuda_atencion.ver==1"></li>
+                  <li><a href="/mesa_ayuda/administrador"  ng-show="permisos.mesa_ayuda_administrador.ver==1">Administrador</a></li>
                 </ul>
               </div>
             </li>
           </ul>
         </li>
-        <li>
+        <li ng-show="permisos.system_config.ver == 1">
           <ul class="collapsible" data-collapsible="accordion">
             <li class="bold">
               <div class="collapsible-header"><i class="material-icons">settings</i>Configuraciones</div>
