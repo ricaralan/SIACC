@@ -164,7 +164,7 @@ block content
               i(class="material-icons prefix") search
               input(type="text", ng-model="searchInventario")
               label(for="icon_prefix") Buscar...
-            button(class="btn waves-effect white-text right", ng-click="setDatosCrearInventario()") crear
+            button(class="btn waves-effect white-text right", ng-click="setDatosCrearInventario()", ng-show="permisos.inventarios.crear==1") crear
 
 
 
@@ -212,11 +212,11 @@ block content
                     td {{inventario.inv_marca}}
                 p(class="green-text") RESGUARDO DE INVENTARIO
                   button(class="btn white-text waves-effect", ng-click="opcResguardo(inventario.num_inventario,inventario.id_resguardo)") {{inventario.id_resguardo != null?"FINALIZAR RESGUARDO":"INICIAR RESGUARDO"}}
-                p(class="red-text") ZONA DE PELIGRO
+                p(class="red-text", ng-show="permisos.inventarios.editar==1 || permisos.inventarios.eliminar==1") ZONA DE PELIGRO
                   br
-                  button(class="btn white-text waves-effect blue", ng-click="setDatosEditarInventario(inventario)") EDITAR
-                  button(class="btn white-text red waves-effect", ng-click="eliminarInventario(inventario.num_inventario)") ELIMINAR
-                  button(class="btn waves-effect yellow", ng-click="setInventario(area.id_area)") Dar de baja
+                  button(class="btn white-text waves-effect blue", ng-click="setDatosEditarInventario(inventario)", ng-show="permisos.inventarios.editar==1") EDITAR
+                  button(class="btn white-text red waves-effect", ng-click="eliminarInventario(inventario.num_inventario)", ng-show="permisos.inventarios.eliminar==1") ELIMINAR
+                  button(class="btn waves-effect yellow", ng-click="setInventario(area.id_area)", ng-show="permisos.inventarios.editar==1") Dar de baja
 
     div(style="position:fixed;background-color:rgba(0,0,0,.6);width:100%;height:100%;top:0;left:0;z-index:9999;overflow:hidden", id="contentControlAcceso", hidden, ng-controller="ControlAccesoController")
       div(style="position:relative;width:80%;margin-left:10%;background-color:#fff;padding:10px;margin-top:20px;")
