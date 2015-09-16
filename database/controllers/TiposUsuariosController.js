@@ -12,10 +12,17 @@ TiposUsuariosController.prototype.getTiposUsuario = function(done) {
   ], {}, done);
 };
 
+TiposUsuariosController.prototype.getTiposUsuarioPermitidos = function(idTipoUsuario, done) {
+  query = "SELECT id_tipo_usuario,tipo_nombre,tipo_descripcion,tipo_asignar_area,"
+        + "tipo_asignar_carrera,ptu_ver_contrasena ver_contrasena FROM tipo_usuario "
+        + "INNER JOIN permiso_por_tipo_usuario ON id_tipo_usuario=ptu_id_tipo_usuario_permiso AND "
+        + "ptu_id_tipo_usuario=" + idTipoUsuario + " AND !ptu_ningun_usuario";
+  self.connection.query(query, done);
+};
+
 TiposUsuariosController.prototype.getPermisosTipoUsuario = function(idTipoUsuario, done) {
   query = "SELECT id_permiso, moa_id_permiso, moa_ver, moa_crear, moa_editar, moa_eliminar FROM "
         + "permiso LEFT JOIN permiso_asignado ON id_permiso=moa_id_permiso AND moa_id_tipo_usuario="+idTipoUsuario;
-  //self.connection.query(query, done);
   self.connection.query(query, function(err, permisos_sistema) {
     query = "SELECT ptu_id_tipo_usuario_permiso, ptu_ver_contrasena,"
           + "ptu_solo_usuarios_area, ptu_todos_usuarios, ptu_ningun_usuario FROM "

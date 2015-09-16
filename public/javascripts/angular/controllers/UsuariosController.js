@@ -130,7 +130,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
   };
 
   $scope.getTiposUsuario = function() {
-    $http.get("/tipo_usuario/getTiposUsuario/").success(function(tiposUsuario) {
+    $http.get("/tipo_usuario/u/getTiposUsuario/").success(function(tiposUsuario) {
       $scope.tiposUsuario = tiposUsuario;
       $scope.initTabs();
     });

@@ -104,9 +104,9 @@ block content
                   form(id="formFileUsuario")
                     input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
             p(class="divider")
-            input(type="checkbox", id="check", ng-model="definirUsuario")
-            label(for="check") Definir usuario
-            table(class="bordered", ng-show="definirUsuario")
+            input(type="checkbox", id="check", ng-model="definirUsuario", ng-show="typeUserPagination.ver_contrasena==1")
+            label(for="check", ng-show="typeUserPagination.ver_contrasena==1") Definir usuario
+            table(class="bordered", ng-show="definirUsuario && typeUserPagination.ver_contrasena==1")
               tr
                 td
                   div(class="input-field col s6")

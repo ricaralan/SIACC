@@ -25,6 +25,12 @@ router.get("/getTiposUsuario", function(req, res) {
   });
 });
 
+router.get("/u/getTiposUsuario/", function(req, res) {
+  controllerTipoUsuario.getTiposUsuarioPermitidos(req.user.usu_id_tipo_usuario, function(err, tiposUsuario) {
+    res.send(tiposUsuario);
+  });
+});
+
 router.get("/getPermisosTipoUsuario/:idTipoUsuario", function(req, res) {
   controllerTipoUsuario.getPermisosTipoUsuario(req.params.idTipoUsuario, function(err, permisos) {
     if(!err) {
