@@ -76,23 +76,23 @@ block content
                 tr
                   td Ver contraseña
                   td
-                    input(type="checkbox", id="check_contra{{tipo.id_tipo_usuario}}", class="checks_ver_contrasena")
-                    label(for="check_contra{{tipo.id_tipo_usuario}}")
+                    input(type="checkbox", id="check_ver_contrasena{{tipo.id_tipo_usuario}}", class="checks_ver_contrasena")
+                    label(for="check_ver_contrasena{{tipo.id_tipo_usuario}}")
                 tr
                   td Ver todos los usuarios
                   td
-                    input(type="radio", id="radio1_ver_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios1")
-                    label(for="radio1_ver_usuarios{{tipo.id_tipo_usuario}}")
+                    input(type="radio", id="radio_ver_todos_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios1")
+                    label(for="radio_ver_todos_usuarios{{tipo.id_tipo_usuario}}")
                 tr
                   td Solo ver usuarios en área a la que pertenece
                   td
-                    input(type="radio", id="radio2_ver_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios2")
-                    label(for="radio2_ver_usuarios{{tipo.id_tipo_usuario}}")
+                    input(type="radio", id="radio_ver_usuarios_area{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios2")
+                    label(for="radio_ver_usuarios_area{{tipo.id_tipo_usuario}}")
                 tr
                   td No ver los usuarios de este tipo
                   td
-                    input(type="radio", id="radio3_ver_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios3")
-                    label(for="radio3_ver_usuarios{{tipo.id_tipo_usuario}}")
+                    input(type="radio", id="radio_no_ver_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios3")
+                    label(for="radio_no_ver_usuarios{{tipo.id_tipo_usuario}}")
 
 
 

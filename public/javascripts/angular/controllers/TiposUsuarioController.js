@@ -72,6 +72,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", functi
   $scope.cleanFormTipoUsuario = function() {
     $scope.formTipoUsuario = {};
     $scope.cleanChecksPermisosTipoUsuario();
+    $scope.cleanPermisosTipoUsuario();
   };
 
   $scope.cleanChecksPermisosTipoUsuario = function() {
@@ -89,13 +90,14 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", functi
     document.getElementById("check_asignar_carrera").checked = $scope.formTipoUsuario.tipo_asignar_carrera;
     document.getElementById("check_asignar_area").checked = $scope.formTipoUsuario.tipo_asignar_area;
     $http.get("/tipo_usuario/getPermisosTipoUsuario/"+tipoUsuario.id_tipo_usuario)
-    .success(function(data) {
-      $scope.setSelectedPermisosTiposUsuario(data);
+    .success(function(permisos) {
+      $scope.setSelectedPermisosSistema(permisos.permisos_sistema);
+      $scope.setSelectedPermisosPorTipoUsuario(permisos.permisos_tipos_usuario);
     });
     $("#modalOpcionesTipoUsuario").openModal();
   };
 
-  $scope.setSelectedPermisosTiposUsuario = function(permisos) {
+  $scope.setSelectedPermisosSistema = function(permisos) {
     for(var i = 0; i < permisos.length; i++) {
       $scope.checkedPermisoById("check-moa_ver-"+permisos[i].id_permiso, permisos[i].moa_ver);
       $scope.checkedPermisoById("check-moa_crear-"+permisos[i].id_permiso, permisos[i].moa_crear);
@@ -104,8 +106,28 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", functi
     }
   };
 
+  $scope.setSelectedPermisosPorTipoUsuario = function(permisos) {
+    for(permiso in permisos) {
+      $scope.checkedPermisoById("radio_ver_todos_usuarios"+permisos[permiso].ptu_id_tipo_usuario_permiso, permisos[permiso].ptu_todos_usuarios);
+      $scope.checkedPermisoById("radio_ver_usuarios_area"+permisos[permiso].ptu_id_tipo_usuario_permiso, permisos[permiso].ptu_solo_usuarios_area);
+      $scope.checkedPermisoById("radio_no_ver_usuarios"+permisos[permiso].ptu_id_tipo_usuario_permiso, permisos[permiso].ptu_ningun_usuario);
+      $scope.checkedPermisoById("check_ver_contrasena"+permisos[permiso].ptu_id_tipo_usuario_permiso, permisos[permiso].ptu_ver_contrasena);
+    }
+  };
+
+  $scope.cleanPermisosTipoUsuario = function() {
+    for(tipoUsuario in $scope.tiposUsuario) {
+      $scope.checkedPermisoById("radio_ver_todos_usuarios" + $scope.tiposUsuario[tipoUsuario].id_tipo_usuario, 0);
+      $scope.checkedPermisoById("radio_ver_usuarios_area" + $scope.tiposUsuario[tipoUsuario].id_tipo_usuario, 0);
+      $scope.checkedPermisoById("radio_no_ver_usuarios" + $scope.tiposUsuario[tipoUsuario].id_tipo_usuario, 0);
+      $scope.checkedPermisoById("check_ver_contrasena" + $scope.tiposUsuario[tipoUsuario].id_tipo_usuario, 0);
+    }
+  };
+
   $scope.checkedPermisoById = function(id, permiso) {
-    document.getElementById(id).checked = !util.empty(permiso) && permiso == 1;
+    if(!util.empty(permiso) || permiso == 0) {
+      document.getElementById(id).checked = !util.empty(permiso) && permiso == 1;
+    }
   };
 
   $scope.deleteTipoUsuario = function(idTipoUsuario) {
@@ -137,7 +159,6 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", functi
         ptu_ningun_usuario : radios3[i].checked
       };
     }
-    console.log(json);
     return json
   };
 
