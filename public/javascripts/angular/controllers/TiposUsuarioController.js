@@ -35,8 +35,13 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", functi
       tipo_asignar_area : document.getElementById("check_asignar_area").checked
     };
     jsonPermisos = $scope.getPermisosSeleccionados();
+    jsonToSend = {
+      jsonTipoUsuario : json,
+      jsonPermisos : jsonPermisos,
+      jsonPermisosSobreTipoUsuario : $scope.getPermisosSobreUsuario()
+    };
     if($scope.crearTipoUsuario) {
-      $http.post("/tipo_usuario/create/",{jsonTipoUsuario:json, jsonPermisos:jsonPermisos}).success(function(data) {
+      $http.post("/tipo_usuario/create/", jsonToSend).success(function(data) {
         if(data.success) {
           $("#modalOpcionesTipoUsuario").closeModal();
           $scope.socket.emit("changeOnTiposUsuarios", {});
@@ -44,7 +49,7 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", functi
         }
       });
     } else {
-      $http.put("/tipo_usuario/update/",{jsonTipoUsuario:json, jsonPermisos:jsonPermisos}).success(function(data) {
+      $http.put("/tipo_usuario/update/", jsonToSend).success(function(data) {
         $("#modalOpcionesTipoUsuario").closeModal();
         $scope.socket.emit("changeOnTiposUsuarios", {});
         Materialize.toast("El tipo de usuario se editó correctamente!", 4000);
@@ -114,6 +119,26 @@ SIACCApp.controller("TiposUsuarioController", ["$scope", "$http", "util", functi
         }
       });
     }
+  };
+
+  $scope.getPermisosSobreUsuario = function() {
+    checks = document.getElementsByClassName("checks_ver_contrasena");
+    radios1 = document.getElementsByClassName("radio_ver_usuarios1");
+    radios2 = document.getElementsByClassName("radio_ver_usuarios2");
+    radios3 = document.getElementsByClassName("radio_ver_usuarios3");
+    json = [];
+    for(var i = 0; i < checks.length; i++) {
+      json[i] = {
+        ptu_id_tipo_usuario : $scope.formTipoUsuario.id_tipo_usuario,
+        ptu_id_tipo_usuario_permiso : $scope.tiposUsuario[i].id_tipo_usuario,
+        ptu_ver_contrasena  : checks[i].checked,
+        ptu_todos_usuarios : radios1[i].checked,
+        ptu_solo_usuarios_area : radios2[i].checked,
+        ptu_ningun_usuario : radios3[i].checked
+      };
+    }
+    console.log(json);
+    return json
   };
 
   $scope.setTodosLosPermisos();

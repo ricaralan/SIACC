@@ -73,6 +73,28 @@
   FOREIGN KEY(moa_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario),
   FOREIGN KEY(moa_id_tipo_area) REFERENCES tipo_area(id_tipo_area)
   );
+  /**
+  * Esta tabla ayudará a saber que tipos de usuario
+  * puede ver un usuario especifico y si puede ver
+  * las contraseñas de dichos usuarios
+  ***********/
+  CREATE TABLE permiso_por_tipo_usuario(
+  /* TIPO DE USUARIO CON EL PERMISO */
+  ptu_id_tipo_usuario INT NOT NULL,
+  /* PERMISO SOBRE ESTE TIPO DE USUARIO */
+  ptu_id_tipo_usuario_permiso INT NOT NULL,
+  /* SI PUEDE O NO VER LA CONTRASEÑA DE LOS USUARIOS */
+  ptu_ver_contrasena BOOLEAN,
+  /* SOLO PODRÁ VER LOS USUARIO DEL ÁREA DEL USUARIO */
+  ptu_solo_usuarios_area BOOLEAN,
+  /* PODRÁ VER TODOS LOS USUARIOS DEL TIPO ELEGIDO */
+  ptu_todos_usuarios BOOLEAN,
+  /* NO PUEDE VER NINGUN USUARIO DEL TIPO ELEGIDO */
+  ptu_ningun_usuario BOOLEAN,
+  PRIMARY KEY(ptu_id_tipo_usuario, ptu_id_tipo_usuario_permiso),
+  FOREIGN KEY(ptu_id_tipo_usuario) REFERENCES tipo_usuario(id_tipo_usuario),
+  FOREIGN KEY(ptu_id_tipo_usuario_permiso) REFERENCES tipo_usuario(id_tipo_usuario)
+  );
 
   CREATE TABLE carrera(
   id_carrera INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

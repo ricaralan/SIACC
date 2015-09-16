@@ -36,7 +36,9 @@ router.get("/getPermisosTipoUsuario/:idTipoUsuario", function(req, res) {
 router.post("/create", function(req, res) {
   var jsonTipoUsuario = req.body.jsonTipoUsuario;
   var jsonPermisos = req.body.jsonPermisos;
-  controllerTipoUsuario.create(jsonTipoUsuario, jsonPermisos, function(data) {
+  var jsonPermisosSobreTipoUsuario = req.body.jsonPermisosSobreTipoUsuario;
+  controllerTipoUsuario.create(jsonTipoUsuario, jsonPermisos, jsonPermisosSobreTipoUsuario,
+    function(data) {
     res.send(data);
   });
 });
@@ -44,7 +46,9 @@ router.post("/create", function(req, res) {
 router.put("/update", function(req, res) {
   var jsonTipoUsuario = req.body.jsonTipoUsuario;
   var jsonPermisos = req.body.jsonPermisos;
-  controllerTipoUsuario.update(jsonTipoUsuario, jsonPermisos, function(err, data) {
+  var jsonPermisosSobreTipoUsuario = req.body.jsonPermisosSobreTipoUsuario;
+  controllerTipoUsuario.update(jsonTipoUsuario, jsonPermisos, jsonPermisosSobreTipoUsuario,
+    function(err, data) {
     res.send(data);
   });
 });

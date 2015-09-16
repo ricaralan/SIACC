@@ -45,11 +45,9 @@ block content
 
             p(class="divider")
 
-            p Permisos del sistema
-
             table(class="bordered")
               tr
-                th Permiso
+                th Permiso del sistema
                 th Ver
                 th Crear
                 th Editar
@@ -68,6 +66,35 @@ block content
                 td
                   input(type="checkbox", id="check-moa_eliminar-{{permiso.id_permiso}}", class="checksOpcUsuario", permiso="{{permiso.id_permiso}}")
                   label(for="check-moa_eliminar-{{permiso.id_permiso}}")
+            p(class="divider")
+            div(ng-repeat="tipo in tiposUsuario")
+              .divider
+              table(class="bordered")
+                tr
+                  th Tipo permiso sobre {{tipo.tipo_nombre}}
+                  th Permiso
+                tr
+                  td Ver contraseña
+                  td
+                    input(type="checkbox", id="check_contra{{tipo.id_tipo_usuario}}", class="checks_ver_contrasena")
+                    label(for="check_contra{{tipo.id_tipo_usuario}}")
+                tr
+                  td Ver todos los usuarios
+                  td
+                    input(type="radio", id="radio1_ver_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios1")
+                    label(for="radio1_ver_usuarios{{tipo.id_tipo_usuario}}")
+                tr
+                  td Solo ver usuarios en área a la que pertenece
+                  td
+                    input(type="radio", id="radio2_ver_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios2")
+                    label(for="radio2_ver_usuarios{{tipo.id_tipo_usuario}}")
+                tr
+                  td No ver los usuarios de este tipo
+                  td
+                    input(type="radio", id="radio3_ver_usuarios{{tipo.id_tipo_usuario}}", name="radio_ver_usuarios{{tipo.id_tipo_usuario}}", class="radio_ver_usuarios3")
+                    label(for="radio3_ver_usuarios{{tipo.id_tipo_usuario}}")
+
+
 
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
