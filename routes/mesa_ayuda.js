@@ -137,6 +137,15 @@ router.get("/getUsuariosAtencionMesaAyudaByText/:palabra/:idArea", function(req,
   });
 });
 
+router.get("/test/testGetUsuariosAtencionMesaAyudaByText/:mesaAyuda/:palabra/:idArea/", function(req, res) {
+  userController.testGetUsuariosAtencionMesaAyudaByText(req.params.palabra, req.params.mesaAyuda,req.params.idArea, function(err, data) {
+    console.log(err, data);
+    if(!err) {
+      res.send(data);
+    }
+  });
+});
+
 router.post("/asignarUsuarioMesa/:idUsuario/:idAreaAtiendeMesa", function(req, res) {
   controller.asignarUsuarioMesa(req.params.idUsuario, req.params.idAreaAtiendeMesa, function(err, data) {
     if(!err) {

@@ -14,7 +14,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
   $scope.usuarioDetalle = {};
   $scope.idUsuarioEditar;
   $scope.accionUsuario = "Crear";
-  $scope.definirUsuario = false;
+  $scope.ver_contrasena = false;
   $scope.typeUserPagination = {};
   $scope.usuarioId = 0;
   $scope.socket = io();
@@ -109,7 +109,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
     $("#modalOpcionesUsuario").openModal();
     $scope.formUsuario = $scope.usuarioDetalle;
     $scope.crearUsuario = false;
-    $scope.definirUsuario = false;
+    $scope.ver_contrasena = false;
     $scope.formUsuarioExtra = {
       usu_id_carrera : $scope.usuarioDetalle.usu_id_carrera,
       usu_id_area : $scope.usuarioDetalle.usu_id_area
@@ -152,7 +152,7 @@ SIACCApp.controller("UsuariosController", ["$scope","$http", "multipartForm",
     $("#modalOpcionesUsuario").openModal();
     $scope.cleanFormUsuario();
     $scope.crearUsuario = true;
-    $scope.definirUsuario = false;
+    $scope.ver_contrasena = false;
     $scope.accionUsuario = "Crear";
   };
 

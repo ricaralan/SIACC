@@ -176,7 +176,7 @@ block content
           div(class="modal-footer")
             a(href="#!" class="modal-action modal-close waves-effect btn-flat") Cancelar
             button(class="waves-effect waves-green btn-flat", ng-click="concluirServicio()", id="btnConcliurServicio") Concluír
-    div(style="background-color:#fff;position:absolute;width:100%;height:100%;top:0;display:none;z-index:9999", id="contentFormatServicePrint")
+    div(style="background-color:#fff;position:absolute;min-width:100%;height:100%;top:0;display:none;z-index:9999", id="contentFormatServicePrint")
       i(ng-click="hideFormatService()", class="hidden-print", style="right:0;top:0;padding:5px 10px 5px 10px;background-color:red;color:#fff !important;border-radius:50%;cursor:pointer;position:absolute") x
       div(class="hidden-print")
         a(class="hidden-print btn", style="magin-right:100px",onclick="window.print()", href="#!")

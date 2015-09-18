@@ -104,9 +104,9 @@ block content
                   form(id="formFileUsuario")
                     input(type="file", accept="image/*", file-model="formUsuario.usu_foto")
             p(class="divider")
-            input(type="checkbox", id="check", ng-model="definirUsuario", ng-show="typeUserPagination.ver_contrasena==1")
-            label(for="check", ng-show="typeUserPagination.ver_contrasena==1") Definir usuario
-            table(class="bordered", ng-show="definirUsuario && typeUserPagination.ver_contrasena==1")
+            input(type="checkbox", id="check", ng-model="ver_contrasena", ng-show="typeUserPagination.ver_contrasena==1")
+            label(for="check", ng-show="typeUserPagination.ver_contrasena==1") Ver contraseña
+            table(class="bordered", ng-show="typeUserPagination.ver_contrasena==1")
               tr
                 td
                   div(class="input-field col s6")
@@ -114,7 +114,7 @@ block content
                     label(for="usuario_usuario") Usuario
                 td
                   div(class="input-field col s6")
-                    input(id="usuario_contra", type="password", class="validate", ng-model="formUsuario.usu_contrasena")
+                    input(id="usuario_contra", type="{{ver_contrasena?'text':'password'}}", class="validate", ng-model="formUsuario.usu_contrasena")
                     label(for="usuario_contra") Contraseña
 
             div(class="modal-footer")

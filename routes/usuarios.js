@@ -44,17 +44,21 @@ router.get("/getPermisosUsuario/:idUsuario", function(req, res) {
 });
 
 router.get("/getUsuariosTipoLimit/:idTipoUsuario/:inicio/:rows", function(req, res) {
-  var idTipoUsuario = req.params.idTipoUsuario;
-  var inicio = req.params.inicio;
-  var rows = req.params.rows;
-  controller.getUsuariosTipoLimit(idTipoUsuario, inicio, rows, function(err, usuarios) {
-    if(!err) {
-      usersPasswordsDecipher(usuarios);
-      res.send(usuarios);
-    } else {
-      res.send(null);
-    }
-  });
+  if(req.user) {
+    var idTipoUsuario = req.params.idTipoUsuario;
+    var inicio = req.params.inicio;
+    var rows = req.params.rows;
+    controller.getUsuariosTipoLimit(idTipoUsuario, inicio, rows, function(err, usuarios) {
+      if(!err) {
+        usersPasswordsDecipher(usuarios);
+        res.send(usuarios);
+      } else {
+        res.send(null);
+      }
+    });
+  } else {
+    res.send({error : "user not logged"});
+  }
 });
 
 router.get("/getUsuariosByTextLimit/:text/:inicio/:rows", function(req, res) {
