@@ -122,7 +122,6 @@ router.put("/update", function(req, res) {
 
 router.get("/getUsuariosAtiendenMesa/:mesaAyuda/", function(req, res) {
   userController.getUsuariosAtiendenMesa(req.params.mesaAyuda, function(err, data) {
-    console.log(err);
     if(!err) {
       res.send(data);
     }
@@ -130,17 +129,7 @@ router.get("/getUsuariosAtiendenMesa/:mesaAyuda/", function(req, res) {
 });
 
 router.get("/getUsuariosAtencionMesaAyudaByText/:mesaAyuda/:palabra/:idArea/", function(req, res) {
-  userController.testGetUsuariosAtencionMesaAyudaByText(req.params.palabra, req.params.mesaAyuda,req.params.idArea, function(err, data) {
-    console.log(err, data);
-    if(!err) {
-      res.send(data);
-    }
-  });
-});
-
-router.get("/test/testGetUsuariosAtencionMesaAyudaByText/:mesaAyuda/:palabra/:idArea/", function(req, res) {
-  userController.testGetUsuariosAtencionMesaAyudaByText(req.params.palabra, req.params.mesaAyuda,req.params.idArea, function(err, data) {
-    console.log(err, data);
+  userController.getUsuariosAtencionMesaAyudaByText(req.params.palabra, req.params.mesaAyuda,req.params.idArea, function(err, data) {
     if(!err) {
       res.send(data);
     }

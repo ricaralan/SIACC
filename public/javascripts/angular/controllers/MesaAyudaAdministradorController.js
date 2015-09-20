@@ -61,8 +61,7 @@ SIACCApp.controller("MesaAyudaAdministradorController", ["$scope", "$http", "uti
         $scope.usuarioAtiendenMesa = usuarios;
       });
     } else {
-      //$http.get("/mesa_ayuda/getUsuariosAtencionMesaAyudaByText/"+palabra+"/"+$scope.datosAsignarUsuariosMesa.id_area).success(function(usuarios) {
-      $http.get("/mesa_ayuda/test/testGetUsuariosAtencionMesaAyudaByText/"+$scope.datosAsignarUsuariosMesa.id_mesa_ayuda+"/"+palabra+"/"+$scope.datosAsignarUsuariosMesa.id_area).success(function(usuarios) {
+      $http.get("/mesa_ayuda/getUsuariosAtencionMesaAyudaByText/"+$scope.datosAsignarUsuariosMesa.id_mesa_ayuda+"/"+palabra+"/"+$scope.datosAsignarUsuariosMesa.id_area).success(function(usuarios) {
         $scope.usuarioAtiendenMesa = usuarios;
       });
     }
