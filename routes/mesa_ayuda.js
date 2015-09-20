@@ -129,8 +129,9 @@ router.get("/getUsuariosAtiendenMesa/:mesaAyuda/", function(req, res) {
   });
 });
 
-router.get("/getUsuariosAtencionMesaAyudaByText/:palabra/:idArea", function(req, res) {
-  userController.getUsuariosAtencionMesaAyudaByText(req.params.palabra,req.params.idArea, function(err, data) {
+router.get("/getUsuariosAtencionMesaAyudaByText/:mesaAyuda/:palabra/:idArea/", function(req, res) {
+  userController.testGetUsuariosAtencionMesaAyudaByText(req.params.palabra, req.params.mesaAyuda,req.params.idArea, function(err, data) {
+    console.log(err, data);
     if(!err) {
       res.send(data);
     }

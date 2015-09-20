@@ -44,19 +44,7 @@ UsuariosController.prototype.getUsuariosByTextLimit = function(text, inicio, row
   self.connection.query(query, done);
 };
 
-UsuariosController.prototype.getUsuariosAtencionMesaAyudaByText = function(word, idMesaAyuda, done) {
-  query = "SELECT uam_id_area_atiende_mesa,aam_id_mesa_ayuda,uam_id_area_atiende_mesa,"
-        + "id_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido FROM "
-        + "(((usuario INNER JOIN permiso_asignado ON usu_id_tipo_usuario=moa_id_tipo_usuario"
-        + " AND moa_id_permiso='mesa_ayuda_atencion' AND moa_ver))LEFT JOIN usuario_atiende_mesa "
-        + "ON id_usuario=uam_id_usuario)LEFT JOIN area_atiende_mesa ON uam_id_area_atiende_mesa="
-        + "id_area_atiende_mesa AND aam_id_mesa_ayuda='"+idMesaAyuda+"' WHERE "
-        + " (id_usuario LIKE '%" + word + "%' OR CONCAT_WS(' ',usu_nombre,"
-        + "usu_primer_apellido,usu_segundo_apellido) like '%"+word+"%') limit 0,10;";
-  self.connection.query(query, done);
-}
-
-UsuariosController.prototype.testGetUsuariosAtencionMesaAyudaByText = function(word, idMesaAyuda, idArea, done) {
+UsuariosController.prototype.getUsuariosAtencionMesaAyudaByText = function(word, idMesaAyuda, idArea, done) {
   query = "SELECT uam_id_area_atiende_mesa,aam_id_mesa_ayuda,uam_id_area_atiende_mesa,"
         + "id_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido FROM "
         + "(((usuario INNER JOIN permiso_asignado ON usu_id_tipo_usuario=moa_id_tipo_usuario"
@@ -65,7 +53,16 @@ UsuariosController.prototype.testGetUsuariosAtencionMesaAyudaByText = function(w
         + "id_area_atiende_mesa WHERE usu_id_area="+idArea+" AND (aam_id_mesa_ayuda='"+idMesaAyuda+"' OR aam_id_mesa_ayuda IS NULL) AND"
         + "(id_usuario LIKE '%" + word + "%' OR CONCAT_WS(' ',usu_nombre,"
         + "usu_primer_apellido,usu_segundo_apellido) like '%"+word+"%') limit 0,10;";
-  console.log(query);
+  self.connection.query(query, done);
+}
+
+UsuariosController.prototype.testGetUsuariosAtencionMesaAyudaByText = function(word, idMesaAyuda, idArea, done) {
+  query = "SELECT uam_id_area_atiende_mesa,aam_id_mesa_ayuda,uam_id_area_atiende_mesa,"
+        + "id_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido FROM "
+        + "((area_atiende_mesa INNER JOIN mesa_ayuda ON id_mesa_ayuda=aam_id_mesa_ayuda AND id_mesa_ayuda='"+idMesaAyuda+"')LEFT JOIN usuario ON usu_id_area)LEFT JOIN usuario_atiende_mesa ON uam_id_area_atiende_mesa=id_area_atiende_mesa AND id_usuario=uam_id_usuario"
+        + " WHERE usu_id_area="+idArea+" AND"
+        + "(id_usuario LIKE '%" + word + "%' OR CONCAT_WS(' ',usu_nombre,"
+        + "usu_primer_apellido,usu_segundo_apellido) like '%"+word+"%') limit 0,10;";
   self.connection.query(query, done);
 }
 
