@@ -9,9 +9,11 @@ var self;
 InventariosController.prototype.getInventarioTipoArea = function(idArea, tipoInv, done) {
   query = "SELECT id_resguardo,inv_usar_control_acceso,rin_id_usuario,num_inventario,inv_id_area,inv_tipo,inv_num_maq,"
         + "inv_ram,inv_procesador,inv_vel_procesador,inv_capacidad,inv_no_serie,"
-        + "inv_marca,inv_status,inv_disponibilidad,inv_descripcion FROM inventario "
+        + "inv_marca,inv_status,inv_disponibilidad,inv_descripcion FROM (inventario "
         + "LEFT JOIN resguardo_inventario ON num_inventario=rin_num_inventario AND "
-        + "rin_fecha_fin='0000-00-00 00:00:00' WHERE inv_tipo="+tipoInv+" AND inv_id_area="+idArea;
+        + "rin_fecha_fin='0000-00-00 00:00:00')INNER JOIN historial_inventario_area ON "
+        + "num_inventario=hia_id_inventario AND inv_id_area="+idArea+" "
+        + "AND hia_fecha_fin='0000-00-00 00:00:00' WHERE inv_tipo="+tipoInv+";";
   self.connection.query(query, done);
 };
 
@@ -19,7 +21,7 @@ InventariosController.prototype.getInventarioArea = function(idArea, done) {
   query = "SELECT inv_usar_control_acceso,num_inventario,inv_id_area,inv_tipo,inv_num_maq,"
         + "inv_ram,inv_procesador,inv_vel_procesador,inv_capacidad,inv_no_serie,"
         + "inv_marca,inv_status,inv_disponibilidad,inv_descripcion FROM inventario "
-        + "WHERE inv_id_area="+idArea;
+        + "INNER JOIN historial_inventario_area ON num_inventario=hia_id_inventario AND hia_fecha_fin=='0000-00-00 00:00:00'";
   self.connection.query(query, done);
 };
 InventariosController.prototype.getInventario = function(idInventario, done) {
