@@ -87,4 +87,10 @@ router.delete("/delete/:idInventario", function(req, res) {
   });
 });
 
+router.put("/darBaja/:idInventario", function(req, res) {
+  controller.darBaja(req.params.idInventario, function(err, data) {
+    res.send( { success : !err && data.affectedRows == 1 } );
+  });
+});
+
 module.exports = router;

@@ -135,6 +135,17 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
     }
   };
 
+  $scope.darBajaInventario = function(idInventario) {
+    if(confirm("¿Realmente deseas dar de baja el inventario?")) {
+      $http.put("/inventarios/darBaja/"+idInventario).success(function(data) {
+        if(data.success) {
+          $scope.socket.emit("changeOnInventarios", {});
+          Materialize.toast("Baja exitosa!", 2000);
+        }
+      });
+    }
+  };
+
   $scope.validarFormulario = function() {
     validacion = true;
     if($scope.getTipoInventario($scope.formInventario.inv_tipo).tin_es_computadora) {

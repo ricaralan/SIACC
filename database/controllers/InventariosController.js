@@ -86,5 +86,9 @@ InventariosController.prototype.delete = function(numInventario, done) {
   self.abstractModel.delete(self.table, { num_inventario : numInventario }, done);
 };
 
+InventariosController.prototype.darBaja = function(numInventario, done) {
+  self.connection.query("CALL baja_inventario('"+numInventario+"')", done);
+};
+
 
 module.exports = new InventariosController();

@@ -1,5 +1,7 @@
 /**
 *	PROCEDURE "create_inventario"
+*
+*	@author Alan Olivares
 **/
 DELIMITER |
 
@@ -37,6 +39,8 @@ DELIMITER ;
 
 /**
 *	PROCEDURE "change_location_invetario"
+*
+*	@author Alan Olivares
 **/
 
 DELIMITER |
@@ -65,6 +69,8 @@ DELIMITER ;
 
 /**
 *	PROCEDURE "BAJA_INVENTARIO"
+*
+*	@author Alan Olivares
 **/
 
 DELIMITER |

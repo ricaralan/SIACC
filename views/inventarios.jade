@@ -69,7 +69,7 @@ block content
                   br
                   button(class="btn white-text waves-effect blue", ng-click="setDatosEditarInventario(inventario)",ng-show="permisos.inventarios.editar==1") EDITAR
                   button(class="btn white-text red waves-effect", ng-click="eliminarInventario(inventario.num_inventario)",ng-show="permisos.inventarios.eliminar==1") ELIMINAR
-                  button(class="btn waves-effect yellow", ng-click="setInventario(area.id_area)",ng-show="permisos.inventarios.editar==1") Dar de baja
+                  button(class="btn waves-effect yellow", ng-show="permisos.inventarios.editar==1", ng-click="darBajaInventario(inventario.num_inventario)") Dar de baja
         // MODAL INVENTARIO
         div(id="modalOpcionesInventarios" class="modal", style="z-index:9999;")
           div(class="modal-content", style="z-index:9999;")
