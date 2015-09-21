@@ -15,8 +15,23 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
   $scope.opcAccion;
   $scope.idMateriaEditar;
   $scope.materias = [];
+  $scope.carreras = [];
   $scope.materiasUsuario = [];
   $scope.idUsuario;
+
+  $scope.getCarreras = function() {
+    $http.get("/carreras/getCarreras/").success(function(carreras) {
+      $scope.carreras = carreras;
+    });
+  };
+
+  $scope.getCarreraById = function(idCarrera) {
+    for(var i = 0; i < $scope.carreras.length; i++) {
+      if($scope.carreras[i].id_carrera === idCarrera) {
+        return $scope.carreras[i];
+      }
+    }
+  };
 
   $scope.getMaterias = function() {
     $http.get("/materias/getMaterias/"+$scope.inicioMaterias+"/"+$scope.numRowsMaterias)
@@ -72,7 +87,7 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
     for(var i = 0; i <= parseInt(countMaterias/$scope.numRowsMaterias); i++) {
       pagination[i] = {
         number : i + 1,
-        selected : (i * $scope.numRowsMaterias) == $scope.inicioMaterias,
+        selected : (i * $scope.numRowsMaterias) === $scope.inicioMaterias,
         paginate : function() {
           $scope.inicioMaterias = (this.number - 1) * $scope.numRowsMaterias;
           callbackPaginate();
@@ -103,7 +118,7 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
     if($scope.validarCampos()) {
       $http.get("/materias/getMateria/"+$scope.formMateria.id_materia)
       .success(function(materia) {
-        if(materia.length == 0 || (materia[0].id_materia == $scope.idMateriaEditar)){
+        if(materia.length === 0 || (materia[0].id_materia === $scope.idMateriaEditar)){
           if($scope.crearMateria) {
             $http.post("/materias/create", {
               jsonData : $scope.formMateria

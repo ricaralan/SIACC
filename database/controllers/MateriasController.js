@@ -7,14 +7,14 @@ var MateriasController = function() {
 var self;
 
 MateriasController.prototype.getMateria = function(idMateria, callback) {
-  self.abstractModel.select(self.table, ["id_materia", "mat_nombre", "mat_descripcion"], {id_materia : idMateria}, callback);
+  self.abstractModel.select(self.table, ["id_materia", "mat_id_carrera", "mat_nombre", "mat_descripcion"], {id_materia : idMateria}, callback);
 };
 
 MateriasController.prototype.getMateriasLimit = function(inicio, numRows, callback) {
   query = "SELECT COUNT(id_materia) countMaterias FROM materia";
   self.connection.query(query, function(err, countMaterias) {
     if(!err) {
-      query = "select id_materia, mat_nombre, mat_descripcion from materia limit "+inicio+", "+numRows+";";
+      query = "select id_materia, mat_id_carrera, mat_nombre, mat_descripcion from materia limit "+inicio+", "+numRows+";";
       self.connection.query(query, function(err, materiasLimit) {
         callback(err, {
           countMaterias : countMaterias[0].countMaterias,
@@ -61,7 +61,7 @@ MateriasController.prototype.getMateriasLimitByText = function(text, inicio, num
 };
 
 MateriasController.prototype.getMateriasUsuarioLimitByText = function(text,idUsuario,inicio,numRows,callback) {
-  query = "SELECT id_materia, mat_nombre, mat_descripcion, uma_fecha_inicio, uma_fecha_fin, uma_id_usuario id_usuario "
+  query = "SELECT id_materia, mat_id_carrera, mat_nombre, mat_descripcion, uma_fecha_inicio, uma_fecha_fin, uma_id_usuario id_usuario "
         + "FROM materia LEFT JOIN usuario_materia on uma_id_materia=id_materia and uma_id_usuario='"+idUsuario+"' "
         + "WHERE id_materia LIKE '%"+text+"%' OR mat_nombre LIKE '%"+text+"%' LIMIT "+inicio+", "+numRows+";";
   self.connection.query(query, callback);

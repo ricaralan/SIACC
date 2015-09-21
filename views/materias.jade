@@ -11,8 +11,13 @@ block content
         // MODAL OPCION MATERIAS
         div(id="modalOpcionesMaterias" class="modal")
           div(class="modal-content")
-            h4 {{opcionMateria}} área
+            h4 {{opcionMateria}} materia
             table
+              tr(ng-init="getCarreras()")
+                td
+                  select(class="browser-default", ng-model="formMateria.mat_id_carrera")
+                    option(value="") Carrera de la materia
+                    option(ng-repeat="carrera in carreras", value="{{carrera.id_carrera}}") {{carrera.car_nombre}}
               tr
                 td
                   div(class="input-field col s6")
@@ -40,6 +45,7 @@ block content
         table(class="bordered",ng-show="permisos.asignacion_materias.ver==1")
           tr
             th NRC
+            th Carrera
             th Nombre
             th Descripción
             th
@@ -47,6 +53,7 @@ block content
             td(colspan="4") No hay materias asignadas
           tr(ng-repeat="materia in materias")
             td {{materia.id_materia}}
+            td {{getCarreraById(materia.mat_id_carrera).car_nombre}}
             td {{materia.mat_nombre}}
             td {{materia.mat_descripcion}}
             td

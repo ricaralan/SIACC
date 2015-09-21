@@ -123,8 +123,10 @@
   CREATE TABLE materia(
     /* id_materia == NRC */
     id_materia VARCHAR(10) NOT NULL PRIMARY KEY,
+    mat_id_carrera INT NOT NULL,
     mat_nombre VARCHAR(40) NOT NULL,
-    mat_descripcion VARCHAR(200)
+    mat_descripcion VARCHAR(200),
+    FOREIGN KEY(mat_id_carrera) REFERENCES carrera(id_carrera)
   );
 
   /**
