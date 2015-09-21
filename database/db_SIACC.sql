@@ -190,6 +190,7 @@
   inv_marca VARCHAR(30),
   inv_status TINYINT NOT NULL DEFAULT 1,
   inv_disponibilidad BOOLEAN DEFAULT TRUE,
+  inv_baja BOOLEAN DEFAULT FALSE,
   inv_descripcion VARCHAR(200),
   FOREIGN KEY(inv_id_area) REFERENCES area(id_area),
   FOREIGN KEY(inv_tipo) REFERENCES tipo_inventario(id_tipo_inventario)

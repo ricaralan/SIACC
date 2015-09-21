@@ -43,12 +43,44 @@ DELIMITER |
 CREATE PROCEDURE change_location_inventario(IN id_inventario VARCHAR(15), IN id_destination_area INT)
 BEGIN
 
+	/**
+	*	UPDATE LOCATION AREA
+	*/
 	UPDATE inventario SET inv_id_area=id_destination_area WHERE num_inventario=id_inventario;
 
-	UPDATE historial_inventario_area SET hia_fecha_fin=CURRENT_TIMESTAMP WHERE hia_id_inventario=id_inventario;
+	/**
+	*	UPDATE LAST HISTORY "INVENTARIO"
+	*/
+	UPDATE historial_inventario_area SET hia_fecha_fin=CURRENT_TIMESTAMP WHERE hia_id_inventario=id_inventario AND hia_fecha_fin="0000-00-00 00:00:00";
 
+	/**
+	*	CREATE ACTUAL HISTORY "INVENTARIO"
+	*/
 	INSERT INTO historial_inventario_area(hia_id_inventario,hia_id_area)
 	VALUES(id_inventario, id_destination_area);
+
+END |
+
+DELIMITER ;
+
+/**
+*	PROCEDURE "BAJA_INVENTARIO"
+**/
+
+DELIMITER |
+
+CREATE PROCEDURE baja_inventario(IN id_inventario VARCHAR(30))
+BEGIN
+
+	/**
+	*	SET "baja inventario" true
+	*/
+	UPDATE inventario SET inv_baja=true WHERE num_inventario=id_inventario;
+
+	/**
+	*	UPDATE LAST HISTORY "inventario"
+	*/
+	UPDATE historial_inventario_area SET hia_fecha_fin=CURRENT_TIMESTAMP WHERE hia_id_inventario=id_inventario AND hia_fecha_fin="0000-00-00 00:00:00";
 
 END |
 
