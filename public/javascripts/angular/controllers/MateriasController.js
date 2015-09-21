@@ -49,7 +49,9 @@ SIACCApp.controller("MateriasController", ["$scope", "$http", "$timeout", "util"
     }
     $http.get("/materias/getMateriasUsuario/" + $scope.idUsuario + "/" + $scope.inicioMateriasUsuario
       +"/"+$scope.numRowsMaterias).success(function(dataMaterias) {
-        $scope.materiasUsuario = dataMaterias.materias;
+        $timeout(function() {
+          $scope.materiasUsuario = dataMaterias.materias;
+        },0);
         $scope.initPaginationMaterias(dataMaterias.countMaterias, $scope.getMateriasUsuario);
     });
   };

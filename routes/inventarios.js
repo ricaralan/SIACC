@@ -65,6 +65,7 @@ router.post("/createResguardo/:idInventario/:idUsuario", function(req, res) {
 router.post("/create", function(req, res) {
   if(req.body.jsonInventario && req.body.jsonInventario.num_inventario) {
     controller.getInventario(req.body.jsonInventario.num_inventario, function(err, inventario) {
+      console.log(err, inventario);
       controller.create(req.body.jsonInventario, function(err, data) {
         res.send( { success : !err && data.affectedRows == 1 , existInv : inventario.length>0} );
       });

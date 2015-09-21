@@ -192,6 +192,7 @@ block content
               table(class="bordered")
                 tr
                   th NRC
+                  th Carrera
                   th Materia
                   th Descripción
                   th
@@ -202,6 +203,7 @@ block content
                     a(href="#!", class="btn waves-effect white-text", ng-click="crearMateria=true;formMateria.id_materia=wordSearchMatUser;formMateria.mat_nombre=wordSearchMatUser;") Crear {{wordSearchMatUser}}
                 tr(ng-repeat="materia in materiasUsuario")
                   td {{materia.id_materia}}
+                  td {{getCarreraById(materia.mat_id_carrera).car_nombre}}
                   td {{materia.mat_nombre}}
                   td {{materia.mat_descripcion}}
                   td
@@ -214,6 +216,11 @@ block content
                   a(href="#!") {{pag.number}}
             div(ng-show="crearMateria")
               table
+                tr(ng-init="getCarreras()")
+                td
+                  select(class="browser-default", ng-model="formMateria.mat_id_carrera")
+                    option(value="") Elije la carrera de la materia
+                    option(ng-repeat="carrera in carreras", value="{{carrera.id_carrera}}") {{carrera.car_nombre}}
                 tr
                   td
                     div(class="input-field col s6")

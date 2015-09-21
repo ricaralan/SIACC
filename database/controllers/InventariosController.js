@@ -31,7 +31,23 @@ InventariosController.prototype.getInventario = function(idInventario, done) {
 };
 
 InventariosController.prototype.create = function(jsonData, done) {
-  self.abstractModel.insert(self.table, jsonData, done);
+  query = "CALL create_inventario('"
+        + jsonData.num_inventario+"'"
+        + "," +jsonData.inv_id_area
+        + "," +jsonData.inv_tipo
+        + "," +jsonData.inv_usar_control_acceso
+        + "," +jsonData.inv_num_maq
+        + "," +jsonData.inv_ram
+        + ",'"+jsonData.inv_procesador+"'"
+        + "," +jsonData.inv_vel_procesador
+        + "," +jsonData.inv_capacidad
+        + ",'"+jsonData.inv_no_serie+"'"
+        + ",'"+jsonData.inv_marca+"'"
+        + ",'"+jsonData.inv_status+"'"
+        + ",'"+jsonData.inv_descripcion+"'"
+        + ")";
+console.log(query);
+  self.connection.query(query, done);
 };
 
 InventariosController.prototype.update = function(jsonData, numInventario, done) {

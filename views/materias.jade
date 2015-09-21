@@ -16,7 +16,7 @@ block content
               tr(ng-init="getCarreras()")
                 td
                   select(class="browser-default", ng-model="formMateria.mat_id_carrera")
-                    option(value="") Carrera de la materia
+                    option(value="") Elije la carrera de la materia
                     option(ng-repeat="carrera in carreras", value="{{carrera.id_carrera}}") {{carrera.car_nombre}}
               tr
                 td
@@ -49,8 +49,8 @@ block content
             th Nombre
             th Descripción
             th
-          tr(ng-show="materiasUsuario.length==0")
-            td(colspan="4") No hay materias asignadas
+          tr(ng-show="materias.length === 0")
+            td(colspan="5") No hay materias asignadas
           tr(ng-repeat="materia in materias")
             td {{materia.id_materia}}
             td {{getCarreraById(materia.mat_id_carrera).car_nombre}}
