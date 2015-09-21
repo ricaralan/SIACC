@@ -18,7 +18,10 @@ CREATE PROCEDURE create_inventario(
 BEGIN
 
 	INSERT INTO inventario(num_inventario,inv_id_area,inv_tipo,inv_usar_control_acceso,inv_num_maq,inv_ram,inv_procesador,inv_vel_procesador,inv_capacidad,inv_no_serie,inv_marca,inv_status,inv_descripcion)
-	VALUES(num_inventario,tipo_inventario,id_area,usar_control_acceso,num_maq,ram,procesador,vel_procesador,capacidad,no_serie,marca,status,descripcion);
+	VALUES(num_inventario,id_area,tipo_inventario,usar_control_acceso,num_maq,ram,procesador,vel_procesador,capacidad,no_serie,marca,status,descripcion);
+
+	INSERT INTO historial_inventario_area(hia_id_inventario,hia_id_area)
+	VALUES(num_inventario, id_area);
 
 END |
 

@@ -31,24 +31,35 @@ InventariosController.prototype.getInventario = function(idInventario, done) {
 };
 
 InventariosController.prototype.create = function(jsonData, done) {
-  query = "CALL create_inventario('"
-        + jsonData.num_inventario+"'"
-        + "," +jsonData.inv_id_area
-        + "," +jsonData.inv_tipo
-        + "," +jsonData.inv_usar_control_acceso
-        + "," +jsonData.inv_num_maq
-        + "," +jsonData.inv_ram
-        + ",'"+jsonData.inv_procesador+"'"
-        + "," +jsonData.inv_vel_procesador
-        + "," +jsonData.inv_capacidad
-        + ",'"+jsonData.inv_no_serie+"'"
-        + ",'"+jsonData.inv_marca+"'"
-        + ",'"+jsonData.inv_status+"'"
-        + ",'"+jsonData.inv_descripcion+"'"
+  query = "CALL create_inventario("
+        + getStringOrNull(jsonData.num_inventario)
+        + ","+getStringOrNull(jsonData.inv_id_area)
+        + ","+getStringOrNull(jsonData.inv_tipo)
+        + ","+getStringOrNull(jsonData.inv_usar_control_acceso)
+        + ","+getStringOrNull(jsonData.inv_num_maq)
+        + ","+getStringOrNull(jsonData.inv_ram)
+        + ","+getStringOrNull(jsonData.inv_procesador)
+        + ","+getStringOrNull(jsonData.inv_vel_procesador)
+        + ","+getStringOrNull(jsonData.inv_capacidad)
+        + ","+getStringOrNull(jsonData.inv_no_serie)
+        + ","+getStringOrNull(jsonData.inv_marca)
+        + ","+getStringOrNull(jsonData.inv_status)
+        + ","+getStringOrNull(jsonData.inv_descripcion)
         + ")";
-console.log(query);
   self.connection.query(query, done);
 };
+
+/**
+* 
+* @return null if value is undefined
+**/
+function getStringOrNull(value) {
+  if(!value) {
+    value = null;
+  }
+  return (value !== null &&
+          typeof value === "string")?"'"+value+"'":value;
+}
 
 InventariosController.prototype.update = function(jsonData, numInventario, done) {
   self.abstractModel.update(self.table, {
