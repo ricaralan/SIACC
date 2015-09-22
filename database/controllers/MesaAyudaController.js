@@ -75,7 +75,6 @@ MesaAyudaController.prototype.getServiciosSolicitadosEnProceso = function(idUsua
         + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=aam_id_area)"
         + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio AND (area_atiende_mesa.aam_finalizo=0 OR area_atiende_mesa.aam_finalizo IS NULL) WHERE "
         + "mes_id_usuario='"+idUsuario+"';";
-        console.log("Query 1:\n"+query+"\n");
   self.connection.query(query, done);
 };
 
@@ -88,7 +87,6 @@ MesaAyudaController.prototype.getServiciosSolicitadosSolucionados = function(idU
         + "LEFT JOIN usuario ON mes_id_usuario=id_usuario)LEFT JOIN area ON id_area=mes_id_area)"
         + "INNER JOIN tipo_servicio ON id_tipo_servicio=mes_id_tipo_servicio WHERE area_atiende_mesa.aam_finalizo=1 "
         + "AND mes_id_usuario='"+idUsuario+"';";
-        console.log("Query 2:\n"+query+"\n");
   self.connection.query(query, done);
 };
 

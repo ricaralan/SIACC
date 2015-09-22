@@ -2,11 +2,22 @@ var express = require("express");
 var router = express.Router();
 var controller = require("../database/controllers/MesaAyudaController");
 var userController = require("../database/controllers/UsuariosController");
+var permisoController = require("../database/controllers/PermisosController");
 var generatedId = require("../util/generateId/");
 
 router.get("/solicitante", function(req, res) {
-  if(req.user != null) {
-    res.render("mesa_ayuda_solicitante", {title : "SIACC"});
+  if(req.user) {
+    permisoController.getPermisoTipoUsuario(req.user.usu_id_tipo_usuario,
+      "mesa_ayuda_solicitante", function(err, permiso) {
+        if(!err && permiso && permiso[0].moa_ver==1) {
+          res.render('mesa_ayuda_solicitante', {title: 'SIACC'});
+        } else {
+          console.log(err);
+          res.render("sin_permiso_vista", {title:"No tienes permisos para ver esto - SIACC"});
+        }
+    });
+  } else {
+    res.render("login", {title:"login"});
   }
 });
 
