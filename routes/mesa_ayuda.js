@@ -22,8 +22,18 @@ router.get("/solicitante", function(req, res) {
 });
 
 router.get("/atender", function(req, res) {
-  if(req.user != null) {
-    res.render("mesa_ayuda_atender", {title : "SIACC"});
+  if(req.user) {
+    permisoController.getPermisoTipoUsuario(req.user.usu_id_tipo_usuario,
+      "mesa_ayuda_atencion", function(err, permiso) {
+        if(!err && permiso && permiso[0].moa_ver==1) {
+          res.render('mesa_ayuda_atender', {title: 'SIACC'});
+        } else {
+          console.log(err);
+          res.render("sin_permiso_vista", {title:"No tienes permisos para ver esto - SIACC"});
+        }
+    });
+  } else {
+    res.render("login", {title:"login"});
   }
 });
 
