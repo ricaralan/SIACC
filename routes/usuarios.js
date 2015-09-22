@@ -203,8 +203,10 @@ router.get("/getTypesUser", function(req, res) {
 
 function usersPasswordsDecipher(usuarios) {
   for(var i = 0; i < usuarios.length; i++) {
-    usuarios[i].usu_usuario = encriptacion.decipher(usuarios[i].usu_usuario);
-    usuarios[i].usu_contrasena = encriptacion.decipher(usuarios[i].usu_contrasena);
+    if(usuarios[i].usu_usuario && usuarios[i].usu_contrasena) {
+      usuarios[i].usu_usuario = encriptacion.decipher(usuarios[i].usu_usuario);
+      usuarios[i].usu_contrasena = encriptacion.decipher(usuarios[i].usu_contrasena);
+    }
   }
 };
 
