@@ -212,12 +212,30 @@ block content
                     td {{inventario.inv_marca}}
                 p(class="green-text") RESGUARDO DE INVENTARIO
                   button(class="btn white-text waves-effect", ng-click="opcResguardo(inventario.num_inventario,inventario.id_resguardo)") {{inventario.id_resguardo != null?"FINALIZAR RESGUARDO":"INICIAR RESGUARDO"}}
+                p(class="green-text",ng-show="permisos.inventarios.editar==1 || permisos.inventarios.eliminar==1") CAMBIAR DE ÁREA
+                  br
+                  button(class="btn white-text waves-effect", ng-click="openModalCambiarArea(inventario.num_inventario, inventario.inv_id_area)") Cambiar de Área
                 p(class="red-text", ng-show="permisos.inventarios.editar==1 || permisos.inventarios.eliminar==1") ZONA DE PELIGRO
                   br
                   button(class="btn white-text waves-effect blue", ng-click="setDatosEditarInventario(inventario)", ng-show="permisos.inventarios.editar==1") EDITAR
                   button(class="btn white-text red waves-effect", ng-click="eliminarInventario(inventario.num_inventario)", ng-show="permisos.inventarios.eliminar==1") ELIMINAR
                   button(class="btn waves-effect yellow", ng-show="permisos.inventarios.editar==1", ng-click="darBajaInventario(inventario.num_inventario)") Dar de baja
 
+        div(id="modalCambiarArea" class="modal", style="z-index:9999;")
+          div(class="modal-content", style="z-index:9999;")
+            h3 Cambiar {{dataCambiarArea.id_inventario}} de área
+            table(class="bordered")
+              tr
+                th Actual
+                th Destino
+              tr
+                td {{getAreaById(dataCambiarArea.id_area).are_nombre}}
+                td
+                  select(class="browser-default", ng-model="dataCambiarArea.idAreaChange")
+                    option(value="") Elige el área de destino
+                    option(ng-repeat="area in areas", ng-show="area.id_area!==dataCambiarArea.id_area", value="{{area.id_area}}") {{area.are_nombre}}
+            button(class="btn white-text waves-effect right", ng-click="cambiarInventarioArea()") Hacer cambio
+            
     div(style="position:fixed;background-color:rgba(0,0,0,.6);width:100%;height:100%;top:0;left:0;z-index:9999;overflow:hidden", id="contentControlAcceso", hidden, ng-controller="ControlAccesoController")
       div(style="position:relative;width:80%;margin-left:10%;background-color:#fff;padding:10px;margin-top:20px;")
         i(onclick="document.getElementById('contentControlAcceso').setAttribute('hidden','');document.getElementsByTagName('body')[0].style.overflow='auto';",class="material-icons prefix",style="position:absolute;right:0;padding:5px;cursor:pointer;") close
@@ -297,6 +315,11 @@ block content
                   p Equipo No. {{datosInventarioAcceso.inv_num_maq}}
 
             button(class="btn waves-effect right white-text", ng-show="idUsuarioAcceso!=null", ng-click="opcionAcceso()") REGISTRAR {{registrarAccesoBoolean?"ACCESO":"SALIDA"}}
+
+
+
+
+
   script(src="/socket.io/socket.io.js")
   script(src="/javascripts/angular/directives/appForUsers.js")
   script(src="/javascripts/angular/services/util.js")

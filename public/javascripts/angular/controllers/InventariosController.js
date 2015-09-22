@@ -265,6 +265,7 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
   };
 
   $scope.getTiposInventario();
+  $scope.getAreas();
 
 
   /**
