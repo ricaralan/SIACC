@@ -10,6 +10,7 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
   $scope.opcAccion;
   $scope.tipoInventarioActual;
   $scope.numInventarioEditar;
+  $scope.dataCambiarArea = {};
   $scope.crearInventario;
   $scope.findUsuarios = [];
   $scope.resguardo = {};
@@ -20,6 +21,15 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
     $http.get("/areas/getAreas").success(function(areas) {
       $scope.areas = areas;
     });
+  };
+
+  $scope.getAreaById = function(idArea) {
+    for(var i = 0; i < $scope.areas.length; i++) {
+      if($scope.areas[i].id_area === idArea) {
+        return $scope.areas[i];
+      }
+    }
+    return null;
   };
 
   $scope.setArea = function(idArea) {
@@ -232,6 +242,25 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
   $scope.getDataResguardo = function(idResguardo) {
     $http.get("/inventarios/getDataResguardo/"+idResguardo).success(function(resguardo) {
       $scope.dataResguardo = resguardo;
+    });
+  };
+
+  $scope.openModalCambiarArea = function(idInventario, idArea) {
+    $scope.dataCambiarArea.id_area = idArea;
+    $scope.dataCambiarArea.id_inventario = idInventario;
+    $("#modalCambiarArea").openModal();
+  };
+
+  $scope.cambiarInventarioArea = function() {
+    URL = "/inventarios/changeArea/"+$scope.dataCambiarArea.id_inventario
+        + "/"+$scope.dataCambiarArea.idAreaChange
+    $http.post(URL).success(function(data) {
+      if(data.success) {
+        $scope.socket.emit("changeOnInventarios", {});
+        Materialize.toast("Cambio de área exitoso!", 2000);
+        $scope.dataCambiarArea = {};
+        $("#modalCambiarArea").closeModal();
+      }
     });
   };
 

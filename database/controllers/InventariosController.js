@@ -90,5 +90,11 @@ InventariosController.prototype.darBaja = function(numInventario, done) {
   self.connection.query("CALL baja_inventario('"+numInventario+"')", done);
 };
 
+InventariosController.prototype.changeArea = function(numInventario, idAreaDestino, done) {
+  query = "CALL change_location_inventario('"
+          + numInventario + "',"
+          + idAreaDestino +")";
+  self.connection.query(query, done);
+}
 
 module.exports = new InventariosController();

@@ -65,7 +65,6 @@ router.post("/createResguardo/:idInventario/:idUsuario", function(req, res) {
 router.post("/create", function(req, res) {
   if(req.body.jsonInventario && req.body.jsonInventario.num_inventario) {
     controller.getInventario(req.body.jsonInventario.num_inventario, function(err, inventario) {
-      console.log(err, inventario);
       controller.create(req.body.jsonInventario, function(err, data) {
         res.send( { success : !err && data.affectedRows == 1 , existInv : inventario.length>0} );
       });
@@ -90,6 +89,13 @@ router.delete("/delete/:idInventario", function(req, res) {
 router.put("/darBaja/:idInventario", function(req, res) {
   controller.darBaja(req.params.idInventario, function(err, data) {
     res.send( { success : !err && data.affectedRows == 1 } );
+  });
+});
+
+router.post("/changeArea/:idInventario/:idAreaDestino", function(req, res) {
+  controller.changeArea(req.params.idInventario,
+        req.params.idAreaDestino, function(err, data) {
+      res.send( { success : !err && data.affectedRows == 1 } );
   });
 });
 

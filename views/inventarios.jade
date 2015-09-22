@@ -65,6 +65,9 @@ block content
                     td {{inventario.inv_marca}}
                 p(class="green-text") RESGUARDO DE INVENTARIO
                   button(class="btn white-text waves-effect", ng-click="opcResguardo(inventario.num_inventario,inventario.id_resguardo)") {{inventario.id_resguardo != null?"FINALIZAR RESGUARDO":"INICIAR RESGUARDO"}}
+                p(class="green-text",ng-show="permisos.inventarios.editar==1 || permisos.inventarios.eliminar==1") CAMBIAR DE ÁREA
+                  br
+                  button(class="btn white-text waves-effect", ng-click="openModalCambiarArea(inventario.num_inventario, inventario.inv_id_area)") Cambiar de Área
                 p(class="red-text",ng-show="permisos.inventarios.editar==1 || permisos.inventarios.eliminar==1") ZONA DE PELIGRO
                   br
                   button(class="btn white-text waves-effect blue", ng-click="setDatosEditarInventario(inventario)",ng-show="permisos.inventarios.editar==1") EDITAR
@@ -162,6 +165,22 @@ block content
                   td No. Inventario reguardado
                   td  {{dataResguardo.num_inventario}}
             button(class="btn waves-effect white-text right", ng-show="usuarioResguardo || resguardo.id_resguardo", ng-click="resguardar()") {{(resguardo.id_resguardo)?"FINALIZAR":"INICIAR"}} RESGUARDO
+
+
+        div(id="modalCambiarArea" class="modal")
+          div(class="modal-content")
+            h3 Cambiar {{dataCambiarArea.id_inventario}} de área
+            table(class="bordered")
+              tr
+                th Actual
+                th Destino
+              tr
+                td {{getAreaById(dataCambiarArea.id_area).are_nombre}}
+                td
+                  select(class="browser-default", ng-model="dataCambiarArea.idAreaChange")
+                    option(ng-repeat="area in areas", ng-show="area.id_area!==dataCambiarArea.id_area", value="{{area.id_area}}") {{area.are_nombre}}
+            button(class="btn white-text waves-effect right", ng-click="cambiarInventarioArea()") Hacer cambio
+
 
   script(src="/javascripts/angular/directives/appForUsers.js")
   script(src="/socket.io/socket.io.js")
