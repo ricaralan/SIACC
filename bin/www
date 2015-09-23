@@ -4,13 +4,21 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('SIACC:server');
-var http = require('http');
+var app   = require('../app');
+    debug = require('debug')('SIACC:server'),
+    http  = require('http'),
+    https  = require('https'),
+    fs   = require('fs');
 
 /**
  * Get port from environment and store in Express.
  */
+
+ var options = {
+   key  : fs.readFileSync("./bin/cert/key.pem"),
+   cert : fs.readFileSync("./bin/cert/cert.pem"),
+   ca   : fs.readFileSync("./bin/cert/key-csr.pem")
+ };
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -18,8 +26,8 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
-var server = http.createServer(app);
+//var server = http.createServer(app);
+var server = https.createServer(options, app);
 require("./SIACCSockets")(server);
 
 /**
