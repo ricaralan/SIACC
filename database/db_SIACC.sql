@@ -4,9 +4,9 @@
 
   use db_siacc2;
   /**
-
   * Modulos del sistema: El contenido de esta tabla estará por defecto en la instalación
   * del sistema para que no afecten el funcionamiento del mismo...
+  *
   * Ejemplos de modulos:
   * - Control de usuarios
   * - Control de inventarios

@@ -1,4 +1,4 @@
-SIACCApp.controller("ReportsController", ["$scope", "$http", "util", function($scope, $http, util) {
+SIACCApp.controller("ReporteAccesosController", ["$scope", "$http", "util", function($scope, $http, util) {
 
   $scope.dataReport = {};
   $scope.areas = [];

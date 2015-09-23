@@ -3,8 +3,12 @@ var express = require("express"),
     controller = require("./../database/controllers/ReportsController");
 
 
-router.get('/acceso_area', function(req, res, next) {
-  res.render('reports/accesos', { title: 'Reports - SIACC' });
+router.get('/acceso_area', function(req, res) {
+  res.render('reports/accesos', { title: 'Reportes accesos - SIACC' });
+});
+
+router.get("/mesa_ayuda", function(req, res) {
+  res.render("reports/mesa_ayuda", { title:"Reportes mesa de ayuda - SIACC" });
 });
 
 router.get("/get/acceso_area/:idArea/:tipoAcceso/:f1/:f2", function(req, res) {
