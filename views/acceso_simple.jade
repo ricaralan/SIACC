@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  div(class="progress", id="loadPage")
+      div(class="indeterminate")
+  div(ng-app="SIACCApp")
+    app-for-users
+      div(id="contentApp", hidden)
+        h3 Bienvenido
+
+  script(src="/javascripts/angular/directives/appForUsers.js")

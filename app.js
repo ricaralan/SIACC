@@ -23,6 +23,7 @@ var inventarios = require('./routes/inventarios');
 var acceso_area = require('./routes/acceso_area');
 var tipo_servicio = require('./routes/tipo_servicio');
 var mesa_ayuda = require('./routes/mesa_ayuda');
+var accesos = require('./routes/accesos');
 var reports = require('./routes/reports');
 
 var app = express();
@@ -61,6 +62,7 @@ app.use('/inventarios', inventarios);
 app.use('/acceso_area', acceso_area);
 app.use('/tipo_servicio', tipo_servicio);
 app.use('/mesa_ayuda', mesa_ayuda);
+app.use('/accesos', accesos);
 app.use('/reports', reports);
 
 app.post("/auth/login", passport.authenticate("local"), function(req, res) {
