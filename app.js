@@ -6,25 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressSession = require("express-session");
 var multer = require("multer");
+var generateId = require("./util/generateId");
 
 var passport = require('./auth');
-var routes = require('./routes/index');
-var usuarios = require('./routes/usuarios');
-var login = require('./routes/login');
-var permisos = require('./routes/permisos');
-var tipo_area = require('./routes/tipo_area');
-var tipo_usuario = require('./routes/tipo_usuario');
-var areas = require('./routes/areas');
-var carreras = require('./routes/carreras');
-var horarios = require('./routes/horarios');
-var materias = require('./routes/materias');
-var tipo_inventario = require('./routes/tipo_inventario');
-var inventarios = require('./routes/inventarios');
-var acceso_area = require('./routes/acceso_area');
-var tipo_servicio = require('./routes/tipo_servicio');
-var mesa_ayuda = require('./routes/mesa_ayuda');
-var accesos = require('./routes/accesos');
-var reports = require('./routes/reports');
 
 var app = express();
 
@@ -42,28 +26,28 @@ app.use(bodyParser({ uploadDir: __dirname + "public/images/temp" }));
 app.use(multer({dest:"public/images/temp"}));
 
 app.use(cookieParser());
-app.use(expressSession({secret:'@1[[de+WEDLN23EOIEFSIACC_*-*[*]]]'}));
+app.use(expressSession({secret:'@23[['+generateId.generate(1024)+'SIACC_*-*[*]]]'}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/usuarios', usuarios);
-app.use('/login', login);
-app.use('/permisos', permisos);
-app.use('/tipoArea', tipo_area);
-app.use('/tipo_usuario', tipo_usuario);
-app.use('/areas', areas);
-app.use('/carreras', carreras);
-app.use('/horarios', horarios);
-app.use('/materias', materias);
-app.use('/tipo_inventario', tipo_inventario);
-app.use('/inventarios', inventarios);
-app.use('/acceso_area', acceso_area);
-app.use('/tipo_servicio', tipo_servicio);
-app.use('/mesa_ayuda', mesa_ayuda);
-app.use('/accesos', accesos);
-app.use('/reports', reports);
+app.use('/', require('./routes/index'));
+app.use('/usuarios', require('./routes/usuarios'));
+app.use('/login', require('./routes/login'));
+app.use('/permisos', require('./routes/permisos'));
+app.use('/tipoArea', require('./routes/tipo_area'));
+app.use('/tipo_usuario', require('./routes/tipo_usuario'));
+app.use('/areas', require('./routes/areas'));
+app.use('/carreras', require('./routes/carreras'));
+app.use('/horarios', require('./routes/horarios'));
+app.use('/materias', require('./routes/materias'));
+app.use('/tipo_inventario', require('./routes/tipo_inventario'));
+app.use('/inventarios', require('./routes/inventarios'));
+app.use('/acceso_area', require('./routes/acceso_area'));
+app.use('/tipo_servicio', require('./routes/tipo_servicio'));
+app.use('/mesa_ayuda', require('./routes/mesa_ayuda'));
+app.use('/accesos', require('./routes/accesos'));
+app.use('/reports', require('./routes/reports'));
 
 app.post("/auth/login", passport.authenticate("local"), function(req, res) {
     loginSuccess = true;
@@ -78,7 +62,8 @@ app.post("/auth/login", passport.authenticate("local"), function(req, res) {
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  //next(err);
+  res.send("404 page not found");
 });
 
 // error handlers
