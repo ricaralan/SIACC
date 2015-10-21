@@ -27,8 +27,8 @@ app.set('port', port);
  * Create HTTP server.
  */
  
-//var server = http.createServer(app);
-var server = https.createServer(options, app);
+var server = http.createServer(app);
+/*var server = https.createServer(options, app);*/
 require("./SIACCSockets")(server);
 
 /**

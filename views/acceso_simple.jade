@@ -3,9 +3,54 @@ extends layout
 block content
   div(class="progress", id="loadPage")
       div(class="indeterminate")
-  div(ng-app="SIACCApp")
+  div(ng-app="SIACCApp", ng-controller="ControlAccesoController")
     app-for-users
       div(id="contentApp", hidden)
-        h3 Bienvenido
+        div(ng-init="setAreaByUser(1)")
+            button(class="btn waves-effect right white-text", ng-click="setDatosRegistrarAcceso()") Registrar acceso
+            table(class="bordered")
+              tr
+                th Matricula/No. Personal
+                th Nombre
+                th Fecha inicio
+                th Hora inicio
+                td Registrar
+              tr(ng-repeat="acceso in accesos | filter:searchAcceso")
+                td {{acceso.id_usuario}}
+                td {{acceso.usu_nombre}} {{acceso.usu_primer_apellido}} {{acceso.usu_segundo_apellido}}
+                td {{acceso.acc_fecha_registro.split("T")[0]}}
+                td {{acceso.acc_hora_inicio}}
+                td
+                  button(class="btn waves-effect red white-text", ng-click="setDatosRegistrarSalida(acceso)") Salida
+
+
+        div(id="modalOpcionesAcceso" class="modal", style="z-index:9999;")
+          div(class="modal-content", style="z-index:9999;")
+            i(class="right material-icons", onclick='$("#modalOpcionesAcceso").closeModal();', style="cursor:pointer;") close
+            h4 Acceso
+            table(class="bordered")
+              tr
+                th Busque el usuario
+                th Seleccione el usuario
+              tr
+                td
+                  div(class="input-field col s5", style="margin:0;padding:0")
+                    i(class="material-icons prefix") search
+                    input(type="text", ng-model="searchUsuarioAcceso", ng-change="buscarUsuarios(searchUsuarioAcceso)", id="searchUsuarioAcceso")
+                    label(for="icon_prefix") Buscar...
+                td
+                  select(class="browser-default", ng-model="idUsuarioAcceso")
+                    option(value="" disabled selected) Selecciona el usuario
+                    option(ng-repeat="usuario in findUsuarios", value="{{usuario.id_usuario}}") {{usuario.usu_nombre}} {{usuario.usu_primer_apellido}} {{usuario.usu_segundo_apellido}}
+              tr(ng-show="datosInventarioAcceso.num_inventario")
+                td
+                  p No. Inventario: {{datosInventarioAcceso.num_inventario}}
+                td
+                  p Equipo No. {{datosInventarioAcceso.inv_num_maq}}
+
+            button(class="btn waves-effect right white-text", ng-show="idUsuarioAcceso!=null", ng-click="opcionAcceso()") REGISTRAR {{registrarAccesoBoolean?"ACCESO":"SALIDA"}}
 
   script(src="/javascripts/angular/directives/appForUsers.js")
+  script(src="/javascripts/angular/controllers/ControlAccesoController.js")
+  script(src="/socket.io/socket.io.js")
+  script(src="/javascripts/angular/services/util.js")

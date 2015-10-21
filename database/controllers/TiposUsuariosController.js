@@ -12,6 +12,12 @@ TiposUsuariosController.prototype.getTiposUsuario = function(done) {
   ], {}, done);
 };
 
+TiposUsuariosController.prototype.getTipoUsuario = function(id_tipo_usuario, done) {
+  self.abstractModel.select(self.table,[
+    "id_tipo_usuario", "tipo_nombre", "tipo_descripcion", "tipo_asignar_area", "tipo_asignar_carrera"
+  ], {id_tipo_usuario : id_tipo_usuario}, done);
+};
+
 TiposUsuariosController.prototype.getTiposUsuarioPermitidos = function(idTipoUsuario, done) {
   query = "SELECT id_tipo_usuario,tipo_nombre,tipo_descripcion,tipo_asignar_area,"
         + "tipo_asignar_carrera,ptu_ver_contrasena ver_contrasena FROM tipo_usuario "

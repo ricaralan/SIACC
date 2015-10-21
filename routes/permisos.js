@@ -19,7 +19,9 @@ router.get("/getPermisosUserLog", function(req, res) {
     controller.getPermisosTipoUsuario(req.user.usu_id_tipo_usuario, function(err, permisosTUsu) {
       controller.getPermisosTipoArea(req.user.usu_id_area, function(err, permisosTAre) {
         permisos : controller.getJsonPermisos(permisosTUsu, permisosTAre, req.user.usu_id_tipo_usuario, function(permisos) {
-          res.send(permisos);
+          controller.removePermisosAreaSiNoTieneArea(permisos, req.user.usu_id_tipo_usuario, function(permisos) {
+            res.send(permisos);
+          });
         });
       });
     });

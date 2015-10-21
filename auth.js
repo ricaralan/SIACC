@@ -5,7 +5,7 @@ var passport = require("passport"),
 
 passport.use(new LocalStrategy(function(username, password, done) {
   loginController.verificarUsuario(encriptacion.cipher(username), encriptacion.cipher(password), function(err, usuario) {
-    done(null, (usuario.length==1) ? usuario[0] : {errLogin : true});
+    done(null, (usuario && usuario.length==1) ? usuario[0] : {errLogin : true});
   });
 }));
 

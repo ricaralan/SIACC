@@ -46,7 +46,6 @@ app.use('/inventarios', require('./routes/inventarios'));
 app.use('/acceso_area', require('./routes/acceso_area'));
 app.use('/tipo_servicio', require('./routes/tipo_servicio'));
 app.use('/mesa_ayuda', require('./routes/mesa_ayuda'));
-app.use('/accesos', require('./routes/accesos'));
 app.use('/reports', require('./routes/reports'));
 
 app.post("/auth/login", passport.authenticate("local"), function(req, res) {

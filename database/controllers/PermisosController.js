@@ -7,36 +7,36 @@ var PermisosController = function() {
 var self;
 
 // Con este método obtenemos todos los permisos
-PermisosController.prototype.getAllPermisos = function(callback) {
-  self.abstractModel.select(self.table, ["id_permiso", "per_nombre", "per_descripcion"], {}, callback);
+PermisosController.prototype.getAllPermisos = function(done) {
+  self.abstractModel.select(self.table, ["id_permiso", "per_nombre", "per_descripcion"], {}, done);
 };
 
-PermisosController.prototype.getPermisosTipoUsuario = function(idTipoUsuario, callback) {
+PermisosController.prototype.getPermisosTipoUsuario = function(idTipoUsuario, done) {
   query = "SELECT id_permiso_asignado,per_url,per_nombre_corto,moa_id_permiso,"
         + "moa_id_tipo_usuario,moa_ver,moa_crear,moa_editar,moa_eliminar FROM "
         + "permiso_asignado LEFT JOIN permiso ON id_permiso=moa_id_permiso WHERE "
         + "moa_id_tipo_area IS NULL AND moa_id_tipo_usuario=" + idTipoUsuario;
-  self.connection.query(query, callback);
+  self.connection.query(query, done);
 };
 
-PermisosController.prototype.getPermisoTipoUsuario = function(idTipoUsuario, id_permiso, callback) {
+PermisosController.prototype.getPermisoTipoUsuario = function(idTipoUsuario, id_permiso, done) {
   query = "SELECT id_permiso_asignado,per_url,per_nombre_corto,moa_id_permiso,"
         + "moa_id_tipo_usuario,moa_ver,moa_crear,moa_editar,moa_eliminar FROM "
         + "permiso_asignado LEFT JOIN permiso ON id_permiso=moa_id_permiso WHERE "
         + "moa_id_tipo_area IS NULL AND moa_id_tipo_usuario=" + idTipoUsuario+" AND id_permiso='"+id_permiso+"'";
-  self.connection.query(query, callback);
+  self.connection.query(query, done);
 };
 
-PermisosController.prototype.getPermisosTipoArea = function(idArea, callback) {
+PermisosController.prototype.getPermisosTipoArea = function(idArea, done) {
   self.abstractModel.select("area", ["are_id_tipo_area"], {id_area : idArea}, function(err, area) {
     if(!err) {
       query = "SELECT id_permiso_asignado,per_url,per_nombre_corto,moa_id_permiso,moa_id_tipo_area,moa_ver FROM permiso_asignado LEFT JOIN permiso ON id_permiso=moa_id_permiso WHERE moa_id_tipo_usuario IS NULL AND moa_id_tipo_area=" + idArea;
-      self.connection.query(query, callback);
+      self.connection.query(query, done);
     }
   });
 };
 
-PermisosController.prototype.getJsonPermisos = function(permisosUsu, permisosArea, idTipoUsuario, callback) {
+PermisosController.prototype.getJsonPermisos = function(permisosUsu, permisosArea, idTipoUsuario, done) {
     self.abstractModel.select("tipo_usuario", ["tipo_asignar_area"], {
       id_tipo_usuario:idTipoUsuario
     }, function(err, data) {
@@ -55,7 +55,7 @@ PermisosController.prototype.getJsonPermisos = function(permisosUsu, permisosAre
             }
           }
         }
-        callback(jsonPermisosUsuario);
+        done(jsonPermisosUsuario);
       }
     });
 };
@@ -75,6 +75,24 @@ PermisosController.prototype.getJsonPermiso = function(arrayPermisos) {
     }
   }
   return json;
+};
+
+PermisosController.prototype.removePermisosAreaSiNoTieneArea = function(permisos, tipo_usuario, done) {
+  self.abstractModel.select("tipo_usuario", ["tipo_asignar_area"], {
+    id_tipo_usuario : tipo_usuario
+  }, function(err, data) {
+    for(permiso in permisos) {
+      /**
+      * Remover permisos que requiren que el usuario este asignado a un área
+      */
+      if(permiso === "acceso_simple" && data[0].tipo_asignar_area !== 1) {
+        delete permisos[permiso];
+      } else if(permiso === "acceso_equipo_computo" && data[0].tipo_asignar_area !== 1) {
+        delete permisos[permiso];
+      }
+    }
+    done(permisos);
+  });
 };
 
 module.exports = new PermisosController();

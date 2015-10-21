@@ -30,6 +30,13 @@ SIACCApp.controller("ControlAccesoController", ["$scope", "$http", "scopes", "ut
     }
   };
 
+  $scope.setAreaByUser = function(tipoAcceso) {
+    $http.get("/acceso_area/getAreaUserLogged").success(function(data) {
+      $scope.setArea(data.id_area);
+      $scope.getAccesos(tipoAcceso);
+    });
+  };
+
   $scope.setDatosRegistrarAcceso = function(datosInventario) {
     $scope.datosInventarioAcceso = (!datosInventario) ? {} : datosInventario;
     $scope.registrarAccesoBoolean = true;
