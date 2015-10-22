@@ -77,20 +77,12 @@ PermisosController.prototype.getJsonPermiso = function(arrayPermisos) {
   return json;
 };
 
-PermisosController.prototype.removePermisosAreaSiNoTieneArea = function(permisos, tipo_usuario, done) {
+PermisosController.prototype.setDataUser = function(permisos, tipo_usuario, done) {
   self.abstractModel.select("tipo_usuario", ["tipo_asignar_area"], {
     id_tipo_usuario : tipo_usuario
   }, function(err, data) {
-    for(permiso in permisos) {
-      /**
-      * Remover permisos que requiren que el usuario este asignado a un área
-      */
-      if(permiso === "acceso_simple" && data[0].tipo_asignar_area !== 1) {
-        delete permisos[permiso];
-      } else if(permiso === "acceso_equipo_computo" && data[0].tipo_asignar_area !== 1) {
-        delete permisos[permiso];
-      }
-    }
+    permisos["data_user"] = {};
+    permisos["data_user"].asignado_area = data[0].tipo_asignar_area;
     done(permisos);
   });
 };

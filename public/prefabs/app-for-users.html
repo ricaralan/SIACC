@@ -39,7 +39,7 @@
         <li ng-show="permisos.usuarios.ver == 1"><a href="{{permisos.usuarios.url}}">Usuarios</a></li>
         <li ng-show="permisos.inventarios.ver == 1"><a href="{{permisos.inventarios.url}}">Inventarios</a></li>
         <li ng-show="permisos.asignacion_materias.ver == 1"><a href="{{permisos.asignacion_materias.url}}">Materias</a></li>
-        <li><a class='dropdown-button' href='#' data-activates='accesos_menu'  ng-show="permisos.acceso_simple.ver==1 || permisos.acceso_equipo_computo.ver==1">Accesos</a>
+        <li><a class='dropdown-button' href='#' data-activates='accesos_menu'  ng-show="(permisos.acceso_simple.ver==1 || permisos.acceso_equipo_computo.ver==1) && permisos.data_user.asignado_area === 1">Accesos</a>
           <ul id='accesos_menu' class='dropdown-content'>
             <li ng-show="permisos.acceso_simple.ver==1"><a href="/acceso_area/simple">Simple</a></li>
             <li class="divider" ng-show="permisos.acceso_equipo_computo.ver==1"></li>
