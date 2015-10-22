@@ -5,12 +5,8 @@ block content
       div(class="indeterminate")
   div(ng-app="SIACCApp")
     app-for-users(ng-show="permisos.inventarios.ver==1")
-      div(id="contentApp", hidden, ng-controller="InventariosController", ng-init="getAreas()")
-        h3(ng-show="!area.are_nombre") Elije un área para ver inventario
-        h3(ng-show="area.are_nombre") Inventarios de {{area.are_nombre}}
-        select(class="browser-default", ng-model="idInventarioX", ng-change="setArea(idInventarioX)")
-          option(value="" disabled selected) Selecciona el área
-          option(ng-repeat="area in areas", value="{{area.id_area}}") {{area.are_nombre}}
+      div(id="contentApp", hidden, ng-controller="InventariosController", ng-init="getAreas();setAreaUserLogged()")
+        h4(ng-show="area.are_nombre", class="center") Inventarios de {{area.are_nombre}}
         div(ng-show="area.id_area")
           div(class="row", ng-init="getTiposInventario()")
               div(class="col s12")
@@ -23,7 +19,7 @@ block content
               input(type="text", ng-model="searchInventario")
               label(for="icon_prefix") Buscar...
             button(class="btn waves-effect white-text right", ng-click="setDatosCrearInventario()",ng-show="permisos.inventarios.crear==1") crear
-          h4(ng-show="inventarios.length==0", style="text-align:center;") No hay inventario registrado
+          h5(ng-show="inventarios.length==0", style="text-align:center;") No hay inventario registrado
           div(class="row")
             div(class="card small col s12 m6 l4", ng-repeat="inventario in inventarios | filter:searchInventario")
               div(class="card-image waves-effect waves-block waves-light")

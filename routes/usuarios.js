@@ -37,6 +37,20 @@ router.get("/getDataUsuario/:idUsuario", function(req, res) {
   });
 });
 
+router.get("/u/logged/getDataUsuario", function(req, res) {
+  if(req.user) {
+    controller.getDataUsuario(req.user.id_usuario, function(err, usuario) {
+      if(!err) {
+        res.send(usuario[0]);
+      } else {
+        res.send( { error : "No se pudo encontrar el usuario" } );
+      }
+    });
+  } else {
+    res.send({error : "User not logged"});
+  }
+});
+
 router.get("/getPermisosUsuario/:idUsuario", function(req, res) {
   controller.getPermisosUsuario(req.params.idUsuario, function(err, permisos) {
     res.send(permisos);

@@ -1,15 +1,26 @@
-var express = require('express');
-var router = express.Router();
-var controller = require("../database/controllers/InventariosController");
-var resguardoController = require("../database/controllers/ResguardoInventarioController");
-var permisoController = require("../database/controllers/PermisosController");
+var express = require('express'),
+    router = express.Router(),
+    controller = require("../database/controllers/InventariosController"),
+    resguardoController = require("../database/controllers/ResguardoInventarioController"),
+    permisoController = require("../database/controllers/PermisosController"),
+    tiposUsuariosController = require("../database/controllers/TiposUsuariosController");
 
 router.get("/", function(req, res) {
   if(req.user) {
     permisoController.getPermisoTipoUsuario(req.user.usu_id_tipo_usuario,
       "inventarios", function(err, permiso) {
-        if(!err && permiso && permiso[0].moa_ver==1) {
-          res.render("inventarios", {title : "SIACC"});
+        if(!err && permiso && permiso[0].moa_ver === 1) {
+          tiposUsuariosController.getTipoUsuario(req.user.usu_id_tipo_usuario, function(err, data) {
+            if(!err) {
+              if(data[0].tipo_asignar_area && data[0].tipo_asignar_area == 1){
+                res.render('inventarios', { title : 'Inventarios - SIACC' });
+              } else {
+                res.render("sin_permiso_vista", {title : "No tienes una área asignada - SIACC"});
+              }
+            } else {
+              res.send("Ocurrio un error desconocido");
+            }
+          });
         } else {
           console.log(err);
           res.render("sin_permiso_vista", {title:"No tienes permisos para ver esto - SIACC"});

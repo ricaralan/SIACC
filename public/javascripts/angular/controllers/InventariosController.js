@@ -38,6 +38,16 @@ SIACCApp.controller("InventariosController", ["$scope", "$http", "scopes", "$tim
     $scope.getDatosArea(idArea);
   };
 
+  $scope.setAreaUserLogged = function() {
+    $http.get("/usuarios/u/logged/getDataUsuario").success(function(user) {
+      try {
+        $scope.setArea(user.usu_id_area);
+      } catch (e) {
+        throw new Error(e);
+      }
+    });
+  };
+
   $scope.getDatosArea = function(idArea) {
     $http.get("/areas/getArea/"+idArea).success(function(area) {
       $timeout(function() {
