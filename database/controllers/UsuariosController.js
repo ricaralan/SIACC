@@ -74,6 +74,13 @@ UsuariosController.prototype.findUsuariosTipoLimit = function(word, idTipoUsuari
   self.connection.query(query, done);
 };
 
+UsuariosController.prototype.getUsuariosArea = function(id_area, done) {
+  self.abstractModel.select(self.table, ["id_usuario","usu_nombre",
+    "usu_primer_apellido", "usu_segundo_apellido", "usu_email"],{
+    usu_id_area : id_area
+  }, done);
+};
+
 UsuariosController.prototype.countUsuariosTipo = function(idTipoUsuario, done) {
   var query = "select count(id_usuario) totalUsers from usuario where usu_id_tipo_usuario="+idTipoUsuario;
   self.connection.query(query, done);

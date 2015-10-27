@@ -1,6 +1,14 @@
-var express = require("express");
-var router = express.Router();
-var controller = require("../database/controllers/HorariosController");
+var express = require("express"),
+    router = express.Router(),
+    controller = require("../database/controllers/HorariosController");
+
+router.get("/mi/area", function(req, res) {
+  if(!req.user) {
+    res.render("login", { title : "login" });
+  } else {
+    res.render("horario_area", { title : "horarios" });
+  }
+});
 
 router.get("/getHorarioUsuario/:idUsuario/:fechaInicio/:fechaFin", function(req, res) {
   idUsuario = req.params.idUsuario;

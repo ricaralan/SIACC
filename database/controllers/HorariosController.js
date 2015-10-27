@@ -67,6 +67,15 @@ HorariosController.prototype.getDetalle = function(idHorario, callback) {
   self.connection.query(query, callback);
 };
 
+HorariosController.prototype.getUsuariosPermisoMaterias = function(callback) {
+  query = 'SELECT id_usuario, id_tipo_usuario, usu_nombre, usu_primer_apellido,'
+          +' usu_segundo_apellido, usu_id_area FROM ((usuario INNER JOIN tipo_usuario'
+          +' ON id_tipo_usuario=usu_id_tipo_usuario) INNER JOIN permiso_asignado ON '
+          +'id_tipo_usuario=moa_id_tipo_usuario)INNER JOIN permiso ON id_permiso='
+          +'moa_id_permiso AND id_permiso="asignacion_materias" AND moa_ver=1';
+  self.connection.query(query, callback);
+};
+
 HorariosController.prototype.create = function(jsonHorario, callback) {
   self.abstractModel.insert(self.table, jsonHorario, callback);
 };

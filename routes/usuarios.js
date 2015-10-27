@@ -224,6 +224,12 @@ function usersPasswordsDecipher(usuarios) {
   }
 };
 
+router.get("/getUsuariosArea/:id_area", function(req, res) {
+    controller.getUsuariosArea(req.params.id_area, function(err, usuarios) {
+      res.send(usuarios);
+    });
+});
+
 router.get("/logout", function(req, res) {
   req.session.destroy(function (){
     req.logout();

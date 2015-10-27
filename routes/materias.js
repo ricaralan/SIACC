@@ -15,7 +15,7 @@ router.get("/", function(req, res) {
         }
     });
   } else {
-    res.render("login", {title:"login"});
+    res.render("login", { title : "login" });
   }
 });
 

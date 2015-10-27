@@ -62,7 +62,7 @@ MateriasController.prototype.getMateriasLimitByText = function(text, inicio, num
 
 MateriasController.prototype.getMateriasUsuarioLimitByText = function(text,idUsuario,inicio,numRows,callback) {
   query = "SELECT id_materia, mat_id_carrera, mat_nombre, mat_descripcion, uma_fecha_inicio, uma_fecha_fin, uma_id_usuario id_usuario "
-        + "FROM materia LEFT JOIN usuario_materia on uma_id_materia=id_materia and uma_id_usuario='"+idUsuario+"' "
+        + "FROM materia INNER JOIN usuario_materia on uma_id_materia=id_materia and uma_id_usuario='"+idUsuario+"' "
         + "WHERE id_materia LIKE '%"+text+"%' OR mat_nombre LIKE '%"+text+"%' LIMIT "+inicio+", "+numRows+";";
   self.connection.query(query, callback);
 };
@@ -71,9 +71,11 @@ MateriasController.prototype.getMateriasUsuarioLimitByText = function(text,idUsu
 * Este método regresa los usuarios que pueden tener materias
 **/
 MateriasController.prototype.getUsuariosPermisoMaterias = function(callback) {
-  query = "SELECT id_usuario,usu_nombre,usu_primer_apellido,usu_segundo_apellido FROM "
-        + "usuario INNER JOIN permiso_usuario ON moa_id_permiso='asignacion_materias' "
-        + "AND moa_area_controla_mod AND usu_id_tipo_usuario=moa_id_tipo_usuario";
+  query = 'SELECT id_usuario, id_tipo_usuario, usu_nombre, usu_primer_apellido,'
+          +' usu_segundo_apellido, usu_id_area FROM ((usuario INNER JOIN tipo_usuario'
+          +' ON id_tipo_usuario=usu_id_tipo_usuario) INNER JOIN permiso_asignado ON '
+          +'id_tipo_usuario=moa_id_tipo_usuario)INNER JOIN permiso ON id_permiso='
+          +'moa_id_permiso AND id_permiso="asignacion_materias" AND moa_ver=1';
   self.connection.query(query, callback);
 };
 

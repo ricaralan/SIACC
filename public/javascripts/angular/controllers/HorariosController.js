@@ -15,18 +15,49 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   $scope.titleOpcHorario;
   $scope.socket = io();
   /**
-  * TIPO 1 = horario de usuario(horario de atención)
+  * TIPO 1 = horario de usuario(horario de atención) DEFAULT
   * TIPO 2 = horario en área(asignación de horario de clases)
   */
-  $scope.tipoHorario;
+  $scope.tipoHorario = 1;
   $scope.registrarHorarioClases = false;
   $scope.horarioDetalle = {};
+  $scope.idAreaDefinida = null;
 
   $scope.getUsuariosPermisoMaterias = function() {
     /* Usuarios que pueden impartir materias */
     $http.get("/materias/getUsuariosPermisoMaterias").success(function(usuarios) {
       $scope.usuarios = usuarios;
     });
+  };
+
+  $scope.changeTipoHorario = function(tipo) {
+    $scope.tipoHorario = tipo;
+    if($scope.tipoHorario == 1) {
+      $scope.getUsuariosArea();
+    } else {
+      $scope.getUsuariosPermisoMaterias();
+    }
+  };
+
+  $scope.getUsuariosArea = function() {
+    $http.get("/usuarios/getUsuariosArea/" + $scope.idArea).success(function(usuarios) {
+       $scope.usuarios = usuarios;
+    });
+  };
+
+
+  $scope.setAreaUsuarioLogueado = function() {
+    $http.get("/usuarios/u/logged/getDataUsuario").success(function(usuario) {
+      $scope.idArea = usuario.usu_id_area;
+      $scope.idAreaDefinida = usuario.usu_id_area;
+      $scope.idUsuario = usuario.id_usuario;
+      document.getElementById("horarioArea").setAttribute("area", usuario.usu_id_area);
+      $scope.getUsuariosArea()
+    });
+  };
+
+  $scope.changeUserId = function(id) {
+    $scope.idUsuario = id;
   };
 
   $scope.getMateriasUsuarioByText = function(text) {
@@ -38,6 +69,11 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
     } else {
       $scope.materiasSeach = [];
     }
+  };
+
+  $scope.changeMateriaId = function(id) {
+    console.log(id);
+    $scope.idMateriaSelect= id;
   };
 
   $scope.asignarHorarioClases = function() {
@@ -55,14 +91,15 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   $scope.getHorario = function() {
     if($scope.tipoHorario == 1) {
       $scope.getHorarioUsuario();
-    } else if($scope.tipoHorario == 2) {
+    } else if($scope.tipoHorario== 2) {
       $scope.getHorarioArea();
     } else {
-      Materialize.toast("Error tipo horario");
+      Materialize.toast("Error: tipo horario no definido", 2000);
     }
   };
 
   $scope.getHorarioUsuario = function() {
+    // HORARIO DE ATENCION
     if($scope.validarCampos()) {
       $http.get("/horarios/getHorarioArea/"+$scope.idArea+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
       .success(function(horarios) {
@@ -76,6 +113,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
   };
 
   $scope.getHorarioArea = function() {
+    // HORARIO DE CLASES
     if($scope.validarCampos()) {
       $http.get("/horarios/getHorarioClasesArea/"+$scope.idArea+"/"+$scope.fechaInicio+"/"+$scope.fechaFin)
       .success(function(horarios) {
@@ -229,6 +267,7 @@ SIACCApp.controller("HorariosController", ["$scope", "$http", "$timeout", "scope
       };
     }
     $scope.setFechas();
+    console.log($scope.idMateriaSelect);
     return {
       hua_id_usuario : $scope.idUsuario,
       hua_id_area    : $scope.idArea,
