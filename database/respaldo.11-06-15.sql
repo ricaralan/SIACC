@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.6.25, for debian-linux-gnu (x86_64)
+﻿-- MySQL dump 10.13  Distrib 5.6.25, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: db_siacc
 -- ------------------------------------------------------
@@ -18,6 +18,9 @@
 --
 -- Table structure for table `acceso_area`
 --
+
+CREATE DATABASE db_siacc;
+USE db_siacc;
 
 DROP TABLE IF EXISTS `acceso_area`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

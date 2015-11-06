@@ -91,3 +91,33 @@ BEGIN
 END |
 
 DELIMITER ;
+
+DELIMITER ;
+
+/**
+*	PROCEDURE "ELIMINAR INVENTARIO"
+*
+*	@author Alan Olivares
+**/
+
+DELIMITER |
+
+CREATE PROCEDURE delete_inventario(IN id_inventario VARCHAR(30))
+BEGIN
+
+	/**
+	*	SET "baja inventario" true
+	*/
+	DELETE FROM historial_inventario_area WHERE hia_id_inventario = id_inventario;
+
+	DELETE FROM resguardo_inventario WHERE rin_num_inventario = id_inventario;
+
+	DELETE FROM acceso_area WHERE acc_id_inventario = id_inventario;
+
+	DELETE FROM mesa_ayuda WHERE mes_id_inventario = id_inventario;
+
+	DELETE FROM inventario WHERE num_inventario = id_inventario;
+
+END |
+
+DELIMITER ;

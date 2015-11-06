@@ -83,7 +83,7 @@ InventariosController.prototype.update = function(jsonData, numInventario, done)
 };
 
 InventariosController.prototype.delete = function(numInventario, done) {
-  self.abstractModel.delete(self.table, { num_inventario : numInventario }, done);
+  self.connection.query("CALL delete_inventario('"+numInventario+"')", done);
 };
 
 InventariosController.prototype.darBaja = function(numInventario, done) {
